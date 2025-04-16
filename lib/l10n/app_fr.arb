@@ -1,0 +1,8 @@
+{
+    "@@locale": "fr",
+    "title": "Red-Flags",
+    "@title": {
+        "description": "Le titre de l'application",
+        "type": "text"
+    }
+}

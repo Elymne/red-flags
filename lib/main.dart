@@ -1,0 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:red_flags/app.dart';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(ProviderScope(child: const App()));
+}

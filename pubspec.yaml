@@ -1,0 +1,37 @@
+name: red_flags
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  intl: ^0.19.0 # To manage string data.
+  flutter_riverpod: ^2.6.1 # To manage state and DI.
+  dio: ^5.8.0+1 # To make http request.
+
+dev_dependencies:
+  flutter_test:
+      sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  generate: true
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  fonts:
+    - family: Lunasima 
+      fonts:
+        - asset: assets/fonts/Lunasima-Regular.ttf
+          weight: 400
