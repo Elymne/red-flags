@@ -17,6 +17,8 @@ dependencies:
   intl: ^0.19.0 # To manage string data.
   flutter_riverpod: ^2.6.1 # To manage state and DI.
   dio: ^5.8.0+1 # To make http request.
+  flutter_dotenv: ^5.2.1 # Env manager.
+  google_fonts: ^6.2.1 # Google fonts.
 
 dev_dependencies:
   flutter_test:
@@ -29,9 +31,4 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
-
-  fonts:
-    - family: Lunasima 
-      fonts:
-        - asset: assets/fonts/Lunasima-Regular.ttf
-          weight: 400
+    - .env

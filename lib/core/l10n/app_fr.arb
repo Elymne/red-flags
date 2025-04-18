@@ -1,0 +1,28 @@
+{
+    "@@locale": "fr",
+    "title": "Red-Flags",
+    "@title": {
+        "description": "Le titre de l'application",
+        "type": "text"
+    },
+    "checkLoading": "Vérification en cours",
+    "@checkLoading": {
+        "description": "Message de chargement et de vérification de l'accès au serveur et de l'application. Une petite animation stylax est visible.",
+        "type": "text"
+    },
+    "checkSuccess": "Parfait!",
+    "@checkSuccess": {
+        "description": "Message signifiant que l'application est prête à être utilisé.",
+        "type": "text"
+    },
+    "checkFailure": "Impossible d'accéder au serveur",
+    "@checkFailure": {
+        "description": "Message signifiant que l'application n'arrive pas à se connecter au serveur.",
+        "type": "text"
+    },
+    "applicationFailure": "Impossible de continuer : une erreur interne s'est produite…",
+    "@applicationFailure": {
+        "description": "Message signifiant que l'application a détecté une erreur et ne peux pas continuer l'action en cours.",
+        "type": "text"
+    }
+}
