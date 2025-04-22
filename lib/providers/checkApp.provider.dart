@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/providers/dio/get_dio.provider.dart';
@@ -31,16 +32,19 @@ class CheckAppNotifier extends StateNotifier<CheckAppState> {
 
   Future runCheck() async {
     try {
+      // Fetch the open API entrry route.
       final response = await ref.read(getDio).get("${dotenv.env["HOST"]}/");
-
-      // if (response.statusCode == 200) {
-      //   state = CheckAppState(status: CheckAppState.success);
-      //   return;
-      // }
-
-      // state = CheckAppState(status: CheckAppState.failure);
+      // When response is not a 200, it mean the server may have problems.
+      if (response.statusCode != 200) {
+        state = CheckAppState(status: CheckAppState.failure);
+        return;
+      }
+      // Everything is ok, we notify the splashscreen that the server is all good.
+      state = CheckAppState(status: CheckAppState.success);
     } catch (err) {
-      // state = CheckAppState(status: CheckAppState.failure);
+      // An error has been, we may reset the app in that case or push an error screen.
+      if (kDebugMode) print(err);
+      state = CheckAppState(status: CheckAppState.failure);
     }
   }
 }

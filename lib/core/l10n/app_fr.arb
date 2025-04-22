@@ -24,5 +24,30 @@
     "@applicationFailure": {
         "description": "Message signifiant que l'application a détecté une erreur et ne peux pas continuer l'action en cours.",
         "type": "text"
+    },
+    "homeTitle": "Bienvenue",
+    "@homeTitle": {
+        "description": "Titre de page principale.",
+        "type": "text"
+    },
+    "firstNameInput": "Prénom :",
+    "@firstNameInput": {
+        "description": "Titre de page principale.",
+        "type": "text"
+    },
+    "lastNameInput": "Nom :",
+    "@lastNameInput": {
+        "description": "Titre de page principale.",
+        "type": "text"
+    },
+    "zoneInput": "Ville/Région :",
+    "@zoneInput": {
+        "description": "Titre de page principale.",
+        "type": "text"
+    },
+    "jobInput": "Le métier/activité en cours :",
+    "@jobInput": {
+        "description": "Titre de page principale.",
+        "type": "text"
     }
 }

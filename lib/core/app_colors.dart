@@ -15,12 +15,12 @@ class AppColors {
 
   // Basic background + text color.
   static Color surface = Color(0xFFE9E9E9);
-  static Color surfaceHighest = Color(0xFFE9E9E9);
-  static Color onSurface = Color.fromARGB(255, 58, 58, 58);
+  static Color surfaceHighest = Color(0xFFFFFFFF);
+  static Color onSurface = Color(0xFF3A3A3A);
 
   // Effetc shadows and outline. May change.
-  static Color outline = Color(0x00616161);
-  static Color shadow = Color(0x00464646);
+  static Color outline = Color(0xFF555555);
+  static Color shadow = Color(0xFF464646);
 
   // For text score color.
   static Color greenFlag = primary;

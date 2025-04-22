@@ -7,6 +7,8 @@ class CustomTheme {
     return ThemeData(
       useMaterial3: true,
 
+      scaffoldBackgroundColor: Color.fromARGB(255, 233, 233, 233),
+
       colorScheme: ColorScheme.fromSeed(
         seedColor: Colors.teal,
         brightness: Brightness.light,
@@ -94,7 +96,20 @@ class CustomTheme {
         backgroundColor: AppColors.primary,
       ),
 
-      scaffoldBackgroundColor: Color.fromARGB(255, 233, 233, 233),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.surfaceHighest,
+
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: AppColors.outline),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.blue, width: 2),
+        ),
+        labelStyle: TextStyle(color: Colors.grey.shade800),
+      ),
     );
   }
 }
