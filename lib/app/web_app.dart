@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/core/light_theme.dart';
 
-import 'package:red_flags/app/mobile/screens/splash_screen.dart';
+import 'package:red_flags/app/screens/splash_screen.dart';
 
 class WebApp extends StatelessWidget {
   const WebApp({super.key});
