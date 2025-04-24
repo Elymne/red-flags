@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:red_flags/app/widgets/stylish_input.dart';
 import 'package:red_flags/app/widgets/title_container.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
@@ -51,13 +52,12 @@ class _State extends ConsumerState<SearchScreen> {
           SizedBox(height: 40),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-            child: TextField(
+            child: StylishInput(
+              AppLocalizations.of(context)!.firstNameInput,
               onChanged: (value) {
                 _firstname = value;
                 _onInputChange();
               },
-              style: Theme.of(context).textTheme.labelLarge,
-              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.firstNameInput),
             ),
           ),
           // Lastname Input.
@@ -68,7 +68,6 @@ class _State extends ConsumerState<SearchScreen> {
                 _lastname = value;
                 _onInputChange();
               },
-              style: Theme.of(context).textTheme.labelLarge,
               decoration: InputDecoration(labelText: AppLocalizations.of(context)!.lastNameInput),
             ),
           ),
@@ -80,7 +79,6 @@ class _State extends ConsumerState<SearchScreen> {
                 _zonename = value;
                 _onInputChange();
               },
-              style: Theme.of(context).textTheme.labelLarge,
               decoration: InputDecoration(labelText: AppLocalizations.of(context)!.zoneInput),
             ),
           ),
@@ -92,7 +90,6 @@ class _State extends ConsumerState<SearchScreen> {
                 _jobname = value;
                 _onInputChange();
               },
-              style: Theme.of(context).textTheme.labelLarge,
               decoration: InputDecoration(labelText: AppLocalizations.of(context)!.jobInput),
             ),
           ),

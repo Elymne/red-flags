@@ -98,9 +98,8 @@ class CustomTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: _colorScheme.surfaceContainerHighest,
-
         labelStyle: _textTheme.labelLarge?.copyWith(color: _colorScheme.onSurfaceVariant),
-        floatingLabelStyle: _textTheme.labelLarge?.copyWith(color: _colorScheme.primary),
+        floatingLabelStyle: _textTheme.labelLarge?.copyWith(color: _colorScheme.onSurface),
 
         border: OutlineInputBorder(
           gapPadding: 4.0,
@@ -115,9 +114,11 @@ class CustomTheme {
         focusedBorder: OutlineInputBorder(
           gapPadding: 4.0,
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: _colorScheme.primary, width: 1),
+          borderSide: BorderSide(color: _colorScheme.outline, width: 1),
         ),
       ),
+
+      textSelectionTheme: TextSelectionThemeData(cursorColor: _colorScheme.outline),
     );
   }
 }
