@@ -1,6 +1,6 @@
 {
     "@@locale": "fr",
-    "title": "Red-Flags",
+    "title": "RedFlags",
     "@title": {
         "description": "Le titre de l'application",
         "type": "text"
@@ -48,6 +48,16 @@
     "jobInput": "Le métier/activité en cours :",
     "@jobInput": {
         "description": "Titre de page principale.",
+        "type": "text"
+    },
+    "searchButton": "Regarder",
+    "@searchButton": {
+        "description": "Texte du boutton de recherche",
+        "type": "text"
+    },
+    "createButton": "Créer une nouvelle entrée ?",
+    "@createButton": {
+        "description": "Texte de création d'une nouvelle entrée.",
         "type": "text"
     }
 }

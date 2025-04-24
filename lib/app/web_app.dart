@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/app/screens/home_screen.dart';
+import 'package:red_flags/app/screens/splash_screen.dart';
 import 'package:red_flags/core/light_theme.dart';
 
 class WebApp extends StatelessWidget {
@@ -22,7 +23,7 @@ class WebApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       locale: const Locale('fr'),
       theme: CustomTheme.lightTheme,
-      home: const HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }
