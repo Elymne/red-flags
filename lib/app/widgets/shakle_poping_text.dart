@@ -19,14 +19,19 @@ class _State extends State<ShaklePopingText> with TickerProviderStateMixin {
   /// Delay time between each letter poping.
   late final Timer _timer;
 
+  /// Multiplier movement.
+  double _multiplier = 1.0;
+
   /// Shake Animation for while text is pop in.
   late final AnimationController _shakyController1;
   late final Animation<double> _shakyAnimation1;
   final Duration _shakyDurationTic1 = Duration(milliseconds: 100);
+  final Duration _idleDurationTic1 = Duration(milliseconds: 400);
 
   late final AnimationController _shakyController2;
   late final Animation<double> _shakyAnimation2;
   final Duration _shakyDurationTic2 = Duration(milliseconds: 200);
+  final Duration _idleDurationTic2 = Duration(milliseconds: 800);
 
   @override
   void initState() {
@@ -54,10 +59,6 @@ class _State extends State<ShaklePopingText> with TickerProviderStateMixin {
       // Theses two conditions allow us to forward/reverse infinitly.
       if (status == AnimationStatus.completed) _shakyController2.reverse();
       if (status == AnimationStatus.dismissed) _shakyController2.forward();
-      // When text is fully complete, we just stop listening to changes from animation to make it stop animate.
-      if (_displayText.length == widget.text.length) {
-        _shakyAnimation2.removeStatusListener((status) {});
-      }
     });
     // Start the shaky animation right away.
     _shakyController2.forward();
@@ -66,7 +67,10 @@ class _State extends State<ShaklePopingText> with TickerProviderStateMixin {
     _timer = Timer.periodic(widget.speedAnimation, (timer) {
       // Stop animation if text has reach his full lenght.
       if (_displayText.length == widget.text.length) {
-        timer.cancel();
+        _timer.cancel();
+        _multiplier = 0.3;
+        _shakyController1.duration = _idleDurationTic1;
+        _shakyController2.duration = _idleDurationTic2;
         return;
       }
       // Add a letter and update the widget visual state.
@@ -92,15 +96,18 @@ class _State extends State<ShaklePopingText> with TickerProviderStateMixin {
           animation: _shakyAnimation1,
           builder: (context, child) {
             return Transform.translate(
-              offset: Offset(_shakyAnimation1.value, 0),
+              offset: Offset(_shakyAnimation1.value * _multiplier, 0),
               child: Text(_displayText, style: widget.style?.copyWith(color: Theme.of(context).colorScheme.primary)),
             );
           },
         ),
         AnimatedBuilder(
-          animation: _shakyAnimation1,
+          animation: _shakyAnimation2,
           builder: (context, child) {
-            return Transform.translate(offset: Offset(_shakyAnimation1.value, 0), child: Text(_displayText, style: widget.style));
+            return Transform.translate(
+              offset: Offset(_shakyAnimation2.value * _multiplier, 0),
+              child: Text(_displayText, style: widget.style),
+            );
           },
         ),
       ],

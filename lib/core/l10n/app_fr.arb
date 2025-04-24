@@ -25,39 +25,49 @@
         "description": "Message signifiant que l'application a détecté une erreur et ne peux pas continuer l'action en cours.",
         "type": "text"
     },
-    "homeTitle": "Bienvenue",
-    "@homeTitle": {
-        "description": "Titre de page principale.",
+    "searchScreenTitle": "Recherche",
+    "@searchScreenTitle": {
+        "description": "Titre de la home page.",
+        "type": "text"
+    },
+    "searchScreenSubTitle": "Recherche une ou plusieurs personnes",
+    "@searchScreenSubTitle": {
+        "description": "Sous-titre de la home page invitant à commencer la recherche.",
         "type": "text"
     },
     "firstNameInput": "Prénom :",
     "@firstNameInput": {
-        "description": "Titre de page principale.",
+        "description": "Label du textinput pour le prénom.",
         "type": "text"
     },
     "lastNameInput": "Nom :",
     "@lastNameInput": {
-        "description": "Titre de page principale.",
+        "description": "Label du textinput pour le nom.",
         "type": "text"
     },
     "zoneInput": "Ville/Région :",
     "@zoneInput": {
-        "description": "Titre de page principale.",
+        "description": "Label du textinput pour la zone.",
         "type": "text"
     },
     "jobInput": "Le métier/activité en cours :",
     "@jobInput": {
-        "description": "Titre de page principale.",
+        "description": "Label du textinput pour le job.",
         "type": "text"
     },
-    "searchButton": "Regarder",
+    "searchButton": "Accéder",
     "@searchButton": {
-        "description": "Texte du boutton de recherche",
+        "description": "Texte du bouton d'accès au résulat via la recherche de personnes.",
         "type": "text"
     },
-    "createButton": "Créer une nouvelle entrée ?",
+    "createButton": "Créer",
     "@createButton": {
-        "description": "Texte de création d'une nouvelle entrée.",
+        "description": "Texte de création d'une nouvelle entrée lorsque la recherche d'une personne n'a rien donnée.",
+        "type": "text"
+    },
+    "createDescription": "Aucune personne se semble appartenir à cette description, vous pouvez la créer en cliquant sur le bouton ci-dessus",
+    "@createDescription": {
+        "description": "Texte de création d'une nouvelle entrée lorsque la recherche d'une personne n'a rien donnée.",
         "type": "text"
     }
 }

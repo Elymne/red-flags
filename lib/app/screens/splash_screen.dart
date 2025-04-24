@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/app/screens/home_screen.dart';
+import 'package:red_flags/app/screens/search_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'dart:async';
 
@@ -8,10 +8,10 @@ class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SplashScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _State();
 }
 
-class _SplashScreenState extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
+class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
   /// Duration of the splashscreen.
   final _splashscreenDuration = Duration(milliseconds: 3000);
 
@@ -81,7 +81,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with TickerProvider
       Future.delayed(_opacityDuration, () {
         if (!mounted) return;
         final navigator = Navigator.of(context);
-        navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
+        navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const SearchScreen()), (route) => false);
       });
     });
   }
