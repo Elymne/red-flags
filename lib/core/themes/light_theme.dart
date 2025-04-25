@@ -66,6 +66,8 @@ final _textTheme = TextTheme(
   labelSmall: GoogleFonts.nunitoSans(color: _colorScheme.onSurface, fontWeight: FontWeight.w100),
 );
 
+/// What's this does : manage theming color and text style only.
+/// What's this does not : manage button, inputs, navbar style, it's ony about color and text, adn that is all.
 class CustomTheme {
   static ThemeData get lightTheme {
     return ThemeData(
@@ -94,30 +96,7 @@ class CustomTheme {
       // ! Floating Button (Not Used).
       floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: _colorScheme.primary),
 
-      // All inputs in apps.
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: _colorScheme.surfaceContainerHighest,
-        labelStyle: _textTheme.labelLarge?.copyWith(color: _colorScheme.onSurfaceVariant),
-        floatingLabelStyle: _textTheme.labelLarge?.copyWith(color: _colorScheme.onSurface),
-
-        border: OutlineInputBorder(
-          gapPadding: 4.0,
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: _colorScheme.outline, width: 1),
-        ),
-        disabledBorder: OutlineInputBorder(
-          gapPadding: 4.0,
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: _colorScheme.outlineVariant, width: 1),
-        ),
-        focusedBorder: OutlineInputBorder(
-          gapPadding: 4.0,
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: _colorScheme.outline, width: 1),
-        ),
-      ),
-
+      // ! NOT INPUT STYLE.
       textSelectionTheme: TextSelectionThemeData(cursorColor: _colorScheme.outline),
     );
   }

@@ -1,18 +1,30 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-class ShaklePopingText extends StatefulWidget {
-  final Duration speedAnimation;
-  final String text;
+class ShakleText extends StatefulWidget {
+  /// About text.
   final TextStyle? style;
+  final String text;
 
-  const ShaklePopingText(this.text, {super.key, required this.style, required this.speedAnimation});
+  /// About animations.
+  final Duration speedAnimation;
+  final bool hasIdleAnim;
+  final Color animColor;
+
+  const ShakleText(
+    this.text, {
+    super.key,
+    required this.style,
+    required this.speedAnimation,
+    required this.animColor,
+    this.hasIdleAnim = false,
+  });
 
   @override
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<ShaklePopingText> with TickerProviderStateMixin {
+class _State extends State<ShakleText> with TickerProviderStateMixin {
   // The visual text.
   late String _displayText = "";
 
@@ -25,13 +37,16 @@ class _State extends State<ShaklePopingText> with TickerProviderStateMixin {
   /// Shake Animation for while text is pop in.
   late final AnimationController _shakyController1;
   late final Animation<double> _shakyAnimation1;
-  final Duration _shakyDurationTic1 = Duration(milliseconds: 100);
-  final Duration _idleDurationTic1 = Duration(milliseconds: 1000);
+  final Duration _shakyDurationTic1 = Duration(milliseconds: 200);
+  final Duration _idleDurationTic1 = Duration(milliseconds: 1600);
 
   late final AnimationController _shakyController2;
   late final Animation<double> _shakyAnimation2;
-  final Duration _shakyDurationTic2 = Duration(milliseconds: 200);
-  final Duration _idleDurationTic2 = Duration(milliseconds: 1400);
+  final Duration _shakyDurationTic2 = Duration(milliseconds: 100);
+  final Duration _idleDurationTic2 = Duration(milliseconds: 1000);
+
+  /// Simple background display state.
+  bool showBackground = true;
 
   @override
   void initState() {
@@ -39,7 +54,7 @@ class _State extends State<ShaklePopingText> with TickerProviderStateMixin {
 
     // Set the text shaky animation for background text.
     _shakyController1 = AnimationController(vsync: this, duration: _shakyDurationTic1);
-    _shakyAnimation1 = Tween<double>(begin: -2, end: 2).animate(_shakyController1);
+    _shakyAnimation1 = Tween<double>(begin: -3, end: 3).animate(_shakyController1);
     // Start the shaky animation right away.
     _shakyController1.repeat(reverse: true);
 
@@ -49,18 +64,28 @@ class _State extends State<ShaklePopingText> with TickerProviderStateMixin {
     // Start the shaky animation right away.
     _shakyController2.repeat(reverse: true);
 
-    // Each tic, we add a character to the text until it's full.
+    /// Each tic, we add a character to the text until it's full.
     _timer = Timer.periodic(widget.speedAnimation, (timer) {
-      // if the text is full, we
+      /// When text is complete, we now have a choice.
       if (_displayText.length == widget.text.length) {
+        /// Cancel the callback timer.
         _timer.cancel();
-        _forceAnimation = 0.3;
-        _shakyController1.duration = _idleDurationTic1;
-        _shakyController2.duration = _idleDurationTic2;
 
-        // Run the anim again to take account of changes.
-        _shakyController1.repeat(reverse: true);
-        _shakyController2.repeat(reverse: true);
+        /// If idle animation is set to true, we smooth current anim and start it.
+        if (widget.hasIdleAnim) {
+          _forceAnimation = 0.3;
+          _shakyController1.duration = _idleDurationTic1;
+          _shakyController2.duration = _idleDurationTic2;
+          // Run the anim again to take account of changes.
+          _shakyController1.repeat(reverse: true);
+          _shakyController2.repeat(reverse: true);
+          return;
+        }
+
+        /// Else, it's full stop mode. Hide the colored background. Reverse animation to correct position.
+        _shakyController1.reverse();
+        _shakyController2.reverse();
+        showBackground = false;
         return;
       }
 
@@ -83,15 +108,16 @@ class _State extends State<ShaklePopingText> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        AnimatedBuilder(
-          animation: _shakyAnimation1,
-          builder: (context, child) {
-            return Transform.translate(
-              offset: Offset(_shakyAnimation1.value * _forceAnimation, 0),
-              child: Text(_displayText, style: widget.style?.copyWith(color: Theme.of(context).colorScheme.primary)),
-            );
-          },
-        ),
+        if (showBackground)
+          AnimatedBuilder(
+            animation: _shakyAnimation1,
+            builder: (context, child) {
+              return Transform.translate(
+                offset: Offset(_shakyAnimation1.value * _forceAnimation, 0),
+                child: Text(_displayText, style: widget.style?.copyWith(color: widget.animColor)),
+              );
+            },
+          ),
         AnimatedBuilder(
           animation: _shakyAnimation2,
           builder: (context, child) {

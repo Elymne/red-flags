@@ -61,38 +61,38 @@ class _State extends ConsumerState<SearchScreen> {
             ),
           ),
           // Lastname Input.
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-            child: TextField(
-              onChanged: (value) {
-                _lastname = value;
-                _onInputChange();
-              },
-              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.lastNameInput),
-            ),
-          ),
-          // Zone/City Input.
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-            child: TextField(
-              onChanged: (value) {
-                _zonename = value;
-                _onInputChange();
-              },
-              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.zoneInput),
-            ),
-          ),
-          // Job name Input.
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-            child: TextField(
-              onChanged: (value) {
-                _jobname = value;
-                _onInputChange();
-              },
-              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.jobInput),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+          //   child: TextField(
+          //     onChanged: (value) {
+          //       _lastname = value;
+          //       _onInputChange();
+          //     },
+          //     decoration: InputDecoration(labelText: AppLocalizations.of(context)!.lastNameInput),
+          //   ),
+          // ),
+          // // Zone/City Input.
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+          //   child: TextField(
+          //     onChanged: (value) {
+          //       _zonename = value;
+          //       _onInputChange();
+          //     },
+          //     decoration: InputDecoration(labelText: AppLocalizations.of(context)!.zoneInput),
+          //   ),
+          // ),
+          // // Job name Input.
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+          //   child: TextField(
+          //     onChanged: (value) {
+          //       _jobname = value;
+          //       _onInputChange();
+          //     },
+          //     decoration: InputDecoration(labelText: AppLocalizations.of(context)!.jobInput),
+          //   ),
+          // ),
           // Validation Button with result number.
           SizedBox(height: 20),
 

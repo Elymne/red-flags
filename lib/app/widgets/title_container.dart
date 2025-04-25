@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:red_flags/app/widgets/shakle_poping_text.dart';
+import 'package:red_flags/app/widgets/shakle_text.dart';
 
 class TitleContainer extends StatelessWidget {
   final String title;
@@ -19,8 +19,20 @@ class TitleContainer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 0,
           children: [
-            ShaklePopingText(title, style: Theme.of(context).textTheme.headlineLarge, speedAnimation: Duration(milliseconds: 100)),
-            ShaklePopingText(subtitle, style: Theme.of(context).textTheme.headlineMedium, speedAnimation: Duration(milliseconds: 40)),
+            ShakleText(
+              title,
+              style: Theme.of(context).textTheme.headlineLarge,
+              speedAnimation: Duration(milliseconds: 100),
+              animColor: Theme.of(context).primaryColor,
+              hasIdleAnim: true,
+            ),
+            ShakleText(
+              subtitle,
+              style: Theme.of(context).textTheme.headlineMedium,
+              speedAnimation: Duration(milliseconds: 40),
+              animColor: Theme.of(context).primaryColor,
+              hasIdleAnim: true,
+            ),
             SizedBox(height: 10),
           ],
         ),

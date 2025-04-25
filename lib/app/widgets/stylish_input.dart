@@ -56,15 +56,15 @@ class _State extends State<StylishInput> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        AnimatedBuilder(
-          animation: _shakyAnimation1,
-          builder: (context, child) {
-            return Transform.translate(
-              offset: Offset(_shakyAnimation1.value, 0),
-              child: TextField(style: Theme.of(context).textTheme.labelLarge, decoration: InputDecoration(labelText: widget.label)),
-            );
-          },
-        ),
+        // AnimatedBuilder(
+        //   animation: _shakyAnimation1,
+        //   builder: (context, child) {
+        //     return Transform.translate(
+        //       offset: Offset(_shakyAnimation1.value, 0),
+        //       child: TextField(style: Theme.of(context).textTheme.labelLarge, decoration: InputDecoration(labelText: widget.label)),
+        //     );
+        //   },
+        // ),
         AnimatedBuilder(
           animation: _shakyAnimation2,
           builder: (context, child) {
@@ -74,7 +74,14 @@ class _State extends State<StylishInput> with TickerProviderStateMixin {
                 focusNode: _focus,
                 onChanged: (value) {},
                 style: Theme.of(context).textTheme.labelLarge,
-                decoration: InputDecoration(labelText: widget.label),
+                decoration: InputDecoration(
+                  labelText: widget.label,
+
+                  border: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.outline, width: 1),
+                  ),
+                ),
               ),
             );
           },
