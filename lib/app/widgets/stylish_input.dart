@@ -18,12 +18,12 @@ class _State extends State<StylishInput> with TickerProviderStateMixin {
   /// Shake Animation (for background color).
   late final AnimationController _shakyController1;
   late final Animation<double> _shakyAnimation1;
-  final Duration _shakyDurationTic1 = Duration(milliseconds: 100);
+  final Duration _shakyDurationTic1 = Duration(milliseconds: 400);
 
   /// Shake Animation (for front input).
   late final AnimationController _shakyController2;
   late final Animation<double> _shakyAnimation2;
-  final Duration _shakyDurationTic2 = Duration(milliseconds: 200);
+  final Duration _shakyDurationTic2 = Duration(milliseconds: 800);
 
   /// Current state of input. Allow me to know when I have to activate or not the animation.
   String inputValue = "";

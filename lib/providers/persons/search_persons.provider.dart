@@ -19,8 +19,39 @@ class _Notifier extends StateNotifier<_Value> {
 
   _Notifier(this.ref) : super(_Value(state: ProviderState.init, value: []));
 
-  Future search({String? firstname, String? lastname, String? zoneName, String? jobname}) async {
+  Future search({required String firstname, required String lastname, required String zoneName, required String jobname}) async {
     try {
+      // Check that at least one value is not empty else set empty list as result.
+      if (firstname.isEmpty && lastname.isEmpty && zoneName.isEmpty && jobname.isEmpty) {
+        state = _Value(state: ProviderState.success, value: []);
+        return;
+      }
+
+      // TODO : Cheating for testing.
+      await Future.delayed(Duration(milliseconds: 1000));
+      state = _Value(
+        state: ProviderState.failure,
+        value: [
+          Person(
+            id: "id1",
+            firstName: "firstName",
+            lastName: "lastName",
+            createdDate: DateTime.now(),
+            updatedDate: null,
+            cityName: "cityName",
+          ),
+          Person(
+            id: "id2",
+            firstName: "firstName",
+            lastName: "lastName",
+            createdDate: DateTime.now(),
+            updatedDate: null,
+            cityName: "cityName",
+          ),
+        ],
+      );
+      return;
+
       // Update state : Searching (load time).
       state = _Value(state: ProviderState.init, value: []);
       final response = await Dio().get<List>(

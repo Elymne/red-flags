@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/app/widgets/stylish_input.dart';
 import 'package:red_flags/app/widgets/title_container.dart';
+import 'package:red_flags/providers/persons/search_persons.provider.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -36,6 +37,8 @@ class _State extends ConsumerState<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final persons = ref.watch(searchPersonsProvider).value;
+
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -51,7 +54,7 @@ class _State extends ConsumerState<SearchScreen> {
           // Firstname Input.
           SizedBox(height: 40),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: StylishInput(
               AppLocalizations.of(context)!.firstNameInput,
               animColor: Theme.of(context).colorScheme.primary,
@@ -61,39 +64,42 @@ class _State extends ConsumerState<SearchScreen> {
               },
             ),
           ),
-          // Lastname Input.
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-          //   child: TextField(
-          //     onChanged: (value) {
-          //       _lastname = value;
-          //       _onInputChange();
-          //     },
-          //     decoration: InputDecoration(labelText: AppLocalizations.of(context)!.lastNameInput),
-          //   ),
-          // ),
-          // // Zone/City Input.
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-          //   child: TextField(
-          //     onChanged: (value) {
-          //       _zonename = value;
-          //       _onInputChange();
-          //     },
-          //     decoration: InputDecoration(labelText: AppLocalizations.of(context)!.zoneInput),
-          //   ),
-          // ),
-          // // Job name Input.
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-          //   child: TextField(
-          //     onChanged: (value) {
-          //       _jobname = value;
-          //       _onInputChange();
-          //     },
-          //     decoration: InputDecoration(labelText: AppLocalizations.of(context)!.jobInput),
-          //   ),
-          // ),
+          //Lastname Input.
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: StylishInput(
+              AppLocalizations.of(context)!.lastNameInput,
+              animColor: Theme.of(context).colorScheme.primary,
+              onChanged: (value) {
+                _lastname = value;
+                _onInputChange();
+              },
+            ),
+          ),
+          // Zone/City Input.
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: StylishInput(
+              AppLocalizations.of(context)!.zoneInput,
+              animColor: Theme.of(context).colorScheme.primary,
+              onChanged: (value) {
+                _zonename = value;
+                _onInputChange();
+              },
+            ),
+          ),
+          // Job name Input.
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: StylishInput(
+              AppLocalizations.of(context)!.jobInput,
+              animColor: Theme.of(context).colorScheme.primary,
+              onChanged: (value) {
+                _jobname = value;
+                _onInputChange();
+              },
+            ),
+          ),
           // Validation Button with result number.
           SizedBox(height: 20),
 
@@ -102,12 +108,20 @@ class _State extends ConsumerState<SearchScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
+              // TODO : Blocked button
+              // ElevatedButton(
+              //   onPressed: () {
+              //     if (kDebugMode) print("Clicked");
+              //   },
+              //   child: Text("${AppLocalizations.of(context)!.searchButton} (${persons.length})"),
+              // ),
+
               // TODO : Access to List persons page.
               ElevatedButton(
                 onPressed: () {
                   if (kDebugMode) print("Clicked");
                 },
-                child: Text(AppLocalizations.of(context)!.searchButton),
+                child: Text("${AppLocalizations.of(context)!.searchButton} (${persons.length})"),
               ),
 
               // TODO : Create a new entry and access to unique person created.
@@ -127,14 +141,11 @@ class _State extends ConsumerState<SearchScreen> {
   /// Everytime an input is updated, we want to delay the time before fetching data to prevent big load on device and server.
   /// When this delay is passed, we start fetching data.
   void _onInputChange() {
-    if (_searchDelay != null) {
-      _searchDelay!.cancel();
-    }
+    _searchDelay?.cancel();
+
     _searchDelay = Timer(_searchDelayTimer, () {
-      _searchDelay = null;
-      if (kDebugMode) {
-        print("$_firstname, $_lastname, $_zonename, $_jobname");
-      }
+      print("SEARCHING NOW !");
+      ref.read(searchPersonsProvider.notifier).search(firstname: _firstname, lastname: _lastname, zoneName: _zonename, jobname: _jobname);
     });
   }
 }

@@ -4,8 +4,9 @@ import 'package:red_flags/app/widgets/shakle_text.dart';
 class TitleContainer extends StatelessWidget {
   final String title;
   final String subtitle;
+  final Color? color;
 
-  const TitleContainer({super.key, required this.title, this.subtitle = " "});
+  const TitleContainer({super.key, required this.title, this.subtitle = " ", this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +23,14 @@ class TitleContainer extends StatelessWidget {
             ShakleText(
               title,
               style: Theme.of(context).textTheme.headlineLarge,
-              animColor: Theme.of(context).primaryColor,
+              animColor: color ?? Theme.of(context).primaryColor,
               speedAnimation: Duration(milliseconds: 100),
               hasIdleAnim: true,
             ),
             ShakleText(
               subtitle,
               style: Theme.of(context).textTheme.headlineMedium,
-              animColor: Theme.of(context).primaryColor,
+              animColor: color ?? Theme.of(context).primaryColor,
               speedAnimation: Duration(milliseconds: 40),
               hasIdleAnim: true,
             ),
