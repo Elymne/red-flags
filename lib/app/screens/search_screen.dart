@@ -54,6 +54,7 @@ class _State extends ConsumerState<SearchScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
             child: StylishInput(
               AppLocalizations.of(context)!.firstNameInput,
+              animColor: Theme.of(context).colorScheme.primary,
               onChanged: (value) {
                 _firstname = value;
                 _onInputChange();

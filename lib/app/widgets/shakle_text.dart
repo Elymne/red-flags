@@ -5,19 +5,27 @@ class ShakleText extends StatefulWidget {
   /// About text.
   final TextStyle? style;
   final String text;
-
-  /// About animations.
-  final Duration speedAnimation;
-  final bool hasIdleAnim;
   final Color animColor;
+
+  /// Text animation.
+  final Duration speedAnimation;
+  final double force;
+
+  /// Idle animation.
+  final bool hasIdleAnim;
+  final double idleForce;
 
   const ShakleText(
     this.text, {
     super.key,
     required this.style,
-    required this.speedAnimation,
     required this.animColor,
+
+    this.speedAnimation = const Duration(milliseconds: 100),
+    this.force = 1,
+
     this.hasIdleAnim = false,
+    this.idleForce = 0.4,
   });
 
   @override
@@ -32,13 +40,13 @@ class _State extends State<ShakleText> with TickerProviderStateMixin {
   late final Timer _timer;
 
   /// Power of movement animation. Lower value will make animation shake less for example.
-  double _forceAnimation = 1.0;
+  late double _forceAnimation = widget.force;
 
   /// Shake Animation for while text is pop in.
   late final AnimationController _shakyController1;
   late final Animation<double> _shakyAnimation1;
   final Duration _shakyDurationTic1 = Duration(milliseconds: 200);
-  final Duration _idleDurationTic1 = Duration(milliseconds: 1600);
+  final Duration _idleDurationTic1 = Duration(milliseconds: 2000);
 
   late final AnimationController _shakyController2;
   late final Animation<double> _shakyAnimation2;
@@ -73,7 +81,7 @@ class _State extends State<ShakleText> with TickerProviderStateMixin {
 
         /// If idle animation is set to true, we smooth current anim and start it.
         if (widget.hasIdleAnim) {
-          _forceAnimation = 0.3;
+          _forceAnimation = widget.idleForce;
           _shakyController1.duration = _idleDurationTic1;
           _shakyController2.duration = _idleDurationTic2;
           // Run the anim again to take account of changes.

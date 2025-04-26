@@ -22,15 +22,15 @@ class TitleContainer extends StatelessWidget {
             ShakleText(
               title,
               style: Theme.of(context).textTheme.headlineLarge,
-              speedAnimation: Duration(milliseconds: 100),
               animColor: Theme.of(context).primaryColor,
+              speedAnimation: Duration(milliseconds: 100),
               hasIdleAnim: true,
             ),
             ShakleText(
               subtitle,
               style: Theme.of(context).textTheme.headlineMedium,
-              speedAnimation: Duration(milliseconds: 40),
               animColor: Theme.of(context).primaryColor,
+              speedAnimation: Duration(milliseconds: 40),
               hasIdleAnim: true,
             ),
             SizedBox(height: 10),
