@@ -3,10 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:red_flags/app/widgets/neon_elevated_button.dart';
+import 'package:red_flags/app/widgets/fantom_widget.dart';
 import 'package:red_flags/app/widgets/shakle_input.dart';
 import 'package:red_flags/app/widgets/shakle_outlined_button.dart';
 import 'package:red_flags/app/widgets/title_container.dart';
+import 'package:red_flags/models/person.model.dart';
 import 'package:red_flags/providers/persons/search_persons.provider.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
@@ -16,13 +17,11 @@ class SearchScreen extends ConsumerStatefulWidget {
   ConsumerState<SearchScreen> createState() => _State();
 }
 
-class _State extends ConsumerState<SearchScreen> {
-  /// The time delay before fetching data on input changes.
-  final _searchDelayTimer = Duration(seconds: 1);
-  Timer? _searchDelay;
+class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
+  late final PageController _pageController = PageController(initialPage: 0);
 
-  // Page controller for button
-  late final PageController pageController;
+  /// The time delay before fetching data on input changes.
+  Timer? _searchDelay;
 
   /// Inputs value references.
   String _firstname = "";
@@ -31,10 +30,9 @@ class _State extends ConsumerState<SearchScreen> {
   String _jobname = "";
 
   @override
-  void initState() {
-    super.initState();
-    // Set the page controller for action button.
-    pageController = PageController(initialPage: 0, viewportFraction: 1);
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -55,87 +53,113 @@ class _State extends ConsumerState<SearchScreen> {
 
           // Firstname Input.
           SizedBox(height: 40),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: ShakleInput(
-              AppLocalizations.of(context)!.firstNameInput,
-              animColor: Theme.of(context).colorScheme.primary,
-              onChanged: (value) {
-                _firstname = value;
-                _onInputChange();
-              },
+          FantomWidget(
+            duration: Duration(milliseconds: 400),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: ShakleInput(
+                AppLocalizations.of(context)!.firstNameInput,
+                animColor: Theme.of(context).colorScheme.primary,
+                onChanged: (value) {
+                  _firstname = value;
+                  _onInputChange();
+                },
+              ),
             ),
           ),
+
           //Lastname Input.
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: ShakleInput(
-              AppLocalizations.of(context)!.lastNameInput,
-              animColor: Theme.of(context).colorScheme.primary,
-              onChanged: (value) {
-                _lastname = value;
-                _onInputChange();
-              },
+          FantomWidget(
+            duration: Duration(milliseconds: 800),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: ShakleInput(
+                AppLocalizations.of(context)!.lastNameInput,
+                animColor: Theme.of(context).colorScheme.primary,
+                onChanged: (value) {
+                  _lastname = value;
+                  _onInputChange();
+                },
+              ),
             ),
           ),
           // Zone/City Input.
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: ShakleInput(
-              AppLocalizations.of(context)!.zoneInput,
-              animColor: Theme.of(context).colorScheme.primary,
-              onChanged: (value) {
-                _zonename = value;
-                _onInputChange();
-              },
+          FantomWidget(
+            duration: Duration(milliseconds: 1200),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: ShakleInput(
+                AppLocalizations.of(context)!.zoneInput,
+                animColor: Theme.of(context).colorScheme.primary,
+                onChanged: (value) {
+                  _zonename = value;
+                  _onInputChange();
+                },
+              ),
             ),
           ),
           // Job name Input.
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: ShakleInput(
-              AppLocalizations.of(context)!.jobInput,
-              animColor: Theme.of(context).colorScheme.primary,
-              onChanged: (value) {
-                _jobname = value;
-                _onInputChange();
-              },
+          FantomWidget(
+            duration: Duration(milliseconds: 1600),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: ShakleInput(
+                AppLocalizations.of(context)!.jobInput,
+                animColor: Theme.of(context).colorScheme.primary,
+                onChanged: (value) {
+                  _jobname = value;
+                  _onInputChange();
+                },
+              ),
             ),
           ),
           // Validation Button with result number.
-          SizedBox(height: 20),
+          FantomWidget(
+            duration: Duration(milliseconds: 2000),
+            child: SizedBox(
+              height: 100,
+              child: PageView(
+                controller: _pageController,
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: ShakleOutlinedButton(
+                      AppLocalizations.of(context)!.searchButton,
+                      animColor: Theme.of(context).colorScheme.primary,
+                      isActive: false,
+                      onPressed: () {
+                        if (kDebugMode) print("Clicked");
+                      },
+                    ),
+                  ),
 
-          // TODO : Change the button depending of what is returned by Search.
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              // TODO : Blocked button
-              // ElevatedButton(
-              //   onPressed: () {
-              //     if (kDebugMode) print("Clicked");
-              //   },
-              //   child: Text("${AppLocalizations.of(context)!.searchButton} (${persons.length})"),
-              // ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: ShakleOutlinedButton(
+                      "${AppLocalizations.of(context)!.searchButton} (${persons.length})",
+                      animColor: Theme.of(context).colorScheme.primary,
+                      isActive: true,
+                      onPressed: () {
+                        if (kDebugMode) print("Clicked");
+                      },
+                    ),
+                  ),
 
-              // TODO : Access to List persons page.
-              ShakleOutlinedButton(
-                "${AppLocalizations.of(context)!.searchButton} (${persons.length})",
-                animColor: Theme.of(context).colorScheme.primary,
-                isActive: true,
-                onPressed: () {
-                  if (kDebugMode) print("Clicked");
-                },
+                  Align(
+                    alignment: Alignment.center,
+                    child: ShakleOutlinedButton(
+                      AppLocalizations.of(context)!.createButton,
+                      animColor: Theme.of(context).colorScheme.primary,
+                      isActive: true,
+                      onPressed: () {
+                        if (kDebugMode) print("Clicked");
+                      },
+                    ),
+                  ),
+                ],
               ),
-
-              // TODO : Create a new entry and access to unique person created.
-              // ElevatedButton(
-              //   onPressed: () {
-              //     if (kDebugMode) print("Clicked");
-              //   },
-              //   child: Text(AppLocalizations.of(context)!.searchButton),
-              // ),
-            ],
+            ),
           ),
         ],
       ),
@@ -147,9 +171,31 @@ class _State extends ConsumerState<SearchScreen> {
   void _onInputChange() {
     _searchDelay?.cancel();
 
-    _searchDelay = Timer(_searchDelayTimer, () {
-      print("SEARCHING NOW !");
-      ref.read(searchPersonsProvider.notifier).search(firstname: _firstname, lastname: _lastname, zoneName: _zonename, jobname: _jobname);
+    _searchDelay = Timer(Duration(milliseconds: 1000), () async {
+      // Fetch the data.
+      await ref
+          .read(searchPersonsProvider.notifier)
+          .search(firstname: _firstname, lastname: _lastname, zoneName: _zonename, jobname: _jobname);
+      // Get persons from search ahead.
+      final persons = ref.read(searchPersonsProvider).value;
+      // Switch to ListView Screen Button.
+      if (persons.isNotEmpty) {
+        _pageController.animateToPage(1, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        return;
+      }
+      // Switch to CreateNew Screen Button.
+      if (_firstname.isNotEmpty &&
+          _lastname.isNotEmpty &&
+          _zonename.isNotEmpty &&
+          _jobname.isNotEmpty &&
+          persons.isNotEmpty &&
+          persons.isEmpty) {
+        _pageController.animateToPage(2, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        return;
+      }
+      // Switch to Disabled Button.
+      _pageController.animateToPage(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+      return;
     });
   }
 }

@@ -59,7 +59,7 @@ final _textTheme = TextTheme(
   bodySmall: GoogleFonts.nunitoSans(color: _colorScheme.onSurface, fontWeight: FontWeight.normal, fontSize: 12),
 
   // Button Text.
-  labelLarge: GoogleFonts.nunitoSans(color: _colorScheme.surface, fontWeight: FontWeight.normal, fontSize: 18),
+  labelLarge: GoogleFonts.nunitoSans(color: _colorScheme.onSurface, fontWeight: FontWeight.normal, fontSize: 18),
   // ! (Not USED)
   labelMedium: GoogleFonts.nunitoSans(color: _colorScheme.onSurface, fontWeight: FontWeight.normal),
   // ! (Not USED)
