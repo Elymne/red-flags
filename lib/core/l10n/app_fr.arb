@@ -50,23 +50,28 @@
         "description": "Label du textinput pour la zone.",
         "type": "text"
     },
-    "jobInput": "Le métier/activité en cours :",
+    "jobInput": "Métier/Activité :",
     "@jobInput": {
         "description": "Label du textinput pour le job.",
         "type": "text"
     },
-    "searchButton": "Accéder",
-    "@searchButton": {
+    "noneButton": "Rien :(",
+    "@noneButton": {
+        "description": "Texte de bouton siginifiant qu'aucune personne ne correspond à la recherche actuelle.",
+        "type": "text"
+    },
+    "createDescription": "Aucune personne se semble appartenir à cette description, vous pouvez la créer en cliquant sur le bouton ci-dessus",
+    "@createDescription": {
+        "description": "Texte de création d'une nouvelle entrée lorsque la recherche d'une personne n'a rien donnée.",
+        "type": "text"
+    },
+    "lookButton": "Voir",
+    "@lookButton": {
         "description": "Texte du bouton d'accès au résulat via la recherche de personnes.",
         "type": "text"
     },
     "createButton": "Créer",
     "@createButton": {
-        "description": "Texte de création d'une nouvelle entrée lorsque la recherche d'une personne n'a rien donnée.",
-        "type": "text"
-    },
-    "createDescription": "Aucune personne se semble appartenir à cette description, vous pouvez la créer en cliquant sur le bouton ci-dessus",
-    "@createDescription": {
         "description": "Texte de création d'une nouvelle entrée lorsque la recherche d'une personne n'a rien donnée.",
         "type": "text"
     }
