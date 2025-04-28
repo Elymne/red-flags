@@ -3,7 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:red_flags/app/widgets/stylish_input.dart';
+import 'package:red_flags/app/widgets/neon_elevated_button.dart';
+import 'package:red_flags/app/widgets/shakle_input.dart';
+import 'package:red_flags/app/widgets/shakle_outlined_button.dart';
 import 'package:red_flags/app/widgets/title_container.dart';
 import 'package:red_flags/providers/persons/search_persons.provider.dart';
 
@@ -55,7 +57,7 @@ class _State extends ConsumerState<SearchScreen> {
           SizedBox(height: 40),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: StylishInput(
+            child: ShakleInput(
               AppLocalizations.of(context)!.firstNameInput,
               animColor: Theme.of(context).colorScheme.primary,
               onChanged: (value) {
@@ -67,7 +69,7 @@ class _State extends ConsumerState<SearchScreen> {
           //Lastname Input.
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: StylishInput(
+            child: ShakleInput(
               AppLocalizations.of(context)!.lastNameInput,
               animColor: Theme.of(context).colorScheme.primary,
               onChanged: (value) {
@@ -79,7 +81,7 @@ class _State extends ConsumerState<SearchScreen> {
           // Zone/City Input.
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: StylishInput(
+            child: ShakleInput(
               AppLocalizations.of(context)!.zoneInput,
               animColor: Theme.of(context).colorScheme.primary,
               onChanged: (value) {
@@ -91,7 +93,7 @@ class _State extends ConsumerState<SearchScreen> {
           // Job name Input.
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: StylishInput(
+            child: ShakleInput(
               AppLocalizations.of(context)!.jobInput,
               animColor: Theme.of(context).colorScheme.primary,
               onChanged: (value) {
@@ -117,11 +119,13 @@ class _State extends ConsumerState<SearchScreen> {
               // ),
 
               // TODO : Access to List persons page.
-              ElevatedButton(
+              ShakleOutlinedButton(
+                "${AppLocalizations.of(context)!.searchButton} (${persons.length})",
+                animColor: Theme.of(context).colorScheme.primary,
+                isActive: true,
                 onPressed: () {
                   if (kDebugMode) print("Clicked");
                 },
-                child: Text("${AppLocalizations.of(context)!.searchButton} (${persons.length})"),
               ),
 
               // TODO : Create a new entry and access to unique person created.

@@ -59,7 +59,7 @@ final _textTheme = TextTheme(
   bodySmall: GoogleFonts.nunitoSans(color: _colorScheme.onSurface, fontWeight: FontWeight.normal, fontSize: 12),
 
   // Button Text.
-  labelLarge: GoogleFonts.nunitoSans(color: _colorScheme.onSurface, fontWeight: FontWeight.normal, fontSize: 18),
+  labelLarge: GoogleFonts.nunitoSans(color: _colorScheme.surface, fontWeight: FontWeight.normal, fontSize: 18),
   // ! (Not USED)
   labelMedium: GoogleFonts.nunitoSans(color: _colorScheme.onSurface, fontWeight: FontWeight.normal),
   // ! (Not USED)
@@ -76,21 +76,6 @@ class CustomTheme {
       textTheme: _textTheme,
       scaffoldBackgroundColor: _colorScheme.surface,
 
-      // Colored button.
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: _colorScheme.outline,
-          side: BorderSide(color: _colorScheme.outline, width: 2),
-          foregroundColor: _colorScheme.onPrimary,
-          iconColor: _colorScheme.onPrimary,
-          textStyle: _textTheme.labelLarge,
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 100),
-        ),
-      ),
-      // Outllinded Button.
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(foregroundColor: _colorScheme.primary, side: BorderSide(color: _colorScheme.primary)),
-      ),
       // Link Button.
       textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: _colorScheme.primary)),
       // ! Floating Button (Not Used).

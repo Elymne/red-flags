@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class StylishInput extends StatefulWidget {
+class ShakleInput extends StatefulWidget {
   final String label;
   final Color animColor;
   final void Function(String) onChanged;
 
-  const StylishInput(this.label, {super.key, required this.onChanged, required this.animColor});
+  const ShakleInput(this.label, {super.key, required this.onChanged, required this.animColor});
 
   @override
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<StylishInput> with TickerProviderStateMixin {
+class _State extends State<ShakleInput> with TickerProviderStateMixin {
   /// This value allow me to know when input is selected. (And activate anim).
   final FocusNode _focus = FocusNode();
 
@@ -35,11 +35,9 @@ class _State extends State<StylishInput> with TickerProviderStateMixin {
     // Set the text shaky animation for background text. The anim is started or stoped depending of the input focus.
     _shakyController1 = AnimationController(vsync: this, duration: _shakyDurationTic1);
     _shakyAnimation1 = Tween<double>(begin: -1.0, end: 1.0).animate(_shakyController1);
-    _shakyAnimation1.addStatusListener((status) {});
     // Set the text shaky animation for frontend text. The anim is started or stoped depending of the input focus.
     _shakyController2 = AnimationController(vsync: this, duration: _shakyDurationTic2);
     _shakyAnimation2 = Tween<double>(begin: -0.5, end: 0.5).animate(_shakyController2);
-    _shakyAnimation2.addStatusListener((status) {});
     // Listen Input focus mode. Will start or stop the animation depending of the focus state of the input.
     _focus.addListener(_onFocusUpdate);
   }
