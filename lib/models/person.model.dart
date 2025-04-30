@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Person {
   final String id;
   final String firstName;
@@ -24,6 +26,11 @@ class Person {
       updatedDate: DateTime.parse(json['updatedDate']),
       cityName: json['cityName'],
     );
+  }
+
+  static List<Person> fromJsonList(String jsonString) {
+    final List<dynamic> jsonList = jsonDecode(jsonString);
+    return jsonList.map((json) => Person.fromJson(json)).toList();
   }
 
   Map<String, dynamic> toJson() {

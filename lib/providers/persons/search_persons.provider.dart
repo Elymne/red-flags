@@ -21,27 +21,32 @@ class _Notifier extends StateNotifier<_Value> {
 
   Future<void> search({required String firstname, required String lastname, required String zoneName, required String jobname}) async {
     try {
-      // Check that at least one value is not empty else set empty list as result.
+      /// Check that at least one value is not empty else set empty list as result.
       if (firstname.isEmpty && lastname.isEmpty && zoneName.isEmpty && jobname.isEmpty) {
         state = _Value(state: ProviderState.success, value: []);
         return;
       }
-      // Update state : Searching (load time).
+
+      /// Update state : Searching (load time).
       state = _Value(state: ProviderState.init, value: []);
-      final response = await Dio().get<List>(
+      final response = await Dio().get<String>(
         "${dotenv.env["HOST"]}/persons",
         queryParameters: {"firstname": firstname, "lastname": lastname, "zonename": zoneName, "jobname": jobname},
       );
-      // Checking response code.
+
+      /// Checking response code.
       if (response.statusCode != 200 || response.data == null) {
-        // Update state : Failure (The response code isn't 200).
+        /// Update state : Failure (The response code isn't 200).
         state = _Value(state: ProviderState.failure, value: []);
         return;
       }
-      // Update state : Success.
-      state = _Value(state: ProviderState.success, value: response.data!.map((elem) => Person.fromJson(elem)).toList());
+
+      /// Update state : Success.
+      state = _Value(state: ProviderState.success, value: Person.fromJsonList(response.data!));
     } catch (err) {
-      // Update state : Failure (Exception thrown).
+      print(err);
+
+      /// Update state : Failure (Exception thrown).
       state = _Value(state: ProviderState.failure, value: []);
     }
   }
