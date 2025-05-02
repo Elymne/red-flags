@@ -6,9 +6,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/app/widgets/fantom_widget.dart';
 import 'package:red_flags/app/widgets/shakle_input.dart';
 import 'package:red_flags/app/widgets/shakle_outlined_button.dart';
-import 'package:red_flags/app/widgets/shakle_text.dart';
 import 'package:red_flags/app/widgets/title_container.dart';
-import 'package:red_flags/providers/persons/search_persons.provider.dart';
+import 'package:red_flags/providers/cities/get_zones.provider.dart';
+import 'package:red_flags/providers/persons/get_persons.provider.dart';
 import 'package:red_flags/providers/provider_value.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
@@ -19,10 +19,10 @@ class SearchScreen extends ConsumerStatefulWidget {
 }
 
 class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
-  /// The time delay before fetching data on input changes.
-  Timer? _searchDelay;
+  Timer? _searchDelay; // * The time delay before fetching persons on any textfield changes.
+  Timer? _zoneSearchDelay; // * The time delay for zone fetching on zone textfield changes.
 
-  /// Inputs value references.
+  // * Values for each textfield.
   String _firstname = "";
   String _lastname = "";
   String _zonename = "";
@@ -30,8 +30,13 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final persons = ref.watch(searchPersonsProvider).value;
-    final indexResult = _getIndexResult();
+    final personsProviderValue = ref.watch(getPersonsProvider);
+    final persons = personsProviderValue.data;
+
+    final zonesProviderValue = ref.watch(getZonesProvider);
+    final zones = zonesProviderValue.data;
+
+    final screenState = _getGlobalState();
 
     return Scaffold(
       body: Column(
@@ -39,13 +44,13 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Header container with page name.
+          /// * Header container with page name.
           TitleContainer(
             title: AppLocalizations.of(context)!.searchScreenTitle,
             subtitle: AppLocalizations.of(context)!.searchScreenSubTitle,
           ),
 
-          /// Firstname Input.
+          /// * Firstname Input.
           SizedBox(height: 40),
           FantomWidget(
             duration: Duration(milliseconds: 400),
@@ -54,16 +59,15 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               child: ShakleInput(
                 AppLocalizations.of(context)!.firstnameInput,
                 animColor: Theme.of(context).colorScheme.primary,
-                autocompleteValues: ["HELLO", "WORLD", "HOLA!", "Mais qui est là?"],
                 onChanged: (value) {
                   _firstname = value;
-                  _onInputChange();
+                  _onTextfieldChange();
                 },
               ),
             ),
           ),
 
-          /// Lastname Input.
+          /// * Lastname Input.
           FantomWidget(
             duration: Duration(milliseconds: 800),
             child: Padding(
@@ -71,152 +75,71 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               child: ShakleInput(
                 AppLocalizations.of(context)!.lastnameInput,
                 animColor: Theme.of(context).colorScheme.primary,
-                autocompleteValues: [],
                 onChanged: (value) {
                   _lastname = value;
-                  _onInputChange();
+                  _onTextfieldChange();
                 },
               ),
             ),
           ),
 
-          /// Zone/City Input.
+          /// * Job name Input.
           FantomWidget(
             duration: Duration(milliseconds: 1200),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: ShakleInput(
-                AppLocalizations.of(context)!.zonenameInput,
+                AppLocalizations.of(context)!.jobnameInput,
                 animColor: Theme.of(context).colorScheme.primary,
-                autocompleteValues: [],
                 onChanged: (value) {
-                  _zonename = value;
-                  _onInputChange();
+                  _jobname = value;
+                  _onTextfieldChange();
                 },
               ),
             ),
           ),
 
-          /// Job name Input.
+          /// * Zone/City Input.
           FantomWidget(
             duration: Duration(milliseconds: 1600),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: ShakleInput(
-                AppLocalizations.of(context)!.jobnameInput,
+                AppLocalizations.of(context)!.zonenameInput,
                 animColor: Theme.of(context).colorScheme.primary,
-                autocompleteValues: ["HELLO", "WORLD", "HOLA!"],
+                autocompleteValues: zones.map((zone) => zone.name).toList(),
                 onChanged: (value) {
-                  _jobname = value;
-                  _onInputChange();
+                  _zonename = value;
+                  _onTextfieldChange();
+                  _onZonefieldChange();
                 },
               ),
             ),
           ),
 
-          /// TODO : Message helper (error, advice, guidance).
-          SizedBox(height: 20),
-
-          /// Init Message.
-          Visibility(
-            visible: indexResult == 0,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: ShakleText(
-                AppLocalizations.of(context)!.searchScreenInitMessage,
-                speedAnimation: Duration(milliseconds: 10),
-                force: 0.4,
-                style: Theme.of(context).textTheme.bodyLarge,
-                animColor: Theme.of(context).colorScheme.primary,
-                hasIdleAnim: true,
-              ),
-            ),
-          ),
-
-          /// Not Found Message.
-          Visibility(
-            visible: indexResult == 1,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: ShakleText(
-                AppLocalizations.of(context)!.searchScreenNotFoundMessage,
-                speedAnimation: Duration(milliseconds: 10),
-                force: 0.4,
-                style: Theme.of(context).textTheme.bodyLarge,
-                animColor: Theme.of(context).colorScheme.primary,
-                hasIdleAnim: true,
-              ),
-            ),
-          ),
-
-          /// Found Message.
-          Visibility(
-            visible: indexResult == 2,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: ShakleText(
-                AppLocalizations.of(context)!.searchScreenFoundMessage,
-                speedAnimation: Duration(milliseconds: 10),
-                force: 0.4,
-                style: Theme.of(context).textTheme.bodyLarge,
-                animColor: Theme.of(context).colorScheme.primary,
-                hasIdleAnim: true,
-              ),
-            ),
-          ),
-
-          /// Create Message.
-          Visibility(
-            visible: indexResult == 3,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: ShakleText(
-                AppLocalizations.of(context)!.searchScreenCreateMessage,
-                speedAnimation: Duration(milliseconds: 10),
-                force: 0.4,
-                style: Theme.of(context).textTheme.bodyLarge,
-                animColor: Theme.of(context).colorScheme.primary,
-                hasIdleAnim: true,
-              ),
-            ),
-          ),
-
-          /// Error Message.
-          Visibility(
-            visible: indexResult == 4,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: ShakleText(
-                AppLocalizations.of(context)!.searchScreenErrorMessage,
-                speedAnimation: Duration(milliseconds: 10),
-                force: 0.4,
-                style: Theme.of(context).textTheme.bodyLarge,
-                animColor: Theme.of(context).colorScheme.primary,
-                hasIdleAnim: true,
-              ),
-            ),
-          ),
-
-          /// Full spacer.
+          /// * Full spacer.
           Expanded(child: SizedBox()),
 
-          /// Not found.
+          /// * Not found.
           Visibility(
-            visible: _getIndexResult() == 1,
+            visible: screenState == -1 || screenState == 0 || screenState == 1 || screenState == 2,
             child: Align(
               alignment: Alignment.center,
               child: ShakleOutlinedButton(
-                AppLocalizations.of(context)!.searchScreenDisabledButton,
+                AppLocalizations.of(context)!.searchScreenLookButton,
                 animColor: Theme.of(context).colorScheme.primary,
                 isActive: false,
-                onPressed: () {},
+                onPressed: () {
+                  /// TODO : Access to ListView with the person create.
+                  if (kDebugMode) print("Clicked");
+                },
               ),
             ),
           ),
 
-          /// Found.
+          /// * Found.
           Visibility(
-            visible: _getIndexResult() == 2,
+            visible: screenState == 3,
             child: Align(
               alignment: Alignment.center,
               child: ShakleOutlinedButton(
@@ -224,15 +147,16 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
                 animColor: Theme.of(context).colorScheme.primary,
                 isActive: true,
                 onPressed: () {
+                  /// TODO : Access to ListView with the person create.
                   if (kDebugMode) print("Clicked");
                 },
               ),
             ),
           ),
 
-          /// Not found and and you can create a new one.
+          /// * Not found and and you can create a new one.
           Visibility(
-            visible: _getIndexResult() == 3,
+            visible: screenState == 4,
             child: Align(
               alignment: Alignment.center,
               child: ShakleOutlinedButton(
@@ -240,57 +164,74 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
                 animColor: Theme.of(context).colorScheme.primary,
                 isActive: true,
                 onPressed: () {
+                  /// TODO : create new person.
                   if (kDebugMode) print("Clicked");
                 },
               ),
             ),
           ),
 
+          /// * Bottom margin.
           SizedBox(height: 20),
         ],
       ),
     );
   }
 
-  /// Everytime an input is updated, we want to delay the time before fetching data to prevent big load on device and server.
-  /// When this delay is passed, we start fetching data.
-  void _onInputChange() {
+  /// Called everytime value textfield from this widget is changed.
+  /// This function fetch persons given textfield values.
+  /// Allow me to know how many person can be find given the textfield values.
+  void _onTextfieldChange() {
     _searchDelay?.cancel();
-
-    _searchDelay = Timer(Duration(milliseconds: 1000), () async {
-      /// Fetch the data.
+    _searchDelay = Timer(Duration(milliseconds: 500), () async {
+      /// * Fetch the data.
       await ref
-          .read(searchPersonsProvider.notifier)
-          .search(firstname: _firstname, lastname: _lastname, zoneName: _zonename, jobname: _jobname);
+          .read(getPersonsProvider.notifier)
+          .searchBy(firstName: _firstname, lastName: _lastname, zoneName: _zonename, jobName: _jobname);
     });
   }
 
-  /// This function simply give us the correct button to display + correct message.
-  int _getIndexResult() {
-    /// Get persons from search ahead.
-    final providerValue = ref.read(searchPersonsProvider);
+  /// Called everytime value textfield of zone is changed.
+  /// This function fetch zones for my autocomplete zone textfield.
+  void _onZonefieldChange() {
+    _zoneSearchDelay?.cancel();
+    _zoneSearchDelay = Timer(Duration(milliseconds: 500), () async {
+      /// * Fetch the data.
+      await ref.read(getZonesProvider.notifier).searchBy(_zonename);
+    });
+  }
 
-    /// An error occured while fetching data.
-    if (providerValue.state == ProviderState.failure) {
-      return 4;
+  /// Called on each widget build or re-build.
+  /// Allow me to know depending of int value returned, which element I should display or not.
+  int _getGlobalState() {
+    final providerValue = ref.read(getPersonsProvider);
+
+    /// * An error occured.
+    if (providerValue.state == ProviderState.exception || providerValue.state == ProviderState.failure) {
+      return -1;
     }
 
-    /// Switch to ListView Screen Button.
-    if (providerValue.value.isNotEmpty) {
-      return 2;
-    }
-
-    /// Switch to CreateNew Screen Button.
-    if (_firstname.isNotEmpty && _lastname.isNotEmpty && _zonename.isNotEmpty && _jobname.isNotEmpty && providerValue.value.isEmpty) {
-      return 3;
-    }
-
-    /// Switch to Disabled Button.
-    if (_firstname.isNotEmpty || _lastname.isNotEmpty || _zonename.isNotEmpty || _jobname.isNotEmpty) {
+    /// * Page is loading something.
+    if (providerValue.state == ProviderState.loading) {
       return 1;
     }
 
-    /// Default stance.
+    /// * Data has been found from textfield value.
+    if (providerValue.data.isNotEmpty) {
+      return 4;
+    }
+
+    /// * No data has been found from textfields values
+    if (_firstname.isNotEmpty && _lastname.isNotEmpty && _zonename.isNotEmpty && _jobname.isNotEmpty && providerValue.data.isEmpty) {
+      return 3;
+    }
+
+    /// * Not all textfield are completed but no found found.
+    if (_firstname.isNotEmpty || _lastname.isNotEmpty || _zonename.isNotEmpty || _jobname.isNotEmpty) {
+      return 2;
+    }
+
+    /// * Init state.
     return 0;
   }
 }

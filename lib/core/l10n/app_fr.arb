@@ -75,5 +75,13 @@
     "searchScreenErrorMessage": "Une erreur s'est produite durant la recherche des potentielles personnes. Vérifies que tu es bien accès à une connexion internet stable.",
     "@searchScreenErrorMessage": {
         "description": "Texte Message quand une erreur de connexion à la base de données s'est produite."
+    },
+    "personDetailedScreenFailure": "La serveur n'a pas pu retourner la personne demmandé. Retour à la page d'accueil.",
+    "@personDetailedScreenFailure": {
+        "description": "Texte Message quand une erreur de connexion à la base de données s'est produite."
+    },
+    "personDetailedScreenException": "Une erreur interne s'est produite durant la recherche. Retour à la page d'accueil.",
+    "@personDetailedScreenException": {
+        "description": "Texte Message quand une erreur de connexion à la base de données s'est produite."
     }
 }

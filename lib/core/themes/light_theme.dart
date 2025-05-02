@@ -82,7 +82,7 @@ class CustomTheme {
       floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: _colorScheme.primary),
 
       // ! NOT INPUT STYLE.
-      textSelectionTheme: TextSelectionThemeData(cursorColor: _colorScheme.outline),
+      textSelectionTheme: TextSelectionThemeData(cursorColor: _colorScheme.primary),
     );
   }
 }

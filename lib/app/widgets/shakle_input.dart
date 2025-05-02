@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class ShakleInput extends StatefulWidget {
   final String label;
@@ -6,7 +7,7 @@ class ShakleInput extends StatefulWidget {
   final List<String> autocompleteValues;
   final void Function(String) onChanged;
 
-  const ShakleInput(this.label, {super.key, required this.onChanged, required this.animColor, required this.autocompleteValues});
+  const ShakleInput(this.label, {super.key, required this.onChanged, required this.animColor, this.autocompleteValues = const []});
 
   @override
   State<StatefulWidget> createState() => _State();
@@ -54,18 +55,26 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
     // Remove the listener.
     _textfieldFocus.removeListener(_onFocusUpdate);
 
-    /// Unsubscribe all controllers.
+    /// Dispose all controllers.
     _shakyController1.dispose();
     _shakyController2.dispose();
     _textFieldController.dispose();
 
     /// Hide the autocomplete list.
-    _hideOverlay();
+    _hideAutoComplete();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    /// * If widget is focused, we build the autocomplete.
+    /// * We still need to wait this widget to be builted before building the autocomplete widget to Textfield (that is not existing at this right moment)
+    if (isFocus == true) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        _refreshAutoComplete();
+      });
+    }
+
     return Stack(
       children: [
         /// This is my background color animation (text + line).
@@ -123,7 +132,6 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
             focusNode: _textfieldFocus,
             onChanged: (value) {
               widget.onChanged(value);
-              _showAndUpdateOverlay();
             },
             style: Theme.of(context).textTheme.labelLarge,
             decoration: null,
@@ -136,19 +144,19 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
   /// This function make the autocomplete appear when used.
   /// Can also be used when autocomplete data has been updated.
   /// The values used will depend of the current autocompleteValues and text set in the TextField.
-  void _showAndUpdateOverlay() {
-    /// When there's no text in textfield, do not show any autocomplete box, hide it.
+  void _refreshAutoComplete() {
+    /// * When there's no text in textfield, do not show any autocomplete box, hide it.
     if (_textFieldController.text.isEmpty || widget.autocompleteValues.isEmpty) {
-      _hideOverlay();
+      _hideAutoComplete();
       return;
     }
 
-    /// Check that _overlayEntry do not exists, if it exists, we destroy the old reference to autocomplete and create a new one with new data.
+    /// * Check that _overlayEntry do not exists, if it exists, we destroy the old reference to autocomplete and create a new one with new data.
     if (_overlayEntry != null) {
-      _hideOverlay();
+      _hideAutoComplete();
     }
 
-    /// Display the 10 first autocomplete values filtered by controller.value text.
+    /// * Display the 10 first autocomplete values filtered by controller.value text.
     final filteredValues =
         widget.autocompleteValues
             .where((value) {
@@ -157,7 +165,7 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
             .take(10)
             .toList();
 
-    /// Render the text field autocomplete box.
+    /// * Render the text field autocomplete box.
     RenderBox renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
     _overlayEntry = OverlayEntry(
@@ -180,7 +188,7 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
                     onTap: () {
                       setState(() {
                         _textFieldController.text = filteredValues[index];
-                        _hideOverlay();
+                        _hideAutoComplete();
                       });
                     },
                   );
@@ -192,29 +200,20 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
       },
     );
 
-    /// Now inject the widget onto the textfield widget.
+    /// * Now inject the widget onto the textfield widget.
     Overlay.of(context).insert(_overlayEntry!);
-
-    /// Update the ui state of the whole widget.
-    setState(() {});
   }
 
   /// Hide the autocomplete listview when used.
-  void _hideOverlay() {
+  void _hideAutoComplete() {
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
 
   /// Called each time the input text is activated, focused.
   void _onFocusUpdate() {
-    setState(() {
-      isFocus = _textfieldFocus.hasFocus;
-    });
-
+    setState(() => isFocus = _textfieldFocus.hasFocus);
     if (isFocus) {
-      /// Display autocomplete overlay.
-      _showAndUpdateOverlay();
-
       /// Run loop animation.
       _shakyController1.repeat(reverse: true);
       _shakyController2.repeat(reverse: true);
