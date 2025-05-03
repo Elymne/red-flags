@@ -183,7 +183,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
   /// Allow me to know how many person can be find given the textfield values.
   void _onTextfieldChange() {
     _searchDelay?.cancel();
-    _searchDelay = Timer(Duration(milliseconds: 500), () async {
+    _searchDelay = Timer(Duration(milliseconds: 200), () async {
       /// * Fetch the data.
       await ref
           .read(getPersonsProvider.notifier)

@@ -75,69 +75,75 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
       });
     }
 
-    return Stack(
-      children: [
-        /// This is my background color animation (text + line).
-        if (isFocus)
+    return TapRegion(
+      /// * When user is clicking this widget, the AutoComplete widget should display.
+      onTapInside: (event) {
+        _refreshAutoComplete();
+      },
+      child: Stack(
+        children: [
+          /// * This is my background color animation (text + line).
+          if (isFocus)
+            AnimatedBuilder(
+              animation: _shakyController1,
+              builder: (context, child) {
+                return Transform.translate(
+                  offset: Offset(_shakyAnimation1.value, _shakyAnimation1.value / 2),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _textFieldController.text.isEmpty ? widget.label : " ",
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(color: widget.animColor),
+                      ),
+                      SizedBox(height: 10),
+                      Container(height: 1, width: double.infinity, color: widget.animColor),
+                    ],
+                  ),
+                );
+              },
+            ),
+
+          /// * This is my frontline color animation (text + line).
           AnimatedBuilder(
-            animation: _shakyController1,
+            animation: _shakyAnimation2,
             builder: (context, child) {
               return Transform.translate(
-                offset: Offset(_shakyAnimation1.value, _shakyAnimation1.value / 2),
+                offset: Offset(_shakyAnimation2.value, _shakyAnimation2.value / 2),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _textFieldController.text.isEmpty ? widget.label : " ",
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: widget.animColor),
+                      _textFieldController.text.isEmpty ? widget.label : "",
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                     ),
                     SizedBox(height: 10),
-                    Container(height: 1, width: double.infinity, color: widget.animColor),
+                    Container(height: 1, width: double.infinity, color: Theme.of(context).colorScheme.outline),
                   ],
                 ),
               );
             },
           ),
 
-        /// This is my frontline color animation (text + line).
-        AnimatedBuilder(
-          animation: _shakyAnimation2,
-          builder: (context, child) {
-            return Transform.translate(
-              offset: Offset(_shakyAnimation2.value, _shakyAnimation2.value / 2),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _textFieldController.text.isEmpty ? widget.label : "",
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
-                  ),
-                  SizedBox(height: 10),
-                  Container(height: 1, width: double.infinity, color: Theme.of(context).colorScheme.outline),
-                ],
-              ),
-            );
-          },
-        ),
-
-        /// This is my textfield widget (encapsulate by a widget that I use to manage my autocomplete list).
-        CompositedTransformTarget(
-          link: _layerLink,
-          child: TextField(
-            controller: _textFieldController,
-            focusNode: _textfieldFocus,
-            onChanged: (value) {
-              widget.onChanged(value);
-            },
-            style: Theme.of(context).textTheme.labelLarge,
-            decoration: null,
+          /// * This is my textfield widget (encapsulate by a widget that I use to manage my autocomplete list).
+          CompositedTransformTarget(
+            link: _layerLink,
+            child: TextField(
+              controller: _textFieldController,
+              focusNode: _textfieldFocus,
+              onChanged: (value) {
+                widget.onChanged(value);
+              },
+              style: Theme.of(context).textTheme.labelLarge,
+              decoration: null,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -162,7 +168,7 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
             .where((value) {
               return value.toLowerCase().contains(_textFieldController.text.toLowerCase());
             })
-            .take(10)
+            .take(6)
             .toList();
 
     /// * Render the text field autocomplete box.
@@ -178,21 +184,26 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
             offset: Offset(0.0, 40.0),
             child: Material(
               elevation: 1.0,
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                itemCount: filteredValues.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(filteredValues[index]),
-                    onTap: () {
-                      setState(() {
-                        _textFieldController.text = filteredValues[index];
-                        _hideAutoComplete();
-                      });
-                    },
-                  );
+              child: TapRegion(
+                onTapOutside: (event) {
+                  _hideAutoComplete();
                 },
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  itemCount: filteredValues.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(filteredValues[index]),
+                      onTap: () {
+                        setState(() {
+                          _textFieldController.text = filteredValues[index];
+                          _hideAutoComplete();
+                        });
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ),
