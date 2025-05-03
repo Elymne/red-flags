@@ -17,7 +17,7 @@ class _Notifier extends StateNotifier<_Result> {
 
   Future<void> addUnique(String firstName, String lastName, String jobName, String zoneID) async {
     try {
-      state = _Result(state: ProviderState.loading, data: null);
+      state = _Result(state: ProviderState.loading, data: state.data);
       final response = await Dio().post<String>(
         "${dotenv.env["HOST"]}/persons",
         data: {"firstname": firstName, "lastname": lastName, "jobname": jobName, "zoneid": zoneID},

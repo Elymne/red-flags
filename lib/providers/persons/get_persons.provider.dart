@@ -25,19 +25,19 @@ class _Notifier extends StateNotifier<_Result> {
         return;
       }
 
-      state = _Result(state: ProviderState.loading, data: []);
+      state = _Result(state: ProviderState.loading, data: state.data); // Keep the old data while fetching !
       final response = await Dio().get<String>(
         "${dotenv.env["HOST"]}/persons",
         queryParameters: {"firstname": firstName, "lastname": lastName, "zonename": zoneName, "jobname": jobName},
       );
 
-      if (response!.statusCode != 200 || response!.data == null) {
+      if (response.statusCode != 200 || response.data == null) {
         state = _Result(state: ProviderState.failure, data: []);
         return;
       }
 
       final List<Person> decodedValues =
-          (jsonDecode(response!.data!) as List).cast<Map<String, dynamic>>().map((json) => Person.fromJson(json)).toList();
+          (jsonDecode(response.data!) as List).cast<Map<String, dynamic>>().map((json) => Person.fromJson(json)).toList();
       state = _Result(state: ProviderState.success, data: decodedValues);
     } catch (err) {
       if (kDebugMode) print(err);

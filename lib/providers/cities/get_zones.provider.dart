@@ -25,7 +25,7 @@ class _Notifier extends StateNotifier<_Result> {
         return;
       }
 
-      state = _Result(state: ProviderState.loading, data: []);
+      state = _Result(state: ProviderState.loading, data: state.data); // Keep the old data while fetching !
       final response = await Dio().get<String>("${dotenv.env["HOST"]}/zones/remote", queryParameters: {"name": zonename});
 
       if (response.statusCode != 200 || response.data == null) {

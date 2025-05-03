@@ -21,7 +21,7 @@ class _Notifier extends StateNotifier<_Result> {
 
   Future<void> fetchUnique(String id) async {
     try {
-      state = _Result(state: ProviderState.loading, data: null);
+      state = _Result(state: ProviderState.loading, data: state.data); // Keep the old data while fetching !
       final response = await Dio().get<String>("${dotenv.env["HOST"]}/persons/$id");
 
       if (response.statusCode != 200 || response.data == null) {
