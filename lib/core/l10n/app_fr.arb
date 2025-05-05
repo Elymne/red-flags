@@ -4,27 +4,27 @@
     "@title": {
         "description": "Le titre de l'application"
     },
-    "checkLoading": "Vérification en cours",
+    "checkLoading": "Vérification des données en cours",
     "@checkLoading": {
         "description": "Message de chargement et de vérification de l'accès au serveur et de l'application. Une petite animation stylax est visible."
     },
-    "checkSuccess": "Parfait!",
+    "checkSuccess": "Chargement terminé!",
     "@checkSuccess": {
         "description": "Message signifiant que l'application est prête à être utilisé."
     },
-    "checkFailure": "Impossible d'accéder au serveur",
-    "@checkFailure": {
+    "netFailure": "Impossible d'accéder au serveur",
+    "@netFailure": {
         "description": "Message signifiant que l'application n'arrive pas à se connecter au serveur."
     },
-    "applicationFailure": "Impossible de continuer : une erreur interne s'est produite…",
+    "applicationFailure": "Une erreur interne s'est produite…",
     "@applicationFailure": {
         "description": "Message signifiant que l'application a détecté une erreur et ne peux pas continuer l'action en cours."
     },
-    "searchScreenTitle": "Recherche",
+    "searchScreenTitle": "Exploration",
     "@searchScreenTitle": {
         "description": "Titre Navigation de la page de recherche."
     },
-    "searchScreenSubTitle": "Regarde si il existe",
+    "searchScreenSubTitle": "Recherche ou ajoute quelqu'un",
     "@searchScreenSubTitle": {
         "description": "Sous-titre Navigation de la page de recherche."
     },
@@ -48,40 +48,12 @@
     "@searchScreenDisabledButton": {
         "description": "Texte bouton inactif car la recherche actuelle n'a rien donnée."
     },
-    "searchScreenLookButton": "Voir",
+    "searchScreenLookButton": "Regarder",
     "@searchScreenLookButton": {
         "description": "Texte Bouton pour accéder à la liste de personnes"
     },
-    "searchScreenCreateButton": "Ajouter",
+    "searchScreenCreateButton": "Ajouter cette personne",
     "@searchScreenCreateButton": {
         "description": "Texte Bouton pour ajouter une nouvelle personne"
-    },
-    "searchScreenInitMessage": "Tu peux commencer à faire la recherche d'une personne ici. Si tu souhaites ajouter une nouvelle personne, complète tous les champs de texte ci-dessus. Si la personne en question n'existe pas, tu pourras la créer.",
-    "@searchScreenInitMessage": {
-        "description": "Texte Message à l'initialisation de la vue."
-    },
-    "searchScreenNotFoundMessage": "Il semble que la personne que tu souhaites chercher n'existe pas. Tu peux compléter les derniers champs de texte avec les informations que tu as.",
-    "@searchScreenNotFoundMessage": {
-        "description": "Texte Message quand personne n'est trouvé."
-    },
-    "searchScreenFoundMessage": "Une ou plusieurs personnes ont été trouvés. Tu peux affiner les recherches en complétant les champs de texte restant.",
-    "@searchScreenFoundMessage": {
-        "description": "Texte Message quand une ou plusieurs personnes sont trouvées."
-    },
-    "searchScreenCreateMessage": "Tu as rentré toutes les informations nécessaire. Tu peux ajouter cette personne à notre base de données. Tu pourras accéder à sa page détaillées pour ajouter des informations sur ses comportements problématiques selon toi.",
-    "@searchScreenCreateMessage": {
-        "description": "Texte Message quand une personne peut-être ajouter."
-    },
-    "searchScreenErrorMessage": "Une erreur s'est produite durant la recherche des potentielles personnes. Vérifies que tu es bien accès à une connexion internet stable.",
-    "@searchScreenErrorMessage": {
-        "description": "Texte Message quand une erreur de connexion à la base de données s'est produite."
-    },
-    "personDetailedScreenFailure": "La serveur n'a pas pu retourner la personne demmandé. Retour à la page d'accueil.",
-    "@personDetailedScreenFailure": {
-        "description": "Texte Message quand une erreur de connexion à la base de données s'est produite."
-    },
-    "personDetailedScreenException": "Une erreur interne s'est produite durant la recherche. Retour à la page d'accueil.",
-    "@personDetailedScreenException": {
-        "description": "Texte Message quand une erreur de connexion à la base de données s'est produite."
     }
 }

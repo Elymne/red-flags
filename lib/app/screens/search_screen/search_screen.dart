@@ -3,13 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:red_flags/app/screens/search_screen/search_screen_state.dart';
 import 'package:red_flags/app/widgets/fantom_widget.dart';
 import 'package:red_flags/app/widgets/shakle_input.dart';
 import 'package:red_flags/app/widgets/shakle_outlined_button.dart';
 import 'package:red_flags/app/widgets/title_container.dart';
-import 'package:red_flags/providers/cities/get_zones.provider.dart';
-import 'package:red_flags/providers/persons/get_persons.provider.dart';
-import 'package:red_flags/providers/provider_value.dart';
+import 'package:red_flags/providers/persons/add_person.provider.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -20,7 +19,6 @@ class SearchScreen extends ConsumerStatefulWidget {
 
 class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
   Timer? _searchDelay; // * The time delay before fetching persons on any textfield changes.
-  Timer? _zoneSearchDelay; // * The time delay for zone fetching on zone textfield changes.
 
   // * Values for each textfield.
   String _firstname = "";
@@ -30,13 +28,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final personsProviderValue = ref.watch(getPersonsProvider);
-    final persons = personsProviderValue.data;
-
-    final zonesProviderValue = ref.watch(getZonesProvider);
-    final zones = zonesProviderValue.data;
-
-    final screenState = _getGlobalState();
+    final state = ref.watch(searchScreenState);
 
     return Scaffold(
       body: Column(
@@ -107,11 +99,10 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               child: ShakleInput(
                 AppLocalizations.of(context)!.zonenameInput,
                 animColor: Theme.of(context).colorScheme.primary,
-                autocompleteValues: zones.map((zone) => zone.name).toList(),
+                autocompleteValues: state.zones.map((zone) => zone.name).toList(),
                 onChanged: (value) {
                   _zonename = value;
                   _onTextfieldChange();
-                  _onZonefieldChange();
                 },
               ),
             ),
@@ -120,51 +111,53 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
           /// * Full spacer.
           Expanded(child: SizedBox()),
 
-          /// * Not found.
+          /// * Disabled button because no value found yet.
           Visibility(
-            visible: screenState == -1 || screenState == 0 || screenState == 1 || screenState == 2,
+            visible: state.persons.isEmpty && (_firstname.isEmpty || _lastname.isEmpty || _jobname.isEmpty || _zonename.isEmpty),
             child: Align(
               alignment: Alignment.center,
               child: ShakleOutlinedButton(
                 AppLocalizations.of(context)!.searchScreenLookButton,
                 animColor: Theme.of(context).colorScheme.primary,
                 isActive: false,
-                onPressed: () {
-                  /// TODO : Access to ListView with the person create.
-                  if (kDebugMode) print("Clicked");
-                },
+                onPressed: () {},
               ),
             ),
           ),
 
-          /// * Found.
+          /// * Create button because no value found at all.
           Visibility(
-            visible: screenState == 3,
-            child: Align(
-              alignment: Alignment.center,
-              child: ShakleOutlinedButton(
-                "${AppLocalizations.of(context)!.searchScreenLookButton} (${persons.length})",
-                animColor: Theme.of(context).colorScheme.primary,
-                isActive: true,
-                onPressed: () {
-                  /// TODO : Access to ListView with the person create.
-                  if (kDebugMode) print("Clicked");
-                },
-              ),
-            ),
-          ),
-
-          /// * Not found and and you can create a new one.
-          Visibility(
-            visible: screenState == 4,
+            visible: state.persons.isEmpty && _firstname.isEmpty && _lastname.isEmpty && _jobname.isEmpty && _zonename.isEmpty,
             child: Align(
               alignment: Alignment.center,
               child: ShakleOutlinedButton(
                 AppLocalizations.of(context)!.searchScreenCreateButton,
                 animColor: Theme.of(context).colorScheme.primary,
                 isActive: true,
+                onPressed: () async {
+                  final params = AddPersonProviderParams(
+                    firstname: _firstname,
+                    lastname: _lastname,
+                    zonename: _zonename,
+                    jobname: _jobname,
+                  );
+                  await ref.read(addPersonProvider(params).future);
+                },
+              ),
+            ),
+          ),
+
+          /// * Access button because values found.
+          Visibility(
+            visible: state.persons.isNotEmpty,
+            child: Align(
+              alignment: Alignment.center,
+              child: ShakleOutlinedButton(
+                "${AppLocalizations.of(context)!.searchScreenLookButton} (${state.persons.length})",
+                animColor: Theme.of(context).colorScheme.primary,
+                isActive: true,
                 onPressed: () {
-                  /// TODO : create new person.
+                  /// TODO : Access to ListView with the person create. Create the view.
                   if (kDebugMode) print("Clicked");
                 },
               ),
@@ -185,53 +178,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
     _searchDelay?.cancel();
     _searchDelay = Timer(Duration(milliseconds: 200), () async {
       /// * Fetch the data.
-      await ref
-          .read(getPersonsProvider.notifier)
-          .searchBy(firstName: _firstname, lastName: _lastname, zoneName: _zonename, jobName: _jobname);
+      await ref.read(searchScreenState.notifier).searchFromInput(_firstname, _lastname, _zonename, _jobname);
     });
-  }
-
-  /// Called everytime value textfield of zone is changed.
-  /// This function fetch zones for my autocomplete zone textfield.
-  void _onZonefieldChange() {
-    _zoneSearchDelay?.cancel();
-    _zoneSearchDelay = Timer(Duration(milliseconds: 500), () async {
-      /// * Fetch the data.
-      await ref.read(getZonesProvider.notifier).searchBy(_zonename);
-    });
-  }
-
-  /// Called on each widget build or re-build.
-  /// Allow me to know depending of int value returned, which element I should display or not.
-  int _getGlobalState() {
-    final providerValue = ref.read(getPersonsProvider);
-
-    /// * An error occured.
-    if (providerValue.state == ProviderState.exception || providerValue.state == ProviderState.failure) {
-      return -1;
-    }
-
-    /// * Page is loading something.
-    if (providerValue.state == ProviderState.loading) {
-      return 1;
-    }
-
-    /// * Data has been found from textfield value.
-    if (providerValue.data.isNotEmpty) {
-      return 4;
-    }
-
-    /// * No data has been found from textfields values
-    if (_firstname.isNotEmpty && _lastname.isNotEmpty && _zonename.isNotEmpty && _jobname.isNotEmpty && providerValue.data.isEmpty) {
-      return 3;
-    }
-
-    /// * Not all textfield are completed but no found found.
-    if (_firstname.isNotEmpty || _lastname.isNotEmpty || _zonename.isNotEmpty || _jobname.isNotEmpty) {
-      return 2;
-    }
-
-    /// * Init state.
-    return 0;
   }
 }

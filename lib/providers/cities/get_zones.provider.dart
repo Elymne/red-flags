@@ -1,48 +1,57 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:red_flags/core/exceptions/bad_response_exception.dart';
+import 'package:red_flags/core/exceptions/network_exception.dart';
 import 'package:red_flags/models/zone.model.dart';
-import 'package:red_flags/providers/provider_value.dart';
+
+final Map<GetZonesProviderParams, List<Zone>> _cached = {};
+Timer? _timer;
 
 /// Provides list of zones.
-/// Function searchBy to fetch data from server given a zonename.
+/// Fetch from server given the args : GetZonesProviderParams.
 ///   - Calling route API : (get) /zones/remote.
-final getZonesProvider = StateNotifierProvider<_Notifier, _Result>((ref) {
-  return _Notifier(ref);
+final getZonesProvider = FutureProvider.autoDispose.family<List<Zone>, GetZonesProviderParams>((ref, params) async {
+  /// * Check if we should clear the cache or not.
+  if (_timer != null) {
+    _timer = Timer(Duration(milliseconds: 10_000), () {
+      _cached.clear();
+      _timer = null;
+    });
+  }
+
+  /// * Check if cached data exists. Return if it's teh case.
+  final cached = _cached[params];
+  if (cached != null) {
+    return cached;
+  }
+
+  /// * Make http request.
+  final response = await Dio().get<String>("${dotenv.env["HOST"]}/zones/remote", queryParameters: {"name": params.zonename});
+
+  /// * Check response code.
+  if (response.statusCode != 200) {
+    throw NetworkException(code: response.statusCode!, expected: 200);
+  }
+
+  /// * Check data type.
+  if (response.data == null) {
+    throw BadResponseException(type: response.data.runtimeType, expected: String);
+  }
+
+  /// * Parse json data.
+  final zones = (jsonDecode(response.data!) as List).cast<Map<String, dynamic>>().map((json) => Zone.fromJson(json)).toList();
+
+  /// * Cache result.
+  _cached[params] = zones;
+
+  /// * Return zones fetched.
+  return zones;
 });
 
-class _Notifier extends StateNotifier<_Result> {
-  final Ref ref;
-
-  _Notifier(this.ref) : super(_Result(state: ProviderState.init, data: []));
-
-  Future<void> searchBy(String zonename) async {
-    try {
-      if (zonename.isEmpty) {
-        state = _Result(state: ProviderState.init, data: []);
-        return;
-      }
-
-      state = _Result(state: ProviderState.loading, data: state.data); // Keep the old data while fetching !
-      final response = await Dio().get<String>("${dotenv.env["HOST"]}/zones/remote", queryParameters: {"name": zonename});
-
-      if (response.statusCode != 200 || response.data == null) {
-        state = _Result(state: ProviderState.failure, data: []);
-        return;
-      }
-
-      final List<Zone> zones =
-          (jsonDecode(response.data!) as List).cast<Map<String, dynamic>>().map((json) => Zone.fromJson(json)).toList();
-      state = _Result(state: ProviderState.success, data: zones);
-    } catch (err) {
-      if (kDebugMode) print(err);
-      state = _Result(state: ProviderState.exception, data: []);
-    }
-  }
-}
-
-class _Result extends ProviderValue<List<Zone>> {
-  _Result({required super.state, required super.data});
+class GetZonesProviderParams {
+  final String zonename;
+  GetZonesProviderParams({required this.zonename});
 }

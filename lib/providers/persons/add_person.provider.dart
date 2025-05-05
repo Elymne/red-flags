@@ -1,41 +1,32 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/providers/provider_value.dart';
+import 'package:red_flags/core/exceptions/network_exception.dart';
 
-/// Provides the creation of unique person..
-/// Function addUnique to add a new person.
+/// Provide an action to add a new person to server.
+/// Fetch from server given the args : AddPersonProviderParams.
 ///   - Calling route API : (post) /persons.
-final addPersonProvider = StateNotifierProvider<_Notifier, _Result>((ref) {
-  return _Notifier(ref);
+final addPersonProvider = FutureProvider.autoDispose.family<void, AddPersonProviderParams>((ref, params) async {
+  /// TODO : Find zone id by name
+  final zoneID = "";
+
+  /// * http request.
+  final response = await Dio().post<String>(
+    "${dotenv.env["HOST"]}/persons",
+    data: {"firstname": params.firstname, "lastname": params.lastname, "jobname": params.jobname, "zoneid": zoneID},
+  );
+
+  /// * Check response code.
+  if (response.statusCode != 201) {
+    throw NetworkException(code: response.statusCode!, expected: 201);
+  }
 });
 
-class _Notifier extends StateNotifier<_Result> {
-  final Ref ref;
+class AddPersonProviderParams {
+  final String firstname;
+  final String lastname;
+  final String jobname;
+  final String zonename;
 
-  _Notifier(this.ref) : super(_Result(state: ProviderState.init, data: null));
-
-  Future<void> addUnique(String firstName, String lastName, String jobName, String zoneID) async {
-    try {
-      state = _Result(state: ProviderState.loading, data: state.data);
-      final response = await Dio().post<String>(
-        "${dotenv.env["HOST"]}/persons",
-        data: {"firstname": firstName, "lastname": lastName, "jobname": jobName, "zoneid": zoneID},
-      );
-
-      if (response.statusCode != 201 || response.data == null) {
-        state = _Result(state: ProviderState.failure, data: null);
-        return;
-      }
-
-      state = _Result(state: ProviderState.success);
-    } catch (err) {
-      state = _Result(state: ProviderState.exception, data: null);
-    }
-  }
-}
-
-/// Result state.
-class _Result extends ProviderValue<void> {
-  _Result({required super.state, super.data});
+  AddPersonProviderParams({required this.firstname, required this.lastname, required this.jobname, required this.zonename});
 }
