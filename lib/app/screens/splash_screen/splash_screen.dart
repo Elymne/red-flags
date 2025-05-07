@@ -46,8 +46,11 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
 
     /// * Timer for splashscreen animation duration. Then push to HomeScreen.
     Future.delayed(_splashscreenDuration, () {
+      /// * Check that the context is still available.
+      if (!mounted) return;
+
       ref.read(routerNotifierprovider.notifier).changeScreen(() {
-        if (!mounted) return;
+        /// * Navigate.
         final navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const SearchScreen()), (route) => false);
       });
@@ -57,7 +60,6 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
   @override
   void dispose() {
     _pageController.dispose();
-
     super.dispose();
   }
 
@@ -93,11 +95,13 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: 7,
                   itemBuilder: (context, index) {
-                    // I want the two first page to be empty (styling choice).
+                    /// * I want the two first page to be empty (styling choice).
                     if (index < 2) return SizedBox(width: screenWidth);
-                    // For some index, I want the stickman to be shaken with red effect like the title.
+
+                    /// * For some index, I want the stickman to be shaken with red effect like the title.
                     if (index == 5) return Image.asset("assets/images/stickman_red.png", fit: BoxFit.contain);
-                    // Default stickman wont have any animation.
+
+                    /// * Default stickman wont have any animation.
                     return SizedBox(width: double.infinity, child: Image.asset("assets/images/stickman_grey.png", fit: BoxFit.contain));
                   },
                 ),

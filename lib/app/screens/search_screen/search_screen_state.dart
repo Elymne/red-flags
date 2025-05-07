@@ -4,6 +4,7 @@ import 'package:red_flags/core/states/widget_state.dart';
 import 'package:red_flags/models/person.model.dart';
 import 'package:red_flags/models/zone.model.dart';
 import 'package:red_flags/providers/cities/get_zones.provider.dart';
+import 'package:red_flags/providers/persons/add_person.provider.dart';
 import 'package:red_flags/providers/persons/get_persons.provider.dart';
 
 final searchScreenState = StateNotifierProvider<SearchScreenNotifier, SearchScreenState>((ref) {
@@ -37,6 +38,23 @@ class SearchScreenNotifier extends StateNotifier<SearchScreenState> {
 
       /// * And now update the state with new data.
       state = SearchScreenState(status: WidgetStatus.success, persons: responses[0] as List<Person>, zones: responses[1] as List<Zone>);
+    } catch (e, stack) {
+      state = SearchScreenState(status: WidgetStatus.failure, persons: state.persons, zones: state.zones);
+      log("$e $stack");
+    }
+  }
+
+  Future<void> addNewPerson(String firstname, String lastname, String zonename, String jobname) async {
+    try {
+      /// * Loading status now, we're fetching some data.
+      state = SearchScreenState(status: WidgetStatus.loading, persons: state.persons, zones: state.zones);
+
+      /// * Trying to add the new person to server.
+      final params = AddPersonProviderParams(firstname: firstname, lastname: lastname, zonename: zonename, jobname: jobname);
+      await ref.read(addPersonProvider(params).future);
+
+      /// * The new person has been added without any issues.
+      state = SearchScreenState(status: WidgetStatus.success, persons: state.persons, zones: state.zones);
     } catch (e, stack) {
       state = SearchScreenState(status: WidgetStatus.failure, persons: state.persons, zones: state.zones);
       log("$e $stack");

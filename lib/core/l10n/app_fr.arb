@@ -55,5 +55,17 @@
     "searchScreenCreateButton": "Ajouter cette personne",
     "@searchScreenCreateButton": {
         "description": "Texte Bouton pour ajouter une nouvelle personne"
+    },
+    "searchScreenCreateError": "Impossible d'ajouter les informations de cette personne.",
+    "@searchScreenCreateError": {
+        "description": "Affichage d'un ToastMessage signifiant qu'il y a un problème avec l'ajout d'une personne en base de données."
+    },
+    "personListViewScreenTitle": "Liste des trous du culs",
+    "@personListViewScreenTitle": {
+        "description": "Titre Navigation de la page de Liste."
+    },
+    "personListViewScreenSubTitle": "Sélectionne un trou du cul là",
+    "@personListViewScreenSubTitle": {
+        "description": "Sous-titre Navigation de la page de liste."
     }
 }

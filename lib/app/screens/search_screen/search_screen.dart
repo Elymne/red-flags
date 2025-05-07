@@ -3,12 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/search_screen/search_screen_state.dart';
 import 'package:red_flags/app/widgets/animations/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_input.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_outlined_button.dart';
 import 'package:red_flags/app/widgets/title_container.dart';
-import 'package:red_flags/providers/persons/add_person.provider.dart';
+import 'package:red_flags/core/states/widget_state.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -20,7 +21,7 @@ class SearchScreen extends ConsumerStatefulWidget {
 class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
   Timer? _searchDelay; // * The time delay before fetching persons on any textfield changes.
 
-  // * Values for each textfield.
+  /// * Values for each textfield.
   String _firstname = "";
   String _lastname = "";
   String _zonename = "";
@@ -135,13 +136,28 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
                 animColor: Theme.of(context).colorScheme.primary,
                 isActive: true,
                 onPressed: () async {
-                  final params = AddPersonProviderParams(
-                    firstname: _firstname,
-                    lastname: _lastname,
-                    zonename: _zonename,
-                    jobname: _jobname,
-                  );
-                  await ref.read(addPersonProvider(params).future);
+                  /// * Add a new person.
+                  await ref.read(searchScreenState.notifier).addNewPerson(_firstname, _lastname, _zonename, _jobname);
+
+                  /// * Check that the context is still available.
+                  if (!context.mounted) return;
+
+                  /// * If an error occurred, do nothing, send little toast message.
+                  if (state.status == WidgetStatus.failure) {
+                    /// * Show toast message error.
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(content: Text(AppLocalizations.of(context)!.searchScreenCreateError)),
+                    );
+                    return;
+                  }
+
+                  /// * Goto list view person widget.
+                  ref.read(routerNotifierprovider.notifier).changeScreen(() {
+                    /// * Navigate.
+                    final navigator = Navigator.of(context);
+                    navigator.push(MaterialPageRoute(builder: (context) => const SearchScreen()));
+                  });
                 },
               ),
             ),
