@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/app/screens/search_screen/search_screen_state.dart';
-import 'package:red_flags/app/widgets/fantom_widget.dart';
-import 'package:red_flags/app/widgets/shakle_input.dart';
-import 'package:red_flags/app/widgets/shakle_outlined_button.dart';
+import 'package:red_flags/app/widgets/animations/slide_widget.dart';
+import 'package:red_flags/app/widgets/shakles/shakle_input.dart';
+import 'package:red_flags/app/widgets/shakles/shakle_outlined_button.dart';
 import 'package:red_flags/app/widgets/title_container.dart';
 import 'package:red_flags/providers/persons/add_person.provider.dart';
 
@@ -44,7 +44,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
 
           /// * Firstname Input.
           SizedBox(height: 40),
-          FantomWidget(
+          SlideWidget(
             duration: Duration(milliseconds: 400),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -60,7 +60,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
           ),
 
           /// * Lastname Input.
-          FantomWidget(
+          SlideWidget(
             duration: Duration(milliseconds: 800),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -76,7 +76,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
           ),
 
           /// * Job name Input.
-          FantomWidget(
+          SlideWidget(
             duration: Duration(milliseconds: 1200),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -92,7 +92,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
           ),
 
           /// * Zone/City Input.
-          FantomWidget(
+          SlideWidget(
             duration: Duration(milliseconds: 1600),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),

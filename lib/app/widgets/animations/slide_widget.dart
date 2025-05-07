@@ -2,26 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
 
-class FantomWidget extends ConsumerStatefulWidget {
+/// Widget linked to page transition.
+/// Will slide and fadein on load and slide fade out on page change.
+class SlideWidget extends ConsumerStatefulWidget {
   final Widget child;
   final Duration duration;
 
-  final bool hasOpacityAnimation;
-  final bool hasSliceAnimation;
-
-  const FantomWidget({
-    super.key,
-    required this.child,
-    this.hasOpacityAnimation = true,
-    this.hasSliceAnimation = true,
-    required this.duration,
-  });
+  const SlideWidget({super.key, required this.child, required this.duration});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _State();
 }
 
-class _State extends ConsumerState<FantomWidget> with TickerProviderStateMixin {
+class _State extends ConsumerState<SlideWidget> with TickerProviderStateMixin {
   /// * Animation controller for fadeout and slide-in effect.
   late final AnimationController _animationController;
   late final Animation<Offset> _slideAnimation;
@@ -39,13 +32,12 @@ class _State extends ConsumerState<FantomWidget> with TickerProviderStateMixin {
 
     /// * Define the slide animation.
     _slideAnimation = Tween<Offset>(
-      begin: Offset(widget.hasSliceAnimation ? -100 : 0, 0),
+      begin: Offset(-100, 0),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
 
     /// * Define the fade animation.
-    final begin = widget.hasOpacityAnimation ? 0.0 : 1.0;
-    _fadeAnimation = Tween<double>(begin: begin, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
 
     /// * On init, I just need to run the animation.
     _animationController.forward();
@@ -59,7 +51,7 @@ class _State extends ConsumerState<FantomWidget> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    /// * Listen to screen changes. When it occur,k I just reverse the fadein animation.
+    /// * This is called on page change using routerNotifierprovider.
     ref.listen(routerNotifierprovider, (previous, next) {
       if (next.status == RouterStatus.changing) {
         _animationController.reverse();

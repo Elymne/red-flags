@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-class ShakleText extends StatefulWidget {
+class ShaklePopText extends StatefulWidget {
   /// About text.
   final TextStyle? style;
   final String text;
@@ -15,7 +15,7 @@ class ShakleText extends StatefulWidget {
   final bool hasIdleAnim;
   final double idleForce;
 
-  const ShakleText(
+  const ShaklePopText(
     this.text, {
     super.key,
     required this.style,
@@ -32,7 +32,7 @@ class ShakleText extends StatefulWidget {
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<ShakleText> with TickerProviderStateMixin {
+class _State extends State<ShaklePopText> with TickerProviderStateMixin {
   // The visual text.
   late String _displayText = "";
 

@@ -3,9 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/search_screen/search_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:red_flags/app/widgets/animations/fade_widget.dart';
+import 'package:red_flags/app/widgets/animations/slide_widget.dart';
+import 'package:red_flags/app/widgets/shakles/shakle_text.dart';
 import 'dart:async';
-
-import 'package:red_flags/app/widgets/fantom_widget.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -22,15 +23,6 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
   late final PageController _pageController;
   final _pageSwapDuration = Duration(milliseconds: 400);
   int _currentPage = 0;
-
-  /// Shake Animation for title.
-  late final AnimationController _idleController1;
-  late final Animation<double> _shakeAnimation1;
-  final Duration _shakeDuration1 = Duration(milliseconds: 100);
-
-  late final AnimationController _idleController2;
-  late final Animation<double> _shakeAnimation2;
-  final Duration _shakeDuration2 = Duration(milliseconds: 200);
 
   @override
   void initState() {
@@ -52,16 +44,6 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
       _pageController.animateToPage(_currentPage, duration: _pageSwapDuration, curve: Curves.easeInOut);
     });
 
-    /// * Background text animation (red text).
-    _idleController1 = AnimationController(vsync: this, duration: _shakeDuration1);
-    _shakeAnimation1 = Tween<double>(begin: -1, end: 1).animate(_idleController1);
-    _idleController1.repeat(reverse: true);
-
-    /// * Frontend text animation (black text).
-    _idleController2 = AnimationController(vsync: this, duration: _shakeDuration2);
-    _shakeAnimation2 = Tween<double>(begin: -1.4, end: 1.4).animate(_idleController2);
-    _idleController2.repeat(reverse: true);
-
     /// * Timer for splashscreen animation duration. Then push to HomeScreen.
     Future.delayed(_splashscreenDuration, () {
       ref.read(routerNotifierprovider.notifier).changeScreen(() {
@@ -75,8 +57,7 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
   @override
   void dispose() {
     _pageController.dispose();
-    _idleController1.dispose();
-    _idleController2.dispose();
+
     super.dispose();
   }
 
@@ -88,45 +69,21 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
     return Scaffold(
       body: Stack(
         children: [
-          /// * Background Red Color Title.
-          FantomWidget(
+          /// * Title.
+          SlideWidget(
             duration: Duration(milliseconds: 400),
             child: Center(
-              child: AnimatedBuilder(
-                animation: _shakeAnimation1,
-                builder: (context, child) {
-                  return Transform.translate(
-                    offset: Offset(_shakeAnimation1.value, 0),
-                    child: Text(
-                      AppLocalizations.of(context)!.title,
-                      style: Theme.of(context).textTheme.displayLarge?.copyWith(color: Theme.of(context).colorScheme.primary),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-
-          /// * Black Color Title.
-          FantomWidget(
-            duration: Duration(milliseconds: 400),
-            child: Center(
-              child: AnimatedBuilder(
-                animation: _shakeAnimation2,
-                builder: (context, child) {
-                  return Transform.translate(
-                    offset: Offset(_shakeAnimation2.value, 0),
-                    child: Text(AppLocalizations.of(context)!.title, style: Theme.of(context).textTheme.displayLarge),
-                  );
-                },
+              child: ShakleText(
+                animColor: Theme.of(context).colorScheme.primary,
+                AppLocalizations.of(context)!.title,
+                style: Theme.of(context).textTheme.displayLarge,
               ),
             ),
           ),
 
           /// * Pager with Stickmans.
-          FantomWidget(
+          FadeWidget(
             duration: Duration(milliseconds: 400),
-            hasSliceAnimation: false,
             child: Align(
               alignment: Alignment(0, 1),
               child: SizedBox(
