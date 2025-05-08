@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/search_screen/search_screen_state.dart';
 import 'package:red_flags/app/widgets/animations/slide_widget.dart';
+import 'package:red_flags/app/widgets/backgrounds/squares_background.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_input.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_outlined_button.dart';
 import 'package:red_flags/app/widgets/title_container.dart';
@@ -109,12 +110,13 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
             ),
           ),
 
-          /// * Full spacer.
-          Expanded(child: SizedBox()),
+          /// * Full spacer with background animation.
+          Expanded(child: SquaresBackground()),
 
           /// * Disabled button because no value found yet.
           Visibility(
-            visible: state.persons.isEmpty && (_firstname.isEmpty || _lastname.isEmpty || _jobname.isEmpty || _zonename.isEmpty),
+            visible:
+                state.persons.isEmpty && (_firstname.isNotEmpty || _lastname.isNotEmpty || _jobname.isNotEmpty || _zonename.isNotEmpty),
             child: Align(
               alignment: Alignment.center,
               child: ShakleOutlinedButton(

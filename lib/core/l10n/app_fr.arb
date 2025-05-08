@@ -52,7 +52,7 @@
     "@searchScreenLookButton": {
         "description": "Texte Bouton pour accéder à la liste de personnes"
     },
-    "searchScreenCreateButton": "Ajouter cette personne",
+    "searchScreenCreateButton": "Ajouter",
     "@searchScreenCreateButton": {
         "description": "Texte Bouton pour ajouter une nouvelle personne"
     },
