@@ -46,7 +46,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
 
           /// * Lastname Input.
           SlideWidget(
-            duration: Duration(milliseconds: 800),
+            duration: Duration(milliseconds: 200),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: ShakleInput(
@@ -78,7 +78,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
 
           /// * Birthday Input.
           SlideWidget(
-            duration: Duration(milliseconds: 1600),
+            duration: Duration(milliseconds: 600),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: ShakleInput(
@@ -95,7 +95,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
 
           /// * Job name Input.
           SlideWidget(
-            duration: Duration(milliseconds: 1200),
+            duration: Duration(milliseconds: 800),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: ShakleInput(
@@ -111,7 +111,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
 
           /// * Zone/City Input.
           SlideWidget(
-            duration: Duration(milliseconds: 1600),
+            duration: Duration(milliseconds: 1000),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: ShakleInput(
@@ -137,7 +137,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               child: Align(
                 alignment: Alignment.center,
                 child: ShakleOutlinedButton(
-                  AppLocalizations.of(context)!.accessButton,
+                  AppLocalizations.of(context)!.searchButton,
                   animColor: Theme.of(context).colorScheme.primary,
                   isActive: false,
                   onPressed: () {},
@@ -154,7 +154,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               child: Align(
                 alignment: Alignment.center,
                 child: ShakleOutlinedButton(
-                  "${AppLocalizations.of(context)!.accessButton} (${state.persons.length})",
+                  "${AppLocalizations.of(context)!.searchButton} (${state.persons.length})",
                   animColor: Theme.of(context).colorScheme.primary,
                   isActive: true,
                   onPressed: () {

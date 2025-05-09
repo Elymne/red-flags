@@ -24,6 +24,10 @@
     "@accessButton": {
         "description": "Texte de bouton d'accès à une ressource (vue, page, données…)."
     },
+    "searchButton": "Rechercher",
+    "@searchButton": {
+        "description": "Texte de bouton d'accès à une recherche (vue, page, données…)."
+    },
     "okButton": "Ok",
     "@okButton": {
         "description": "Texte de bouton OKAY."
