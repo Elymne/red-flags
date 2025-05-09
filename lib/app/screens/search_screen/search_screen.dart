@@ -1,16 +1,13 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/search_screen/search_screen_state.dart';
-import 'package:red_flags/app/widgets/animations/slide_widget.dart';
-import 'package:red_flags/app/widgets/backgrounds/squares_background.dart';
+import 'package:red_flags/app/widgets/page_change_related/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_input.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_outlined_button.dart';
-import 'package:red_flags/app/widgets/title_container.dart';
-import 'package:red_flags/core/states/widget_state.dart';
+import 'package:red_flags/app/widgets/layouts/title_container.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -44,8 +41,26 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
             subtitle: AppLocalizations.of(context)!.searchScreenSubTitle,
           ),
 
+          /// * Full spacer with background animation.
+          Expanded(child: SizedBox()),
+
+          /// * Lastname Input.
+          SlideWidget(
+            duration: Duration(milliseconds: 800),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: ShakleInput(
+                AppLocalizations.of(context)!.lastnameInput,
+                animColor: Theme.of(context).colorScheme.primary,
+                onChanged: (value) {
+                  _lastname = value;
+                  _onTextfieldChange();
+                },
+              ),
+            ),
+          ),
+
           /// * Firstname Input.
-          SizedBox(height: 40),
           SlideWidget(
             duration: Duration(milliseconds: 400),
             child: Padding(
@@ -61,16 +76,17 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
             ),
           ),
 
-          /// * Lastname Input.
+          /// * Birthday Input.
           SlideWidget(
-            duration: Duration(milliseconds: 800),
+            duration: Duration(milliseconds: 1600),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: ShakleInput(
-                AppLocalizations.of(context)!.lastnameInput,
+                AppLocalizations.of(context)!.birthdayInput,
                 animColor: Theme.of(context).colorScheme.primary,
+                autocompleteValues: state.zones.map((zone) => zone.name).toList(),
                 onChanged: (value) {
-                  _lastname = value;
+                  _zonename = value;
                   _onTextfieldChange();
                 },
               ),
@@ -111,73 +127,45 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
           ),
 
           /// * Full spacer with background animation.
-          Expanded(child: SquaresBackground()),
+          Expanded(child: SizedBox()),
 
           /// * Disabled button because no value found yet.
-          Visibility(
-            visible:
-                state.persons.isEmpty && (_firstname.isNotEmpty || _lastname.isNotEmpty || _jobname.isNotEmpty || _zonename.isNotEmpty),
-            child: Align(
-              alignment: Alignment.center,
-              child: ShakleOutlinedButton(
-                AppLocalizations.of(context)!.searchScreenLookButton,
-                animColor: Theme.of(context).colorScheme.primary,
-                isActive: false,
-                onPressed: () {},
-              ),
-            ),
-          ),
-
-          /// * Create button because no value found at all.
-          Visibility(
-            visible: state.persons.isEmpty && _firstname.isEmpty && _lastname.isEmpty && _jobname.isEmpty && _zonename.isEmpty,
-            child: Align(
-              alignment: Alignment.center,
-              child: ShakleOutlinedButton(
-                AppLocalizations.of(context)!.searchScreenCreateButton,
-                animColor: Theme.of(context).colorScheme.primary,
-                isActive: true,
-                onPressed: () async {
-                  /// * Add a new person.
-                  await ref.read(searchScreenState.notifier).addNewPerson(_firstname, _lastname, _zonename, _jobname);
-
-                  /// * Check that the context is still available.
-                  if (!context.mounted) return;
-
-                  /// * If an error occurred, do nothing, send little toast message.
-                  if (state.status == WidgetStatus.failure) {
-                    /// * Show toast message error.
-                    showDialog(
-                      context: context,
-                      builder: (_) => AlertDialog(content: Text(AppLocalizations.of(context)!.searchScreenCreateError)),
-                    );
-                    return;
-                  }
-
-                  /// * Goto list view person widget.
-                  ref.read(routerNotifierprovider.notifier).changeScreen(() {
-                    /// * Navigate.
-                    final navigator = Navigator.of(context);
-                    navigator.push(MaterialPageRoute(builder: (context) => const SearchScreen()));
-                  });
-                },
+          SlideWidget(
+            duration: Duration(milliseconds: 400),
+            child: Visibility(
+              visible: state.persons.isEmpty,
+              child: Align(
+                alignment: Alignment.center,
+                child: ShakleOutlinedButton(
+                  AppLocalizations.of(context)!.accessButton,
+                  animColor: Theme.of(context).colorScheme.primary,
+                  isActive: false,
+                  onPressed: () {},
+                ),
               ),
             ),
           ),
 
           /// * Access button because values found.
-          Visibility(
-            visible: state.persons.isNotEmpty,
-            child: Align(
-              alignment: Alignment.center,
-              child: ShakleOutlinedButton(
-                "${AppLocalizations.of(context)!.searchScreenLookButton} (${state.persons.length})",
-                animColor: Theme.of(context).colorScheme.primary,
-                isActive: true,
-                onPressed: () {
-                  /// TODO : Access to ListView with the person create. Create the view.
-                  if (kDebugMode) print("Clicked");
-                },
+          SlideWidget(
+            duration: Duration(milliseconds: 400),
+            child: Visibility(
+              visible: state.persons.isNotEmpty,
+              child: Align(
+                alignment: Alignment.center,
+                child: ShakleOutlinedButton(
+                  "${AppLocalizations.of(context)!.accessButton} (${state.persons.length})",
+                  animColor: Theme.of(context).colorScheme.primary,
+                  isActive: true,
+                  onPressed: () {
+                    /// * Goto list view person widget.
+                    ref.read(routerNotifierprovider.notifier).changeScreen(() {
+                      /// * Navigate.
+                      final navigator = Navigator.of(context);
+                      navigator.push(MaterialPageRoute(builder: (context) => const SearchScreen()));
+                    });
+                  },
+                ),
               ),
             ),
           ),

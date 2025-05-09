@@ -8,6 +8,7 @@ class DetailedPerson extends Person {
     required super.id,
     required super.firstName,
     required super.lastName,
+    required super.birthday,
     required super.cityName,
     required super.jobName,
 
@@ -23,6 +24,7 @@ class DetailedPerson extends Person {
       id: json["id"] as String,
       firstName: json["firstname"] as String,
       lastName: json["lastname"] as String,
+      birthday: DateTime.now(),
       cityName: json["cityname"] as String,
       jobName: json["jobname"] as String,
 
@@ -40,6 +42,7 @@ class DetailedPerson extends Person {
       "id": id,
       "firstname": firstName,
       "lastname": lastName,
+      "birthname": birthday,
       "cityname": cityName,
       "jobname": jobName,
 

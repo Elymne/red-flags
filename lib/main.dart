@@ -7,21 +7,21 @@ import 'package:red_flags/app/mobile_app.dart';
 import 'package:red_flags/app/web_app.dart';
 
 Future main() async {
-  /// Make sure env file is loaded before starting the app.
+  /// * Make sure env file is loaded before starting the app.
   await dotenv.load(fileName: ".env");
 
-  /// Allow me to test UI.
+  /// * Allow me to test UI.
   debugPaintSizeEnabled = false;
 
-  /// Hello.
+  /// * Hello.
   WidgetsFlutterBinding.ensureInitialized();
 
-  /// Check if it's a web context.
+  /// * Check if it's a web context.
   if (kIsWeb) {
     runApp(ProviderScope(child: const WebApp()));
     return;
   }
 
-  /// Run Mobile version.
+  /// * Run Mobile version.
   runApp(ProviderScope(child: const MobileApp()));
 }

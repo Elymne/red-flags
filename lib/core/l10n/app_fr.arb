@@ -20,51 +20,47 @@
     "@applicationFailure": {
         "description": "Message signifiant que l'application a détecté une erreur et ne peux pas continuer l'action en cours."
     },
+    "accessButton": "Accéder",
+    "@accessButton": {
+        "description": "Texte de bouton d'accès à une ressource (vue, page, données…)."
+    },
+    "okButton": "Ok",
+    "@okButton": {
+        "description": "Texte de bouton OKAY."
+    },
     "searchScreenTitle": "Exploration",
     "@searchScreenTitle": {
-        "description": "Titre Navigation de la page de recherche."
+        "description": "Titre Navigation de la page de recherche par nom/prénom."
     },
-    "searchScreenSubTitle": "Recherche ou ajoute quelqu'un",
+    "searchScreenSubTitle": "Recherche précise",
     "@searchScreenSubTitle": {
         "description": "Sous-titre Navigation de la page de recherche."
     },
-    "firstnameInput": "Prénom :",
-    "@firstnameInput": {
-        "description": "Label du textinput pour le prénom."
-    },
     "lastnameInput": "Nom :",
     "@lastnameInput": {
-        "description": "Label du textinput pour le nom."
+        "description": "Label du champ de texte pour le nom de la ou les personnes recherchées."
     },
-    "zonenameInput": "Ville/Région :",
+    "firstnameInput": "Prénom :",
+    "@firstnameInput": {
+        "description": "Label du champ de texte pour le prénom de la ou les personnes recherchées."
+    },
+    "birthdayInput": "Date de Naissance :",
+    "@birthdayInput": {
+        "description": "Label du champ de texte pour la date de naissance de la ou les personnes recherchées."
+    },
+    "zonenameInput": "Ville/Région actuelle :",
     "@zonenameInput": {
-        "description": "Label du textinput pour la zone."
+        "description": "Label du champ de la ville actuelle de la ou les personnes recherchées."
     },
-    "jobnameInput": "Métier/Activité :",
+    "jobnameInput": "Métier/Activité actuel :",
     "@jobnameInput": {
-        "description": "Label du textinput pour le job."
+        "description": "Label du champ de texte d'activité ou métier actuelle de la ou les personnes recherchées."
     },
-    "searchScreenDisabledButton": "Rien trouvé",
-    "@searchScreenDisabledButton": {
-        "description": "Texte bouton inactif car la recherche actuelle n'a rien donnée."
-    },
-    "searchScreenLookButton": "Regarder",
-    "@searchScreenLookButton": {
-        "description": "Texte Bouton pour accéder à la liste de personnes"
-    },
-    "searchScreenCreateButton": "Ajouter",
-    "@searchScreenCreateButton": {
-        "description": "Texte Bouton pour ajouter une nouvelle personne"
-    },
-    "searchScreenCreateError": "Impossible d'ajouter les informations de cette personne.",
-    "@searchScreenCreateError": {
-        "description": "Affichage d'un ToastMessage signifiant qu'il y a un problème avec l'ajout d'une personne en base de données."
-    },
-    "personListViewScreenTitle": "Liste des trous du culs",
+    "personListViewScreenTitle": "Résultats",
     "@personListViewScreenTitle": {
-        "description": "Titre Navigation de la page de Liste."
+        "description": "Titre Navigation de la page de résultats de la recherche."
     },
-    "personListViewScreenSubTitle": "Sélectionne un trou du cul là",
+    "personListViewScreenSubTitle": "Je ne sais pas quoi écrire ici",
     "@personListViewScreenSubTitle": {
         "description": "Sous-titre Navigation de la page de liste."
     }

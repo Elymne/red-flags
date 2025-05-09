@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/search_screen/search_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:red_flags/app/widgets/animations/fade_widget.dart';
-import 'package:red_flags/app/widgets/animations/slide_widget.dart';
+import 'package:red_flags/app/widgets/page_change_related/fade_widget.dart';
+import 'package:red_flags/app/widgets/page_change_related/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_text.dart';
 import 'dart:async';
 

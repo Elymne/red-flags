@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/app/widgets/animations/slide_person_list_view.dart';
-import 'package:red_flags/app/widgets/title_container.dart';
+import 'package:red_flags/app/widgets/listviews/card_person.dart';
+import 'package:red_flags/app/widgets/listviews/slide_person_list_view.dart';
+import 'package:red_flags/app/widgets/layouts/title_container.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:red_flags/models/person.model.dart';
 
 class PersonListViewScreenScreen extends ConsumerStatefulWidget {
   final String firstname;
@@ -40,15 +42,19 @@ class _State extends ConsumerState<PersonListViewScreenScreen> with TickerProvid
           ),
           Expanded(
             child: SlideListView(
-              itemCount: 20, // Replace with the actual number of items
+              itemCount: 40, // Replace with the actual number of items
               itemBuilder: (context, index) {
-                return ListTile(
-                  leading: CircleAvatar(child: Text((index + 1).toString())),
-                  title: Text('Person ${index + 1}'),
-                  subtitle: Text('Subtitle for Person ${index + 1}'),
-                  onTap: () {
-                    // Handle tap event
-                  },
+                return CardPerson(
+                  person: Person(
+                    id: "ID FUCK",
+                    firstName: "Sacha",
+                    lastName: "Djurdjevic",
+                    birthday: DateTime.now(),
+                    cityName: "Nantes",
+                    jobName: "Une merde",
+                    createdDate: DateTime.now(),
+                    updatedDate: DateTime.now(),
+                  ),
                 );
               },
             ),
