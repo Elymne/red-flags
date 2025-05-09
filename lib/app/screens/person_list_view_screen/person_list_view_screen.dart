@@ -40,6 +40,8 @@ class _State extends ConsumerState<PersonListViewScreenScreen> with TickerProvid
             title: AppLocalizations.of(context)!.personListViewScreenTitle,
             subtitle: "${AppLocalizations.of(context)!.personListViewScreenSubTitle} (${10})",
           ),
+
+          /// * The listview.
           Expanded(
             child: SlideListView(
               itemCount: 40, // Replace with the actual number of items

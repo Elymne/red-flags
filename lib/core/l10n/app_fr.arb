@@ -28,6 +28,14 @@
     "@okButton": {
         "description": "Texte de bouton OKAY."
     },
+    "homeScreenTitle": "Accueil",
+    "@homeScreenTitle": {
+        "description": "Titre de la homepage."
+    },
+    "homeScreenSubTitle": "Choisi un type de recherche",
+    "@homeScreenSubTitle": {
+        "description": "Sous-yitre de la homepage."
+    },
     "searchScreenTitle": "Exploration",
     "@searchScreenTitle": {
         "description": "Titre Navigation de la page de recherche par nom/prénom."
