@@ -38,7 +38,7 @@ class _State extends ConsumerState<PersonListViewScreenScreen> with TickerProvid
           /// * Header container with page name.
           TitleContainer(
             title: AppLocalizations.of(context)!.personListViewScreenTitle,
-            subtitle: AppLocalizations.of(context)!.personListViewScreenSubTitle,
+            subtitle: "${AppLocalizations.of(context)!.personListViewScreenSubTitle} (${10})",
           ),
           Expanded(
             child: SlideListView(
@@ -47,11 +47,11 @@ class _State extends ConsumerState<PersonListViewScreenScreen> with TickerProvid
                 return CardPerson(
                   person: Person(
                     id: "ID FUCK",
-                    firstName: "Sacha",
-                    lastName: "Djurdjevic",
+                    firstname: "Sacha",
+                    lastname: "Djurdjevic",
                     birthday: DateTime.now(),
-                    cityName: "Nantes",
-                    jobName: "Une merde",
+                    zonename: "Nantes",
+                    jobname: "Une merde",
                     createdDate: DateTime.now(),
                     updatedDate: DateTime.now(),
                   ),

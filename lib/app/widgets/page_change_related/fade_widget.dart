@@ -25,9 +25,6 @@ class _State extends ConsumerState<FadeWidget> with TickerProviderStateMixin {
 
     /// *  Initialize the animation controller.
     _animationController = AnimationController(vsync: this, duration: widget.duration);
-    _animationController.addListener(() {
-      setState(() {});
-    });
 
     /// * Define the fade animation.
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));

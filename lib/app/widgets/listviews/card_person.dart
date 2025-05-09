@@ -10,13 +10,24 @@ class CardPerson extends StatefulWidget {
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<CardPerson> {
+class _State extends State<CardPerson> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    /// TODO Here's our image placeholder.
+    final img = "https://cdn.futura-sciences.com/sources/images/actu/esperance-vie-chiens-chiot-golden-retriever.jpg";
+
     return ListTile(
-      leading: CircleAvatar(child: Text((1).toString())),
-      title: Text('Person ${1}'),
-      subtitle: Text('Subtitle for Person ${1}'),
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          /// * Imagtes
+          shape: BoxShape.rectangle,
+          image: DecorationImage(image: NetworkImage(img), fit: BoxFit.cover),
+        ),
+      ),
+      title: Text("${widget.person.lastname} ${widget.person.firstname}"),
+      subtitle: Text("${widget.person.zonename} - ${widget.person.jobname}"),
       onTap: () {
         /// TODO Access to details.
       },

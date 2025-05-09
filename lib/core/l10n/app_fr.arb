@@ -60,8 +60,8 @@
     "@personListViewScreenTitle": {
         "description": "Titre Navigation de la page de résultats de la recherche."
     },
-    "personListViewScreenSubTitle": "Je ne sais pas quoi écrire ici",
+    "personListViewScreenSubTitle": "Personnes Trouvées",
     "@personListViewScreenSubTitle": {
-        "description": "Sous-titre Navigation de la page de liste."
+        "description": "Sous-Titre Navigation de la page de résultats de la recherche."
     }
 }

@@ -1,21 +1,21 @@
 class Person {
   final String id;
-  final String firstName;
-  final String lastName;
+  final String firstname;
+  final String lastname;
   final DateTime birthday;
-  final String cityName;
-  final String jobName;
+  final String zonename;
+  final String jobname;
 
   final DateTime createdDate;
   final DateTime? updatedDate;
 
   Person({
     required this.id,
-    required this.firstName,
-    required this.lastName,
+    required this.firstname,
+    required this.lastname,
     required this.birthday,
-    required this.cityName,
-    required this.jobName,
+    required this.zonename,
+    required this.jobname,
     required this.createdDate,
     this.updatedDate,
   });
@@ -23,14 +23,14 @@ class Person {
   factory Person.fromJson(Map<String, dynamic> json) {
     return Person(
       id: json["id"] as String,
-      firstName: json["firstName"] as String,
-      lastName: json["lastName"] as String,
+      firstname: json["firstName"] as String,
+      lastname: json["lastName"] as String,
 
       /// TODO : Waiting backend changes.
       birthday: DateTime.now(),
 
-      cityName: json["cityName"] as String,
-      jobName: json["jobname"] as String,
+      zonename: json["cityName"] as String,
+      jobname: json["jobname"] as String,
       createdDate: DateTime.parse(json["createdDate"]),
       updatedDate: DateTime.parse(json["updatedDate"]),
     );
@@ -39,11 +39,11 @@ class Person {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
-      "firstName": firstName,
-      "lastName": lastName,
+      "firstName": firstname,
+      "lastName": lastname,
       "birthday": birthday,
-      "cityName": cityName,
-      "jobname": jobName,
+      "cityName": zonename,
+      "jobname": jobname,
 
       "createdDate": createdDate.toIso8601String(),
       "updatedDate": updatedDate?.toIso8601String(),
