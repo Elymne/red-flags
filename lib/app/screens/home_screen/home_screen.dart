@@ -5,6 +5,7 @@ import 'package:red_flags/app/screens/search_screen/search_screen.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/app/widgets/page_change_related/slide_widget.dart';
+import 'package:red_flags/app/widgets/shakles/shakle_home_item.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -32,22 +33,27 @@ class _State extends ConsumerState<HomeScreen> with TickerProviderStateMixin {
 
           /// * Add new Named Person.
           SlideWidget(
-            duration: Duration(milliseconds: 400),
+            duration: Duration(milliseconds: 200),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
+              child: ShakleHomeItem(
+                /// *
+                "Create",
+                animColor: Theme.of(context).colorScheme.primary,
                 onTap: () {},
-                child: Container(height: 100, width: double.infinity, decoration: BoxDecoration(border: Border.all(color: Colors.black))),
               ),
             ),
           ),
 
           /// * Search Named Person.
           SlideWidget(
-            duration: Duration(milliseconds: 800),
+            duration: Duration(milliseconds: 400),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
+              child: ShakleHomeItem(
+                /// *
+                "Search",
+                animColor: Theme.of(context).colorScheme.primary,
                 onTap: () {
                   ref.read(routerNotifierprovider.notifier).changeScreen(() {
                     /// * Navigate.
@@ -55,19 +61,21 @@ class _State extends ConsumerState<HomeScreen> with TickerProviderStateMixin {
                     navigator.push(MaterialPageRoute(builder: (context) => const SearchScreen()));
                   });
                 },
-                child: Container(height: 100, width: double.infinity, decoration: BoxDecoration(border: Border.all(color: Colors.black))),
               ),
             ),
           ),
 
           /// * Search Unknown Named Person.
           SlideWidget(
-            duration: Duration(milliseconds: 1200),
+            duration: Duration(milliseconds: 600),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
+              child: ShakleHomeItem(
+                /// *
+                "Random Search",
+                animColor: Theme.of(context).colorScheme.primary,
+                isActive: false,
                 onTap: () {},
-                child: Container(height: 100, width: double.infinity, decoration: BoxDecoration(border: Border.all(color: Colors.black))),
               ),
             ),
           ),

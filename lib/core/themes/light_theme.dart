@@ -22,13 +22,13 @@ final _colorScheme = ColorScheme.fromSeed(
 );
 
 final _textTheme = TextTheme(
-  // SplashScreen
+  // SplashScreen Title. (7x7)
   displayLarge: GoogleFonts.nunitoSans(color: _colorScheme.onSurface, fontSize: 42, fontWeight: FontWeight.w900, letterSpacing: 0),
 
-  // Page screen title. (On dark surface always).
+  // Page screen title. (On dark surface always). (6x6)
   headlineLarge: GoogleFonts.nunitoSans(
     color: _colorScheme.onSurface,
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: FontWeight.bold,
     letterSpacing: 0,
     height: 1.2,
