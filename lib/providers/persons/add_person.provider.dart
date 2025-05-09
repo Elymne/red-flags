@@ -29,7 +29,7 @@ final addPersonProvider = FutureProvider.autoDispose.family<void, AddPersonProvi
   final zones = (jsonDecode(zonesResponse.data!) as List).cast<Map<String, dynamic>>().map((json) => Zone.fromJson(json)).toList();
 
   /// * Find unique occurance.
-  final zone = zones.firstWhereOrNull((zone) => zone!.name == params.zonename);
+  final zone = zones.firstWhereOrNull((zone) => zone.name == params.zonename);
 
   /// * Check that the exact name string exists.
   if (zone == null) {

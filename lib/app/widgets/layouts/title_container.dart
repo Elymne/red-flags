@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:red_flags/app/widgets/shakles/shakle_pop_text.dart';
+import 'package:red_flags/app/widgets/page_change_related/shakle_pop_text.dart';
 
 class TitleContainer extends StatelessWidget {
   final String title;
@@ -24,14 +24,14 @@ class TitleContainer extends StatelessWidget {
               title,
               style: Theme.of(context).textTheme.headlineLarge,
               animColor: color ?? Theme.of(context).primaryColor,
-              speedAnimation: Duration(milliseconds: 100),
+              speedAnimation: Duration(milliseconds: 40),
               hasIdleAnim: true,
             ),
             ShaklePopText(
               subtitle,
               style: Theme.of(context).textTheme.headlineMedium,
               animColor: color ?? Theme.of(context).primaryColor,
-              speedAnimation: Duration(milliseconds: 40),
+              speedAnimation: Duration(milliseconds: 20),
               hasIdleAnim: true,
             ),
             SizedBox(height: 10),
