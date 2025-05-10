@@ -74,13 +74,7 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
           /// * Title.
           SlideWidget(
             duration: Duration(milliseconds: 400),
-            child: Center(
-              child: ShakleText(
-                animColor: Theme.of(context).colorScheme.primary,
-                AppLocalizations.of(context)!.title,
-                style: Theme.of(context).textTheme.displayLarge,
-              ),
-            ),
+            child: Center(child: ShakleText(AppLocalizations.of(context)!.title, style: Theme.of(context).textTheme.displayLarge)),
           ),
 
           /// * Pager with Stickmans.

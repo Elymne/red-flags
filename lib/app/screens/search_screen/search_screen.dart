@@ -51,7 +51,6 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: ShakleInput(
                 AppLocalizations.of(context)!.lastnameInput,
-                animColor: Theme.of(context).colorScheme.primary,
                 onChanged: (value) {
                   _lastname = value;
                   _onTextfieldChange();
@@ -67,7 +66,6 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: ShakleInput(
                 AppLocalizations.of(context)!.firstnameInput,
-                animColor: Theme.of(context).colorScheme.primary,
                 onChanged: (value) {
                   _firstname = value;
                   _onTextfieldChange();
@@ -83,7 +81,6 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: ShakleInput(
                 AppLocalizations.of(context)!.birthdayInput,
-                animColor: Theme.of(context).colorScheme.primary,
                 autocompleteValues: state.zones.map((zone) => zone.name).toList(),
                 onChanged: (value) {
                   _zonename = value;
@@ -100,7 +97,6 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: ShakleInput(
                 AppLocalizations.of(context)!.jobnameInput,
-                animColor: Theme.of(context).colorScheme.primary,
                 onChanged: (value) {
                   _jobname = value;
                   _onTextfieldChange();
@@ -116,7 +112,6 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: ShakleInput(
                 AppLocalizations.of(context)!.zonenameInput,
-                animColor: Theme.of(context).colorScheme.primary,
                 autocompleteValues: state.zones.map((zone) => zone.name).toList(),
                 onChanged: (value) {
                   _zonename = value;
@@ -136,12 +131,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               visible: state.persons.isEmpty,
               child: Align(
                 alignment: Alignment.center,
-                child: ShakleOutlinedButton(
-                  AppLocalizations.of(context)!.searchButton,
-                  animColor: Theme.of(context).colorScheme.primary,
-                  isActive: false,
-                  onPressed: () {},
-                ),
+                child: ShakleOutlinedButton(AppLocalizations.of(context)!.searchButton, isActive: false, onPressed: () {}),
               ),
             ),
           ),
@@ -155,7 +145,6 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
                 alignment: Alignment.center,
                 child: ShakleOutlinedButton(
                   "${AppLocalizations.of(context)!.searchButton} (${state.persons.length})",
-                  animColor: Theme.of(context).colorScheme.primary,
                   isActive: true,
                   onPressed: () {
                     /// * Goto list view person widget.

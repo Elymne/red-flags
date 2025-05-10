@@ -28,8 +28,8 @@ class _State extends ConsumerState<HomeScreen> with TickerProviderStateMixin {
           /// * Header container with page name.
           TitleContainer(title: AppLocalizations.of(context)!.homeScreenTitle, subtitle: AppLocalizations.of(context)!.homeScreenSubTitle),
 
-          /// * Little margin.
-          SizedBox(height: 20),
+          /// * Spacer.
+          Expanded(child: SizedBox()),
 
           /// * Add new Named Person.
           SlideWidget(
@@ -38,8 +38,8 @@ class _State extends ConsumerState<HomeScreen> with TickerProviderStateMixin {
               padding: const EdgeInsets.all(8.0),
               child: ShakleHomeItem(
                 /// *
-                "Create",
-                animColor: Theme.of(context).colorScheme.primary,
+                iconData: Icons.add_outlined,
+                title: "Create",
                 onTap: () {},
               ),
             ),
@@ -52,8 +52,8 @@ class _State extends ConsumerState<HomeScreen> with TickerProviderStateMixin {
               padding: const EdgeInsets.all(8.0),
               child: ShakleHomeItem(
                 /// *
-                "Search",
-                animColor: Theme.of(context).colorScheme.primary,
+                iconData: Icons.search_outlined,
+                title: "Search",
                 onTap: () {
                   ref.read(routerNotifierprovider.notifier).changeScreen(() {
                     /// * Navigate.
@@ -72,13 +72,31 @@ class _State extends ConsumerState<HomeScreen> with TickerProviderStateMixin {
               padding: const EdgeInsets.all(8.0),
               child: ShakleHomeItem(
                 /// *
-                "Random Search",
-                animColor: Theme.of(context).colorScheme.primary,
+                iconData: Icons.perm_camera_mic_outlined,
+                title: "Random Search",
                 isActive: false,
                 onTap: () {},
               ),
             ),
           ),
+
+          /// * Search Unknown Named Person.
+          SlideWidget(
+            duration: Duration(milliseconds: 600),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ShakleHomeItem(
+                /// *
+                iconData: Icons.perm_camera_mic_outlined,
+                title: "Random Search",
+                isActive: false,
+                onTap: () {},
+              ),
+            ),
+          ),
+
+          /// * Spacer.
+          Expanded(child: SizedBox()),
         ],
       ),
     );

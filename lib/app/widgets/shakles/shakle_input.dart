@@ -1,40 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:red_flags/core/themes/light_theme.dart';
 
 class ShakleInput extends StatefulWidget {
   final String label;
-  final Color animColor;
   final List<String> autocompleteValues;
   final void Function(String) onChanged;
 
-  const ShakleInput(this.label, {super.key, required this.onChanged, required this.animColor, this.autocompleteValues = const []});
+  const ShakleInput(this.label, {super.key, required this.onChanged, this.autocompleteValues = const []});
 
   @override
   State<StatefulWidget> createState() => _State();
 }
 
 class _State extends State<ShakleInput> with TickerProviderStateMixin {
-  /// * This value allow me to know when input is selected. (And activate anim).
+  /// This value allow me to know when input is selected. (And activate anim).
   final FocusNode _textfieldFocus = FocusNode();
 
-  /// * Shake Animation (for background color).
+  /// Shake Animation (for background color).
   late final AnimationController _shakyController1;
   late final Animation<double> _shakyAnimation1;
-  final Duration _shakyDurationTic1 = Duration(milliseconds: 400);
+  final Duration _shakyDurationTic1 = Duration(milliseconds: 1_600);
 
-  /// * Shake Animation (for front input).
+  /// Shake Animation (for front input).
   late final AnimationController _shakyController2;
   late final Animation<double> _shakyAnimation2;
-  final Duration _shakyDurationTic2 = Duration(milliseconds: 800);
+  final Duration _shakyDurationTic2 = Duration(milliseconds: 1_000);
 
-  /// * Current state of input. Allow me to know when I have to activate or not the animation.
+  /// Background color animation.
+  late final AnimationController _colorController;
+  late final Animation<Color?> _colorAnimation;
+  final Duration _colorDurationTic = Duration(milliseconds: 10_000);
+
+  /// Current state of input. Allow me to know when I have to activate or not the animation.
   final TextEditingController _textFieldController = TextEditingController();
   bool isFocus = false;
 
-  /// * Link between my overlay (autocomplete widget) and my TextField.
+  /// Link between my overlay (autocomplete widget) and my TextField.
   final LayerLink _layerLink = LayerLink();
 
-  /// * Adress to my overlay (autocomplete widget).
+  /// Adress to my overlay (autocomplete widget).
   OverlayEntry? _overlayEntry;
 
   @override
@@ -49,6 +54,10 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
     _shakyController2 = AnimationController(vsync: this, duration: _shakyDurationTic2);
     _shakyAnimation2 = Tween<double>(begin: -0.5, end: 0.5).animate(_shakyController2);
 
+    /// * Set the background color.
+    _colorController = AnimationController(vsync: this, duration: _colorDurationTic);
+    _colorAnimation = ColorTween(begin: lightColorScheme.primary, end: lightColorScheme.secondary).animate(_colorController);
+
     /// * Listen Input focus mode. Will start or stop the animation depending of the focus state of the input.
     _textfieldFocus.addListener(_onFocusUpdate);
   }
@@ -61,6 +70,7 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
     /// * Dispose all controllers.
     _shakyController1.dispose();
     _shakyController2.dispose();
+    _colorController.dispose();
     _textFieldController.dispose();
 
     /// * Hide the autocomplete list.
@@ -99,10 +109,10 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
                     children: [
                       Text(
                         _textFieldController.text.isEmpty ? widget.label : " ",
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(color: widget.animColor),
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(color: _colorAnimation.value),
                       ),
                       SizedBox(height: 10),
-                      Container(height: 1, width: double.infinity, color: widget.animColor),
+                      Container(height: 1, width: double.infinity, color: _colorAnimation.value),
                     ],
                   ),
                 );
@@ -231,11 +241,13 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
       /// Run loop animation.
       _shakyController1.repeat(reverse: true);
       _shakyController2.repeat(reverse: true);
+      // _colorController.repeat(reverse: true);
       return;
     }
 
     /// Revert and stop animation.
     _shakyController1.reverse();
     _shakyController2.reverse();
+    // _colorController.stop();
   }
 }

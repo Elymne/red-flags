@@ -2,12 +2,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
+import 'package:red_flags/core/themes/light_theme.dart';
 
 class ShaklePopText extends ConsumerStatefulWidget {
   /// About text.
   final TextStyle? style;
   final String text;
-  final Color animColor;
 
   /// Text animation.
   final Duration speedAnimation;
@@ -21,7 +21,6 @@ class ShaklePopText extends ConsumerStatefulWidget {
     this.text, {
     super.key,
     required this.style,
-    required this.animColor,
 
     this.speedAnimation = const Duration(milliseconds: 100),
     this.force = 1,
@@ -48,12 +47,18 @@ class _State extends ConsumerState<ShaklePopText> with TickerProviderStateMixin 
   late final AnimationController _shakyController1;
   late final Animation<double> _shakyAnimation1;
   final Duration _shakyDurationTic1 = Duration(milliseconds: 200);
-  final Duration _idleDurationTic1 = Duration(milliseconds: 2000);
+  final Duration _idleDurationTic1 = Duration(milliseconds: 1_600);
 
+  /// Shake Animation for while text is pop in.
   late final AnimationController _shakyController2;
   late final Animation<double> _shakyAnimation2;
   final Duration _shakyDurationTic2 = Duration(milliseconds: 100);
-  final Duration _idleDurationTic2 = Duration(milliseconds: 1000);
+  final Duration _idleDurationTic2 = Duration(milliseconds: 1_000);
+
+  /// Background color animation.
+  late final AnimationController _colorController;
+  late final Animation<Color?> _colorAnimation;
+  final Duration _colorDurationTic = Duration(milliseconds: 10_000);
 
   /// Simple background display state.
   bool showBackground = true;
@@ -65,16 +70,17 @@ class _State extends ConsumerState<ShaklePopText> with TickerProviderStateMixin 
     /// * Set the text shaky animation for background text.
     _shakyController1 = AnimationController(vsync: this, duration: _shakyDurationTic1);
     _shakyAnimation1 = Tween<double>(begin: -3, end: 3).animate(_shakyController1);
-
-    /// * Start the shaky animation right away.
     _shakyController1.repeat(reverse: true);
 
     /// * Set the text shaky animation for frontend text.
     _shakyController2 = AnimationController(vsync: this, duration: _shakyDurationTic2);
     _shakyAnimation2 = Tween<double>(begin: -1, end: 1).animate(_shakyController2);
-
-    /// * Start the shaky animation right away.
     _shakyController2.repeat(reverse: true);
+
+    /// * Set the background color.
+    _colorController = AnimationController(vsync: this, duration: _colorDurationTic);
+    _colorAnimation = ColorTween(begin: lightColorScheme.primary, end: lightColorScheme.secondary).animate(_colorController);
+    // _colorController.repeat(reverse: true);
 
     /// * Run the starting animation.
     runAnimation();
@@ -169,7 +175,7 @@ class _State extends ConsumerState<ShaklePopText> with TickerProviderStateMixin 
             builder: (context, child) {
               return Transform.translate(
                 offset: Offset(_shakyAnimation1.value * _forceAnimation, 0),
-                child: Text(_displayText, style: widget.style?.copyWith(color: widget.animColor)),
+                child: Text(_displayText, style: widget.style?.copyWith(color: _colorAnimation.value)),
               );
             },
           ),
