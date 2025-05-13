@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
@@ -80,7 +81,6 @@ class _State extends ConsumerState<ShaklePopText> with TickerProviderStateMixin 
     /// * Set the background color.
     _colorController = AnimationController(vsync: this, duration: _colorDurationTic);
     _colorAnimation = ColorTween(begin: lightColorScheme.primary, end: lightColorScheme.secondary).animate(_colorController);
-    // _colorController.repeat(reverse: true);
 
     /// * Run the starting animation.
     runAnimation();
@@ -125,6 +125,11 @@ class _State extends ConsumerState<ShaklePopText> with TickerProviderStateMixin 
   /// Reverse the animation
   /// Used on screen changes.
   void reverseAnimation() {
+    /// * Stop animations.
+    if (_shakyController1.isAnimating) _shakyController1.stop();
+    if (_shakyController2.isAnimating) _shakyController2.stop();
+    if (_timer.isActive) _timer.cancel();
+
     /// * Update shaky animation with the force one.
     _forceAnimation = widget.idleForce;
     _shakyController1.duration = _idleDurationTic1;

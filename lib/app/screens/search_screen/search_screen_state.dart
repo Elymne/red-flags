@@ -27,13 +27,15 @@ class SearchScreenNotifier extends StateNotifier<SearchScreenState> {
       /// * Loading status now, we're fetching some data.
       state = SearchScreenState(status: WidgetStatus.loading, persons: state.persons, zones: state.zones);
 
-      /// * Fetch data for each.
+      /// * Fetch persons.
       final getPersonsParams = GetPersonsProviderParams(firstname: firstname, lastname: lastname, jobname: jobname, zonename: zonename);
       final getPersons = ref.read(getPersonsProvider(getPersonsParams).future);
 
+      /// * Fetch zones.
       final getZonesParams = GetZonesProviderParams(zonename: zonename);
       final getZones = ref.read(getZonesProvider(getZonesParams).future);
 
+      /// * calls.
       final responses = await Future.wait([getPersons, getZones]);
 
       /// * And now update the state with new data.
