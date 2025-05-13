@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
-import 'package:red_flags/app/screens/search_screen/search_screen.dart';
+import 'package:red_flags/app/screens/home_screen/home_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/app/widgets/page_change_related/fade_widget.dart';
 import 'package:red_flags/app/widgets/page_change_related/slide_widget.dart';
@@ -52,7 +52,7 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
       ref.read(routerNotifierprovider.notifier).changeScreen(() {
         /// * Navigate.
         final navigator = Navigator.of(context);
-        navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const SearchScreen()), (route) => false);
+        navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
       });
     });
   }

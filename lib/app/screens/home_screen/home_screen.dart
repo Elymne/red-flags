@@ -39,7 +39,7 @@ class _State extends ConsumerState<HomeScreen> with TickerProviderStateMixin {
               child: ShakleHomeItem(
                 /// *
                 iconData: Icons.add_outlined,
-                title: "Create",
+                title: "Ajouter de l'information",
                 onTap: () {},
               ),
             ),
@@ -53,7 +53,7 @@ class _State extends ConsumerState<HomeScreen> with TickerProviderStateMixin {
               child: ShakleHomeItem(
                 /// *
                 iconData: Icons.search_outlined,
-                title: "Search",
+                title: "Rechercher par identité",
                 onTap: () {
                   ref.read(routerNotifierprovider.notifier).changeScreen(() {
                     /// * Navigate.
@@ -73,7 +73,7 @@ class _State extends ConsumerState<HomeScreen> with TickerProviderStateMixin {
               child: ShakleHomeItem(
                 /// *
                 iconData: Icons.perm_camera_mic_outlined,
-                title: "Random Search",
+                title: "Recherche par description",
                 isActive: false,
                 onTap: () {},
               ),
@@ -88,7 +88,7 @@ class _State extends ConsumerState<HomeScreen> with TickerProviderStateMixin {
               child: ShakleHomeItem(
                 /// *
                 iconData: Icons.perm_camera_mic_outlined,
-                title: "Random Search",
+                title: "News",
                 isActive: false,
                 onTap: () {},
               ),
