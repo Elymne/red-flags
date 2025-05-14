@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
+import 'package:red_flags/app/screens/person_list_view_screen/person_list_view_screen.dart';
 import 'package:red_flags/app/screens/search_screen/search_screen_state.dart';
 import 'package:red_flags/app/widgets/page_change_related/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_input.dart';
@@ -151,7 +152,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
                     ref.read(routerNotifierprovider.notifier).changeScreen(() {
                       /// * Navigate.
                       final navigator = Navigator.of(context);
-                      navigator.push(MaterialPageRoute(builder: (context) => const SearchScreen()));
+                      navigator.push(MaterialPageRoute(builder: (context) => PersonListViewScreenScreen(persons: state.persons)));
                     });
                   },
                 ),

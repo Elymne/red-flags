@@ -6,14 +6,15 @@ class DetailedPerson extends Person {
 
   DetailedPerson({
     required super.id,
-    required super.firstname,
-    required super.lastname,
+    required super.firstName,
+    required super.lastName,
     required super.birthday,
-    required super.zonename,
-    required super.jobname,
+    required super.zoneName,
+    required super.jobName,
 
-    required super.createdDate,
-    super.updatedDate,
+    required super.createdAt,
+    super.updatedAt,
+    super.portrait,
 
     required this.messages,
     required this.links,
@@ -22,17 +23,19 @@ class DetailedPerson extends Person {
   factory DetailedPerson.fromJson(Map<String, dynamic> json) {
     return DetailedPerson(
       id: json["id"] as String,
-      firstname: json["firstname"] as String,
-      lastname: json["lastname"] as String,
-      birthday: DateTime.now(),
-      zonename: json["cityname"] as String,
-      jobname: json["jobname"] as String,
-
-      createdDate: DateTime.parse(json["createdAt"] as String),
-      updatedDate: DateTime.parse(json["createdAt"] as String),
+      firstName: json["firstName"] as String,
+      lastName: json["lastName"] as String,
+      birthday: DateTime.fromMillisecondsSinceEpoch(json["birthday"]),
+      zoneName: json["zone"]["name"] as String,
+      jobName: json["jobName"] as String,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(json["createdAt"]),
 
       messages: List<String>.from(json["messages"] as List),
       links: List<String>.from(json["links"] as List),
+
+      /// * Nullable.
+      updatedAt: json["updatedAt"] ? DateTime.fromMillisecondsSinceEpoch(json["updatedAt"]) : null,
+      portrait: json["portrait"],
     );
   }
 
@@ -40,14 +43,14 @@ class DetailedPerson extends Person {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
-      "firstname": firstname,
-      "lastname": lastname,
+      "firstName": firstName,
+      "lastName": lastName,
       "birthname": birthday,
-      "zonename": zonename,
-      "jobname": jobname,
+      "zoneName": zoneName,
+      "jobName": jobName,
 
-      "createdAt": createdDate.toIso8601String(),
-      "updatedAt": createdDate.toIso8601String(),
+      "createdAt": createdAt.toIso8601String(),
+      "updatedAt": createdAt.toIso8601String(),
 
       "messages": messages,
       "links": links,

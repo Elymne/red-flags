@@ -7,18 +7,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/models/person.model.dart';
 
 class PersonListViewScreenScreen extends ConsumerStatefulWidget {
-  final String firstname;
-  final String lastname;
-  final String zonename;
-  final String jobname;
+  final List<Person> persons;
 
-  const PersonListViewScreenScreen({
-    super.key,
-    required this.firstname,
-    required this.lastname,
-    required this.zonename,
-    required this.jobname,
-  });
+  const PersonListViewScreenScreen({super.key, required this.persons});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _State();
@@ -38,27 +29,24 @@ class _State extends ConsumerState<PersonListViewScreenScreen> with TickerProvid
           /// * Header container with page name.
           TitleContainer(
             title: AppLocalizations.of(context)!.personListViewScreenTitle,
-            subtitle: "${AppLocalizations.of(context)!.personListViewScreenSubTitle} (${10})",
+            subtitle: "${AppLocalizations.of(context)!.personListViewScreenSubTitle} (${widget.persons.length})",
           ),
 
           /// * The listview.
           Expanded(
-            child: SlideListView(
-              itemCount: 40, // Replace with the actual number of items
-              itemBuilder: (context, index) {
-                return CardPerson(
-                  person: Person(
-                    id: "ID FUCK",
-                    firstname: "Sacha",
-                    lastname: "Djurdjevic",
-                    birthday: DateTime.now(),
-                    zonename: "Nantes",
-                    jobname: "Une merde",
-                    createdDate: DateTime.now(),
-                    updatedDate: DateTime.now(),
-                  ),
-                );
-              },
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: SlideListView(
+                itemCount: widget.persons.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      CardPerson(person: widget.persons[index]),
+                      if (index < widget.persons.length - 1) Divider(color: Theme.of(context).colorScheme.onSurface, thickness: 2),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ],

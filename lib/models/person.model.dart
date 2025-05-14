@@ -1,52 +1,55 @@
 class Person {
   final String id;
-  final String firstname;
-  final String lastname;
+  final String firstName;
+  final String lastName;
   final DateTime birthday;
-  final String zonename;
-  final String jobname;
+  final String zoneName;
+  final String jobName;
 
-  final DateTime createdDate;
-  final DateTime? updatedDate;
+  final DateTime createdAt;
+
+  final String? portrait;
+  final DateTime? updatedAt;
 
   Person({
     required this.id,
-    required this.firstname,
-    required this.lastname,
+    required this.firstName,
+    required this.lastName,
     required this.birthday,
-    required this.zonename,
-    required this.jobname,
-    required this.createdDate,
-    this.updatedDate,
+    required this.zoneName,
+    required this.jobName,
+    required this.createdAt,
+    this.updatedAt,
+    this.portrait,
   });
 
   factory Person.fromJson(Map<String, dynamic> json) {
     return Person(
       id: json["id"] as String,
-      firstname: json["firstName"] as String,
-      lastname: json["lastName"] as String,
+      firstName: json["firstName"] as String,
+      lastName: json["lastName"] as String,
+      birthday: DateTime.fromMillisecondsSinceEpoch(json["birthday"]),
 
-      /// TODO : Waiting backend changes.
-      birthday: DateTime.now(),
+      zoneName: json["zone"]["name"] as String,
+      jobName: json["jobName"] as String,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(json["createdAt"]),
 
-      zonename: json["cityName"] as String,
-      jobname: json["jobname"] as String,
-      createdDate: DateTime.parse(json["createdDate"]),
-      updatedDate: DateTime.parse(json["updatedDate"]),
+      /// * Nullable.
+      updatedAt: json["updatedAt"] != null ? DateTime.fromMillisecondsSinceEpoch(json["updatedAt"]) : null,
+      portrait: json["portrait"],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       "id": id,
-      "firstName": firstname,
-      "lastName": lastname,
+      "firstName": firstName,
+      "lastName": lastName,
       "birthday": birthday,
-      "cityName": zonename,
-      "jobname": jobname,
-
-      "createdDate": createdDate.toIso8601String(),
-      "updatedDate": updatedDate?.toIso8601String(),
+      "jobName": jobName,
+      "zoneName": zoneName,
+      "createdAt": createdAt.toIso8601String(),
+      "updatedAt": updatedAt?.toIso8601String(),
     };
   }
 }

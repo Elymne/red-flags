@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:red_flags/app/widgets/page_change_related/slide_widget.dart';
 
 class SlideListView extends StatefulWidget {
   final int itemCount;
@@ -27,10 +28,9 @@ class _State extends State<SlideListView> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: widget.itemCount,
-
       itemBuilder: (context, index) {
         return AnimatedChild(
-          /// *
+          /// * Animated Child.
           index: index,
           runAnimation: runItemAnimation,
           child: widget.itemBuilder(context, index),
@@ -51,62 +51,21 @@ class AnimatedChild extends StatefulWidget {
   State<StatefulWidget> createState() => _ChildState();
 }
 
-class _ChildState extends State<AnimatedChild> with SingleTickerProviderStateMixin {
+class _ChildState extends State<AnimatedChild> with TickerProviderStateMixin {
   /// * Slide duration animation.
   late final Duration _slideDuration;
-
-  /// * Slide animation.
-  late final AnimationController _animController;
-  late final Animation<double> _slideAnimation;
-  late final Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    /// * No animation after the 10th item or if parent have already run the animation once.
-    if (widget.index > 10 || !widget.runAnimation) {
-      return;
-    }
-
-    /// * Set the slide anim duration.
-    _slideDuration = Duration(milliseconds: 200 * widget.index);
-
-    /// * Set the slide animation.
-    _animController = AnimationController(vsync: this, duration: _slideDuration);
-    _slideAnimation = Tween<double>(begin: -100, end: 0).animate(_animController);
-    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_animController);
-
-    /// * Start the animation.
-    _animController.forward();
+    /// * Set a multiplier delay animation (to create a sort of wave animation).
+    final mutiplierDuration = widget.index > 10 ? 10 : widget.index;
+    _slideDuration = Duration(milliseconds: 600 + (100) * mutiplierDuration);
   }
 
   @override
   Widget build(BuildContext context) {
-    /// * Static Item.
-    if (widget.index > 10 || !widget.runAnimation) {
-      return widget.child;
-    }
-
-    /// * Animated Item.
-    return AnimatedBuilder(
-      animation: _slideAnimation,
-      builder: (context, _) {
-        return Transform.translate(
-          offset: Offset(_slideAnimation.value, 0),
-          child: AnimatedBuilder(
-            animation: _fadeAnimation,
-            builder: (context, _) {
-              return Opacity(
-                opacity: _fadeAnimation.value,
-
-                /// * Static Item.
-                child: widget.child,
-              );
-            },
-          ),
-        );
-      },
-    );
+    return SlideWidget(duration: _slideDuration, child: widget.child);
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:red_flags/app/screens/splash_screen/splash_screen.dart';
+import 'package:red_flags/app/screens/detailed_person_screen/detailed_person_screen.dart';
 import 'package:red_flags/core/themes/light_theme.dart';
 
 class WebApp extends StatelessWidget {
@@ -22,7 +22,7 @@ class WebApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       locale: const Locale('fr'),
       theme: CustomTheme.lightTheme,
-      home: const SplashScreen(),
+      home: DetailedPersonScreen(id: "8065AD20293646938819766643F7A5A8"),
     );
   }
 }

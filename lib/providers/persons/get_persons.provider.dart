@@ -31,7 +31,13 @@ final getPersonsProvider = FutureProvider.autoDispose.family<List<Person>, GetPe
   /// * Make http request.
   final response = await Dio().get<String>(
     "${dotenv.env["HOST"]}/persons",
-    queryParameters: {"firstname": params.firstname, "lastname": params.lastname, "zonename": params.zonename, "jobname": params.jobname},
+    queryParameters: {
+      /// * I need that value isn't empty.
+      if (params.firstname.isNotEmpty) "firstname": params.firstname,
+      if (params.lastname.isNotEmpty) "lastname": params.lastname,
+      if (params.zonename.isNotEmpty) "zonename": params.zonename,
+      if (params.jobname.isNotEmpty) "jobname": params.jobname,
+    },
   );
 
   /// * Check response code.
@@ -44,8 +50,11 @@ final getPersonsProvider = FutureProvider.autoDispose.family<List<Person>, GetPe
     throw BadResponseException(type: response.data.runtimeType, expected: String);
   }
 
-  /// * Parse json data.
-  final persons = (jsonDecode(response.data!) as List).cast<Map<String, dynamic>>().map((json) => Person.fromJson(json)).toList();
+  // print(response.data);
+
+  /// * Parse response data.
+  final List<dynamic> jsonData = jsonDecode(response.data!);
+  final List<Person> persons = jsonData.map((item) => Person.fromJson(item)).toList();
 
   /// * Cache result.
   _cached[params] = persons;
