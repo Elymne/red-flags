@@ -40,7 +40,7 @@ final getCompaniesProvider = FutureProvider.autoDispose.family<List<Company>, Ge
   }
 
   /// * get resp
-  final raw = jsonDecode(response.data!) as ResponseData<List>;
+  final ResponseData<List> raw = jsonDecode(response.data!);
 
   /// * Parse json data.
   final companies = raw.data.cast<Map<String, dynamic>>().map((json) => Company.fromJson(json)).toList();

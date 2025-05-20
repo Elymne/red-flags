@@ -40,7 +40,7 @@ final getActivityByIdProvider = FutureProvider.autoDispose.family<Activity, GetA
   }
 
   /// * get resp
-  final raw = jsonDecode(response.data!) as ResponseData<Map<String, dynamic>>;
+  final ResponseData<Map<String, dynamic>> raw = jsonDecode(response.data!);
 
   /// * Parse json data.
   final activity = Activity.fromJson(raw.data);

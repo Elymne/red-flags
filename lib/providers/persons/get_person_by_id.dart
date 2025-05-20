@@ -5,15 +5,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/exceptions/bad_response_exception.dart';
 import 'package:red_flags/core/exceptions/network_exception.dart';
-import 'package:red_flags/models/detailed_person.model.dart';
+import 'package:red_flags/models/person.model.dart';
+import 'package:red_flags/providers/response.model.dart';
 
-/// Provides details about one person.
-/// Fetch from server given the args : GetDetailedPersonProviderParams.
-///   - Calling route API : (get) /persons/{id}.
-final Map<GetDetailedPersonProviderParams, DetailedPerson> _cached = {};
+final Map<GetPersonByIdParams, Person> _cached = {};
 Timer? _timer;
 
-final getDetailedPersonProvider = FutureProvider.autoDispose.family<DetailedPerson, GetDetailedPersonProviderParams>((ref, params) async {
+final getDetailedPersonProvider = FutureProvider.autoDispose.family<Person, GetPersonByIdParams>((ref, params) async {
   /// * Check if we should clear the cache or not.
   if (_timer != null) {
     _timer = Timer(Duration(milliseconds: 10_000), () {
@@ -41,18 +39,20 @@ final getDetailedPersonProvider = FutureProvider.autoDispose.family<DetailedPers
     throw BadResponseException(type: response.data.runtimeType, expected: String);
   }
 
-  /// * Parse response data.
-  final Map<String, dynamic> jsonData = jsonDecode(response.data!);
-  final DetailedPerson detailedPerson = DetailedPerson.fromJson(jsonData);
+  /// * get resp
+  final ResponseData<Map<String, dynamic>> raw = jsonDecode(response.data!);
+
+  /// * Parse json data.
+  final person = Person.fromJson(raw.data);
 
   /// * Cache result.
-  _cached[params] = detailedPerson;
+  _cached[params] = person;
 
   /// * Return result.
-  return detailedPerson;
+  return person;
 });
 
-class GetDetailedPersonProviderParams {
+class GetPersonByIdParams {
   final String id;
-  GetDetailedPersonProviderParams({required this.id});
+  GetPersonByIdParams({required this.id});
 }

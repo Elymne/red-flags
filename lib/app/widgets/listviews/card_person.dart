@@ -34,7 +34,7 @@ class _State extends ConsumerState<CardPerson> with TickerProviderStateMixin {
         decoration: BoxDecoration(shape: BoxShape.circle, image: DecorationImage(image: NetworkImage(img), fit: BoxFit.cover)),
       ),
       title: Text("${widget.person.lastName} ${widget.person.firstName}"),
-      subtitle: Text("${widget.person.zoneName} - ${widget.person.activity}"),
+      subtitle: Text("${widget.person.zone.name} - ${widget.person.activity}"),
       onTap: () {
         /// * Goto list view person widget.
         ref.read(routerNotifierprovider.notifier).changeScreen(() {

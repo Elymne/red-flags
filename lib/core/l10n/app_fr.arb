@@ -72,16 +72,20 @@
     "@firstnameInput": {
         "description": "Label du champ de texte pour le prénom de la ou les personnes recherchées."
     },
-    "birthdayInput": "Date de Naissance :",
-    "@birthdayInput": {
+    "birthDateInput": "Date de Naissance :",
+    "@birthDateInput": {
         "description": "Label du champ de texte pour la date de naissance de la ou les personnes recherchées."
     },
-    "zonenameInput": "Ville/Région actuelle :",
-    "@zonenameInput": {
+    "zoneNameInput": "Ville/Région actuelle :",
+    "@zoneNameInput": {
         "description": "Label du champ de la ville actuelle de la ou les personnes recherchées."
     },
-    "jobnameInput": "Métier/Activité actuel :",
-    "@jobnameInput": {
+    "companyNameInput": "Entreprise/société :",
+    "@companyNameInput": {
+        "description": "Label du champ de l'entreprise dans laquelle travaille cette personne."
+    },
+    "activityNameInput": "Métier/Activité actuel :",
+    "@activityNameInput": {
         "description": "Label du champ de texte d'activité ou métier actuelle de la ou les personnes recherchées."
     },
     "personListViewScreenTitle": "Résultats",

@@ -40,7 +40,7 @@ final getZoneByIdProvider = FutureProvider.autoDispose.family<Company, GetCompan
   }
 
   /// * get resp
-  final raw = jsonDecode(response.data!) as ResponseData<Map<String, dynamic>>;
+  final ResponseData<Map<String, dynamic>> raw = jsonDecode(response.data!);
 
   /// * Parse json data.
   final company = Company.fromJson(raw.data);

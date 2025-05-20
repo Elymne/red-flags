@@ -40,7 +40,7 @@ final getZonesProvider = FutureProvider.autoDispose.family<List<Zone>, GetZonesP
   }
 
   /// * get resp
-  final raw = jsonDecode(response.data!) as ResponseData<List>;
+  final ResponseData<List> raw = jsonDecode(response.data!);
 
   /// * Parse json data.
   final zones = raw.data.cast<Map<String, dynamic>>().map((json) => Zone.fromJson(json)).toList();

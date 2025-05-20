@@ -40,7 +40,7 @@ final getZoneByIdProvider = FutureProvider.autoDispose.family<Zone, GetZoneByIdP
   }
 
   /// * get resp
-  final raw = jsonDecode(response.data!) as ResponseData<Map<String, dynamic>>;
+  final ResponseData<Map<String, dynamic>> raw = jsonDecode(response.data!);
 
   /// * Parse json data.
   final zone = Zone.fromJson(raw.data);

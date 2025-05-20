@@ -6,13 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/exceptions/bad_response_exception.dart';
 import 'package:red_flags/core/exceptions/network_exception.dart';
 import 'package:red_flags/models/person.model.dart';
+import 'package:red_flags/providers/response.model.dart';
 
 final Map<GetPersonsProviderParams, List<Person>> _cached = {};
 Timer? _timer;
 
-/// Provides list of persons.
-/// Fetch from server given the args : GetPersonsProviderParams.
-///   - Calling route API : (get) /persons.
 final getPersonsProvider = FutureProvider.autoDispose.family<List<Person>, GetPersonsProviderParams>((ref, params) async {
   /// * Check if we should clear the cache or not.
   if (_timer != null) {
@@ -32,11 +30,12 @@ final getPersonsProvider = FutureProvider.autoDispose.family<List<Person>, GetPe
   final response = await Dio().get<String>(
     "${dotenv.env["HOST"]}/persons",
     queryParameters: {
-      /// * I need that value isn't empty.
       if (params.firstname.isNotEmpty) "firstname": params.firstname,
       if (params.lastname.isNotEmpty) "lastname": params.lastname,
-      if (params.zonename.isNotEmpty) "zonename": params.zonename,
-      if (params.jobname.isNotEmpty) "jobname": params.jobname,
+      if (params.birthDate.isNotEmpty) "birthDate": params.birthDate,
+      if (params.zoneID.isNotEmpty) "jobname": params.zoneID,
+      if (params.activityID.isNotEmpty) "jobname": params.activityID,
+      if (params.companyID.isNotEmpty) "jobname": params.companyID,
     },
   );
 
@@ -50,11 +49,11 @@ final getPersonsProvider = FutureProvider.autoDispose.family<List<Person>, GetPe
     throw BadResponseException(type: response.data.runtimeType, expected: String);
   }
 
-  // print(response.data);
+  /// * get resp
+  final ResponseData<List> raw = jsonDecode(response.data!);
 
-  /// * Parse response data.
-  final List<dynamic> jsonData = jsonDecode(response.data!);
-  final List<Person> persons = jsonData.map((item) => Person.fromJson(item)).toList();
+  /// * Parse json data.
+  final persons = raw.data.cast<Map<String, dynamic>>().map((json) => Person.fromJson(json)).toList();
 
   /// * Cache result.
   _cached[params] = persons;
@@ -66,7 +65,16 @@ final getPersonsProvider = FutureProvider.autoDispose.family<List<Person>, GetPe
 class GetPersonsProviderParams {
   final String firstname;
   final String lastname;
-  final String zonename;
-  final String jobname;
-  GetPersonsProviderParams({required this.firstname, required this.lastname, required this.zonename, required this.jobname});
+  final String birthDate;
+  final String zoneID;
+  final String activityID;
+  final String companyID;
+  GetPersonsProviderParams({
+    required this.firstname,
+    required this.lastname,
+    required this.birthDate,
+    required this.zoneID,
+    required this.activityID,
+    required this.companyID,
+  });
 }

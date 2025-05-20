@@ -99,8 +99,8 @@ class _State extends ConsumerState<DetailedPersonScreen> with TickerProviderStat
           children: [
             /// * Title component.
             TitleContainer(
-              title: "${personProvider.detailedPerson!.firstName.toName()} ${personProvider.detailedPerson!.lastName.toName()}",
-              subtitle: "${personProvider.detailedPerson!.zoneName.toName()} - ${personProvider.detailedPerson!.jobName.toName()}",
+              title: "${personProvider.person!.firstName.toName()} ${personProvider.person!.lastName.toName()}",
+              subtitle: "${personProvider.person!.zone.name.toName()} - ${personProvider.person!.activity.name.toName()}",
             ),
 
             /// * Space.
@@ -130,7 +130,7 @@ class _State extends ConsumerState<DetailedPersonScreen> with TickerProviderStat
                       ),
                       SizedBox(height: 10),
                       ShaklePopText(
-                        personProvider.detailedPerson!.description!,
+                        personProvider.person!.description!,
                         style: Theme.of(context).textTheme.bodyLarge,
                         hasIdleAnim: false,
                         force: 0.4,

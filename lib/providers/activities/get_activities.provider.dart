@@ -40,7 +40,7 @@ final getActivitiesProvider = FutureProvider.autoDispose.family<List<Activity>, 
   }
 
   /// * get resp
-  final raw = jsonDecode(response.data!) as ResponseData<List>;
+  final ResponseData<List> raw = jsonDecode(response.data!);
 
   /// * Parse json data.
   final activities = raw.data.cast<Map<String, dynamic>>().map((json) => Activity.fromJson(json)).toList();

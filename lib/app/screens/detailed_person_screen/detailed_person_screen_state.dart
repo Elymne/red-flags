@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/states/widget_state.dart';
-import 'package:red_flags/models/detailed_person.model.dart';
+import 'package:red_flags/models/person.model.dart';
 import 'package:red_flags/providers/persons/get_person_by_id.dart';
 
 final detailedPersonScreenState = StateNotifierProvider<DetailedPersonScreenNotifier, DetailedPersonScreenState>((ref) {
@@ -11,29 +11,29 @@ final detailedPersonScreenState = StateNotifierProvider<DetailedPersonScreenNoti
 class DetailedPersonScreenNotifier extends StateNotifier<DetailedPersonScreenState> {
   final Ref ref;
 
-  DetailedPersonScreenNotifier(this.ref) : super(DetailedPersonScreenState(status: WidgetStatus.init, detailedPerson: null));
+  DetailedPersonScreenNotifier(this.ref) : super(DetailedPersonScreenState(status: WidgetStatus.init, person: null));
 
   Future<void> find(String id) async {
     try {
       /// * Loading status now, we're fetching some data.
-      state = DetailedPersonScreenState(status: WidgetStatus.loading, detailedPerson: state.detailedPerson);
+      state = DetailedPersonScreenState(status: WidgetStatus.loading, person: state.person);
 
       /// * Fetch unique person.
-      final getPersonParams = GetDetailedPersonProviderParams(id: id);
+      final getPersonParams = GetPersonByIdParams(id: id);
       final detailedPerson = await ref.read(getDetailedPersonProvider(getPersonParams).future);
 
       /// * And now update the state with new data.
-      state = DetailedPersonScreenState(status: WidgetStatus.success, detailedPerson: detailedPerson);
+      state = DetailedPersonScreenState(status: WidgetStatus.success, person: detailedPerson);
     } catch (e, stack) {
       /// * An error occur.
-      state = DetailedPersonScreenState(status: WidgetStatus.failure, detailedPerson: state.detailedPerson);
+      state = DetailedPersonScreenState(status: WidgetStatus.failure, person: state.person);
       log("$e $stack");
     }
   }
 }
 
 class DetailedPersonScreenState extends WidgetState {
-  final DetailedPerson? detailedPerson;
+  final Person? person;
 
-  DetailedPersonScreenState({required super.status, required this.detailedPerson});
+  DetailedPersonScreenState({required super.status, required this.person});
 }
