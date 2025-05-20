@@ -6,7 +6,7 @@ import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/person_list_view_screen/person_list_view_screen.dart';
 import 'package:red_flags/app/screens/search_screen/search_screen_state.dart';
 import 'package:red_flags/app/widgets/page_change_related/slide_widget.dart';
-import 'package:red_flags/app/widgets/shakles/shakle_input.dart';
+import 'package:red_flags/app/widgets/shakles/shakle_textfield.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_outlined_button.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
 import 'package:red_flags/core/themes/style_constant.dart';
@@ -56,8 +56,8 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               duration: Duration(milliseconds: 200),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: ShakleInput(
-                  AppLocalizations.of(context)!.lastnameInput,
+                child: ShakleTextfield(
+                  AppLocalizations.of(context)!.lastname,
                   onChanged: (value) {
                     _lastname = value;
                     _onTextfieldChange();
@@ -71,8 +71,8 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               duration: Duration(milliseconds: 400),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: ShakleInput(
-                  AppLocalizations.of(context)!.firstnameInput,
+                child: ShakleTextfield(
+                  AppLocalizations.of(context)!.firstname,
                   onChanged: (value) {
                     _firstname = value;
                     _onTextfieldChange();
@@ -86,8 +86,8 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               duration: Duration(milliseconds: 200),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: ShakleInput(
-                  AppLocalizations.of(context)!.birthDateInput,
+                child: ShakleTextfield(
+                  AppLocalizations.of(context)!.birthDate,
                   autocompleteValues: state.zones.map((zone) => zone.name).toList(),
                   onChanged: (value) {
                     _birthDate = value;
@@ -102,8 +102,8 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               duration: Duration(milliseconds: 400),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: ShakleInput(
-                  AppLocalizations.of(context)!.zoneNameInput,
+                child: ShakleTextfield(
+                  AppLocalizations.of(context)!.zoneName,
                   onChanged: (value) {
                     _zoneName = value;
                     _onTextfieldChange();
@@ -117,8 +117,8 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               duration: Duration(milliseconds: 400),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: ShakleInput(
-                  AppLocalizations.of(context)!.activityNameInput,
+                child: ShakleTextfield(
+                  AppLocalizations.of(context)!.activityName,
                   onChanged: (value) {
                     _activityName = value;
                     _onTextfieldChange();
@@ -132,8 +132,8 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               duration: Duration(milliseconds: 600),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: ShakleInput(
-                  AppLocalizations.of(context)!.activityNameInput,
+                child: ShakleTextfield(
+                  AppLocalizations.of(context)!.activityName,
                   autocompleteValues: state.zones.map((zone) => zone.name).toList(),
                   onChanged: (value) {
                     _companyName = value;

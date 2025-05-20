@@ -36,6 +36,18 @@
     "@backButton": {
         "description": "Texte de bouton Retour."
     },
+    "createButton": "Créer",
+    "@createButton": {
+        "description": "Texte de bouton Créer."
+    },
+    "createScreenTitle": "Création",
+    "@createScreenTitle": {
+        "description": "Texte de titre de la page d'ajout d'un redflag."
+    },
+    "createScreenSubTitle": "Ajoute un potenciel redflag",
+    "@createScreenSubTitle": {
+        "description": "Sous-Texte de titre de la page d'ajout d'un redflag."
+    },
     "homeAddOption": "Ajoute une personne",
     "@homeAddOption": {
         "description": "Texte de menu : Ajoute une personne."
@@ -54,7 +66,7 @@
     },
     "homeScreenSubTitle": "Choisi un type de recherche",
     "@homeScreenSubTitle": {
-        "description": "Sous-yitre de la homepage."
+        "description": "Sous-titre de la homepage."
     },
     "searchScreenTitle": "Exploration",
     "@searchScreenTitle": {
@@ -64,30 +76,6 @@
     "@searchScreenSubTitle": {
         "description": "Sous-titre Navigation de la page de recherche."
     },
-    "lastnameInput": "Nom :",
-    "@lastnameInput": {
-        "description": "Label du champ de texte pour le nom de la ou les personnes recherchées."
-    },
-    "firstnameInput": "Prénom :",
-    "@firstnameInput": {
-        "description": "Label du champ de texte pour le prénom de la ou les personnes recherchées."
-    },
-    "birthDateInput": "Date de Naissance :",
-    "@birthDateInput": {
-        "description": "Label du champ de texte pour la date de naissance de la ou les personnes recherchées."
-    },
-    "zoneNameInput": "Ville/Région actuelle :",
-    "@zoneNameInput": {
-        "description": "Label du champ de la ville actuelle de la ou les personnes recherchées."
-    },
-    "companyNameInput": "Entreprise/société :",
-    "@companyNameInput": {
-        "description": "Label du champ de l'entreprise dans laquelle travaille cette personne."
-    },
-    "activityNameInput": "Métier/Activité actuel :",
-    "@activityNameInput": {
-        "description": "Label du champ de texte d'activité ou métier actuelle de la ou les personnes recherchées."
-    },
     "personListViewScreenTitle": "Résultats",
     "@personListViewScreenTitle": {
         "description": "Titre Navigation de la page de résultats de la recherche."
@@ -95,5 +83,29 @@
     "personListViewScreenSubTitle": "Personnes Trouvées",
     "@personListViewScreenSubTitle": {
         "description": "Sous-Titre Navigation de la page de résultats de la recherche."
+    },
+    "lastname": "Nom",
+    "@lastname": {
+        "description": "Label du champ de texte pour le nom de la ou les personnes recherchées."
+    },
+    "firstname": "Prénom",
+    "@firstname": {
+        "description": "Label du champ de texte pour le prénom de la ou les personnes recherchées."
+    },
+    "birthDate": "Date de Naissance",
+    "@birthDate": {
+        "description": "Label du champ de texte pour la date de naissance de la ou les personnes recherchées."
+    },
+    "zoneName": "Ville/Région actuelle",
+    "@zoneName": {
+        "description": "Label du champ de la ville actuelle de la ou les personnes recherchées."
+    },
+    "companyName": "Entreprise/société",
+    "@companyName": {
+        "description": "Label du champ de l'entreprise dans laquelle travaille cette personne."
+    },
+    "activityName": "Métier/Activité",
+    "@activityName": {
+        "description": "Label du champ de texte d'activité ou métier actuelle de la ou les personnes recherchées."
     }
 }

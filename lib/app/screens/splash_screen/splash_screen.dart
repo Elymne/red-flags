@@ -71,13 +71,13 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
     return Scaffold(
       body: Stack(
         children: [
-          /// * Title.
+          /// * Center Title Widget.
           SlideWidget(
             duration: Duration(milliseconds: 400),
             child: Center(child: ShakleText(AppLocalizations.of(context)!.title, style: Theme.of(context).textTheme.displayLarge)),
           ),
 
-          /// * Pager with Stickmans.
+          /// * Bottom Pager Widget.
           FadeWidget(
             duration: Duration(milliseconds: 400),
             child: Align(

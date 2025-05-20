@@ -41,7 +41,6 @@ class _State extends State<ShakleLoading> with TickerProviderStateMixin {
     /// * Set the background color.
     _colorController = AnimationController(vsync: this, duration: _colorDurationTic);
     _colorAnimation = ColorTween(begin: lightColorScheme.primary, end: lightColorScheme.secondary).animate(_colorController);
-    // _colorController.repeat(reverse: true);
   }
 
   @override

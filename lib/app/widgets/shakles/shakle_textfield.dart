@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:red_flags/core/themes/light_theme.dart';
 
-class ShakleInput extends StatefulWidget {
+class ShakleTextfield extends StatefulWidget {
   final String label;
   final List<String> autocompleteValues;
   final void Function(String) onChanged;
 
-  const ShakleInput(this.label, {super.key, required this.onChanged, this.autocompleteValues = const []});
+  const ShakleTextfield(this.label, {super.key, required this.onChanged, this.autocompleteValues = const []});
 
   @override
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<ShakleInput> with TickerProviderStateMixin {
+class _State extends State<ShakleTextfield> with TickerProviderStateMixin {
   /// This value allow me to know when input is selected. (And activate anim).
   final FocusNode _textfieldFocus = FocusNode();
 
