@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:red_flags/core/themes/light_theme.dart';
 
-class ShakleOutlinedButton extends StatefulWidget {
+class ShakleTextButton extends StatefulWidget {
   final String label;
   final bool isActive;
   final void Function() onPressed;
 
-  const ShakleOutlinedButton(this.label, {super.key, required this.onPressed, this.isActive = true});
+  const ShakleTextButton(this.label, {super.key, required this.onPressed, this.isActive = true});
 
   @override
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<ShakleOutlinedButton> with TickerProviderStateMixin {
+class _State extends State<ShakleTextButton> with TickerProviderStateMixin {
+  /// Underline animation when active.
+  late final AnimationController _underlineController;
+  late final Animation<double> _underlineAnimation;
+  final Duration _underlineDuration = Duration(milliseconds: 1_000);
+
   /// Shake Animation (for background color).
   late final AnimationController _shakyController1;
   late final Animation<double> _shakyAnimation1;
@@ -60,9 +65,8 @@ class _State extends State<ShakleOutlinedButton> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Visibility(
-          visible: widget.isActive,
-          child: AnimatedBuilder(
+        if (widget.isActive)
+          AnimatedBuilder(
             animation: _shakyController1,
             builder: (context, child) {
               return Transform.translate(
@@ -73,13 +77,12 @@ class _State extends State<ShakleOutlinedButton> with TickerProviderStateMixin {
                     side: BorderSide(color: _colorAnimation.value ?? Colors.transparent),
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   ),
+
                   child: Text(widget.label, style: Theme.of(context).textTheme.labelLarge?.copyWith(color: _colorAnimation.value)),
                 ),
               );
             },
           ),
-        ),
-
         AnimatedBuilder(
           animation: _shakyAnimation2,
           builder: (context, child) {

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-final lightColorScheme = ColorScheme.fromSeed(
+final lightColorScheme = ColorScheme(
   brightness: Brightness.light,
-  seedColor: Color(0xFFFF4164),
 
   primary: Color(0xFFFF4164),
   onPrimary: Color(0xFFF0F0F0),
@@ -25,10 +24,10 @@ final lightColorScheme = ColorScheme.fromSeed(
 );
 
 final lightTextTheme = TextTheme(
-  // SplashScreen Title. (7x7)
+  /// * SplashScreen Title. (7x7)
   displayLarge: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontSize: 42, fontWeight: FontWeight.w900, letterSpacing: 0),
 
-  // Page screen title. (On dark surface always). (6x6)
+  /// * Page screen title. (On dark surface always). (6x6)
   headlineLarge: GoogleFonts.nunitoSans(
     color: lightColorScheme.onSurface,
     fontSize: 36,
@@ -36,7 +35,8 @@ final lightTextTheme = TextTheme(
     letterSpacing: 0,
     height: 1.2,
   ),
-  // Page screen subtitle. (On dark surface always).
+
+  /// * Page screen subtitle. (On dark surface always).
   headlineMedium: GoogleFonts.nunitoSans(
     color: lightColorScheme.onSurface,
     fontSize: 20,
@@ -44,28 +44,35 @@ final lightTextTheme = TextTheme(
     letterSpacing: 0,
     height: 1.2,
   ),
-  // Card Title.
+
+  /// * Card Title.
   headlineSmall: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 0),
 
-  // ! (Not USED)
-  titleLarge: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.normal),
-  // ! (Not USED)
-  titleMedium: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.normal),
-  // ! (Not USED)
-  titleSmall: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.normal),
+  /// * Title for each body section.
+  titleLarge: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.bold, fontSize: 20),
 
-  // Main content text.
+  /// ! (Not USED)
+  titleMedium: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.bold, fontSize: 18),
+
+  /// ! (Not USED)
+  titleSmall: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.bold, fontSize: 16),
+
+  /// * Main content text.
   bodyLarge: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.normal, fontSize: 16),
-  // Secondary content text.
+
+  /// * Secondary content text.
   bodyMedium: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.normal, fontSize: 14),
-  // ! (Not USED)
+
+  /// ! (Not USED)
   bodySmall: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.normal, fontSize: 12),
 
-  // Button Text.
+  /// * Button Text.
   labelLarge: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.normal, fontSize: 18),
-  // ! (Not USED)
+
+  /// ! (Not USED)
   labelMedium: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.normal),
-  // ! (Not USED)
+
+  /// ! (Not USED)
   labelSmall: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.w100),
 );
 
@@ -79,12 +86,13 @@ class CustomTheme {
       textTheme: lightTextTheme,
       scaffoldBackgroundColor: lightColorScheme.surface,
 
-      // Link Button.
+      /// * Link Button.
       textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: lightColorScheme.primary)),
-      // ! Floating Button (Not Used).
+
+      /// ! Floating Button (Not Used).
       floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: lightColorScheme.primary),
 
-      // ! NOT INPUT STYLE.
+      /// ! NOT INPUT STYLE.
       textSelectionTheme: TextSelectionThemeData(cursorColor: lightColorScheme.primary),
     );
   }

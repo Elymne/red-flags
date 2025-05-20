@@ -41,14 +41,15 @@ final getDetailedPersonProvider = FutureProvider.autoDispose.family<DetailedPers
     throw BadResponseException(type: response.data.runtimeType, expected: String);
   }
 
-  /// * parse json.
-  final personDetailed = DetailedPerson.fromJson((jsonDecode(response.data!)));
+  /// * Parse response data.
+  final Map<String, dynamic> jsonData = jsonDecode(response.data!);
+  final DetailedPerson detailedPerson = DetailedPerson.fromJson(jsonData);
 
   /// * Cache result.
-  _cached[params] = personDetailed;
+  _cached[params] = detailedPerson;
 
   /// * Return result.
-  return personDetailed;
+  return detailedPerson;
 });
 
 class GetDetailedPersonProviderParams {

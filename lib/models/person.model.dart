@@ -1,55 +1,62 @@
+import 'package:red_flags/models/activity.model.dart';
+import 'package:red_flags/models/company.model.dart';
+import 'package:red_flags/models/zone.model.dart';
+
 class Person {
   final String id;
   final String firstName;
   final String lastName;
-  final DateTime birthday;
-  final String zoneName;
-  final String jobName;
+  final DateTime birthDate;
 
+  /// *
+  final Zone zone;
+  final Activity activity;
+  final Company company;
+
+  /// *
   final DateTime createdAt;
 
+  /// *
   final String? portrait;
-  final DateTime? updatedAt;
+  final String? description;
 
   Person({
     required this.id,
     required this.firstName,
     required this.lastName,
-    required this.birthday,
-    required this.zoneName,
-    required this.jobName,
+    required this.birthDate,
+
+    /// *
+    required this.zone,
+    required this.activity,
+    required this.company,
+
+    /// *
     required this.createdAt,
-    this.updatedAt,
+
+    /// *
     this.portrait,
+    this.description,
   });
 
   factory Person.fromJson(Map<String, dynamic> json) {
     return Person(
-      id: json["id"] as String,
+      id: json["ID"] as String,
       firstName: json["firstName"] as String,
       lastName: json["lastName"] as String,
-      birthday: DateTime.fromMillisecondsSinceEpoch(json["birthday"]),
+      birthDate: DateTime.fromMillisecondsSinceEpoch(json["birthDate"]),
 
-      zoneName: json["zone"]["name"] as String,
-      jobName: json["jobName"] as String,
+      /// *
+      zone: Zone.fromJson(json["zone"]),
+      activity: Activity.fromJson(json["activity"]),
+      company: Company.fromJson(json["company"]),
+
+      /// *
       createdAt: DateTime.fromMillisecondsSinceEpoch(json["createdAt"]),
 
       /// * Nullable.
-      updatedAt: json["updatedAt"] != null ? DateTime.fromMillisecondsSinceEpoch(json["updatedAt"]) : null,
-      portrait: json["portrait"],
+      portrait: json["portrait"] as String?,
+      description: json["portrait"] as String?,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "firstName": firstName,
-      "lastName": lastName,
-      "birthday": birthday,
-      "jobName": jobName,
-      "zoneName": zoneName,
-      "createdAt": createdAt.toIso8601String(),
-      "updatedAt": updatedAt?.toIso8601String(),
-    };
   }
 }

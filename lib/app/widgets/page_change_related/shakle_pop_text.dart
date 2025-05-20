@@ -17,6 +17,9 @@ class ShaklePopText extends ConsumerStatefulWidget {
   final bool hasIdleAnim;
   final double idleForce;
 
+  /// Special color.
+  final Color? color;
+
   const ShaklePopText(
     this.text, {
     super.key,
@@ -27,6 +30,8 @@ class ShaklePopText extends ConsumerStatefulWidget {
 
     this.hasIdleAnim = false,
     this.idleForce = 0.4,
+
+    this.color,
   });
 
   @override
@@ -110,14 +115,12 @@ class _State extends ConsumerState<ShaklePopText> with TickerProviderStateMixin 
         /// * Else, it's full stop mode. Hide the colored background. Reverse animation to correct position.
         _shakyController1.reverse();
         _shakyController2.reverse();
-        showBackground = false;
+        setState(() => showBackground = false);
         return;
       }
 
       /// * Add a letter and update the widget visual state.
-      setState(() {
-        _displayText += widget.text[_displayText.length];
-      });
+      setState(() => _displayText += widget.text[_displayText.length]);
     });
   }
 
@@ -173,16 +176,18 @@ class _State extends ConsumerState<ShaklePopText> with TickerProviderStateMixin 
 
     return Stack(
       children: [
-        if (showBackground)
-          AnimatedBuilder(
+        Visibility(
+          visible: showBackground,
+          child: AnimatedBuilder(
             animation: _shakyAnimation1,
             builder: (context, child) {
               return Transform.translate(
                 offset: Offset(_shakyAnimation1.value * _forceAnimation, 0),
-                child: Text(_displayText, style: widget.style?.copyWith(color: _colorAnimation.value)),
+                child: Text(_displayText, style: widget.style?.copyWith(color: widget.color ?? _colorAnimation.value)),
               );
             },
           ),
+        ),
         AnimatedBuilder(
           animation: _shakyAnimation2,
           builder: (context, child) {

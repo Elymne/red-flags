@@ -32,6 +32,22 @@
     "@okButton": {
         "description": "Texte de bouton OKAY."
     },
+    "backButton": "Retour",
+    "@backButton": {
+        "description": "Texte de bouton Retour."
+    },
+    "homeAddOption": "Ajoute une personne",
+    "@homeAddOption": {
+        "description": "Texte de menu : Ajoute une personne."
+    },
+    "homeSearchOption": "Recherche quelqu'un",
+    "@homeSearchOption": {
+        "description": "Texte de menu : Recherche quelqu'un."
+    },
+    "descriptionTitle": "Description",
+    "@descriptionTitle": {
+        "description": "Texte de titre de description d'une data."
+    },
     "homeScreenTitle": "Accueil",
     "@homeScreenTitle": {
         "description": "Titre de la homepage."

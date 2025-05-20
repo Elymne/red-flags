@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/states/widget_state.dart';
 import 'package:red_flags/models/detailed_person.model.dart';
-import 'package:red_flags/providers/persons/get_detailed_person.provider.dart';
+import 'package:red_flags/providers/persons/get_person_by_id.dart';
 
 final detailedPersonScreenState = StateNotifierProvider<DetailedPersonScreenNotifier, DetailedPersonScreenState>((ref) {
   return DetailedPersonScreenNotifier(ref);
@@ -25,6 +25,7 @@ class DetailedPersonScreenNotifier extends StateNotifier<DetailedPersonScreenSta
       /// * And now update the state with new data.
       state = DetailedPersonScreenState(status: WidgetStatus.success, detailedPerson: detailedPerson);
     } catch (e, stack) {
+      /// * An error occur.
       state = DetailedPersonScreenState(status: WidgetStatus.failure, detailedPerson: state.detailedPerson);
       log("$e $stack");
     }

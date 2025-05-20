@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/states/widget_state.dart';
 import 'package:red_flags/models/person.model.dart';
 import 'package:red_flags/models/zone.model.dart';
-import 'package:red_flags/providers/cities/get_zones.provider.dart';
+import 'package:red_flags/providers/zones/get_zones.provider.dart';
 import 'package:red_flags/providers/persons/add_person.provider.dart';
 import 'package:red_flags/providers/persons/get_persons.provider.dart';
 
@@ -32,7 +32,7 @@ class SearchScreenNotifier extends StateNotifier<SearchScreenState> {
       final getPersons = ref.read(getPersonsProvider(getPersonsParams).future);
 
       /// * Fetch zones.
-      final getZonesParams = GetZonesProviderParams(zonename: zonename);
+      final getZonesParams = GetZonesProviderParams(zoneName: zonename);
       final getZones = ref.read(getZonesProvider(getZonesParams).future);
 
       /// * calls.

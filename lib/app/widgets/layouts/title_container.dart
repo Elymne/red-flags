@@ -13,28 +13,27 @@ class TitleContainer extends StatelessWidget {
     return Container(
       color: Colors.transparent,
       width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 0,
-          children: [
-            ShaklePopText(
-              title,
-              style: Theme.of(context).textTheme.headlineLarge,
-              speedAnimation: Duration(milliseconds: 40),
-              hasIdleAnim: true,
-            ),
-            ShaklePopText(
-              subtitle,
-              style: Theme.of(context).textTheme.headlineMedium,
-              speedAnimation: Duration(milliseconds: 20),
-              hasIdleAnim: true,
-            ),
-            SizedBox(height: 10),
-          ],
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 0,
+        children: [
+          ShaklePopText(
+            title,
+            style: Theme.of(context).textTheme.headlineLarge,
+            speedAnimation: Duration(milliseconds: 40),
+            hasIdleAnim: true,
+            color: color,
+          ),
+          ShaklePopText(
+            subtitle,
+            style: Theme.of(context).textTheme.headlineMedium,
+            speedAnimation: Duration(milliseconds: 20),
+            hasIdleAnim: true,
+            color: color,
+          ),
+          SizedBox(height: 10),
+        ],
       ),
     );
   }

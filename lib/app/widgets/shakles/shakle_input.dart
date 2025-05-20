@@ -96,8 +96,9 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
       child: Stack(
         children: [
           /// * This is my background color animation (text + line).
-          if (isFocus)
-            AnimatedBuilder(
+          Visibility(
+            visible: isFocus,
+            child: AnimatedBuilder(
               animation: _shakyController1,
               builder: (context, child) {
                 return Transform.translate(
@@ -118,6 +119,7 @@ class _State extends State<ShakleInput> with TickerProviderStateMixin {
                 );
               },
             ),
+          ),
 
           /// * This is my frontline color animation (text + line).
           AnimatedBuilder(

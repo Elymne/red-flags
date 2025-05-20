@@ -49,8 +49,8 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
       /// * Check that the context is still available.
       if (!mounted) return;
 
+      /// * Navigate.
       ref.read(routerNotifierprovider.notifier).changeScreen(() {
-        /// * Navigate.
         final navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
       });
