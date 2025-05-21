@@ -6,12 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/exceptions/bad_response_exception.dart';
 import 'package:red_flags/core/exceptions/network_exception.dart';
 import 'package:red_flags/models/activity.model.dart';
-import 'package:red_flags/providers/response.model.dart';
+import 'package:red_flags/actions/response.model.dart';
 
-final Map<GetActivityByIdProviderParams, Activity> _cached = {};
+final Map<GetActivitiesProviderParams, List<Activity>> _cached = {};
 Timer? _timer;
 
-final getActivityByIdProvider = FutureProvider.autoDispose.family<Activity, GetActivityByIdProviderParams>((ref, params) async {
+final getActivitiesProvider = FutureProvider.autoDispose.family<List<Activity>, GetActivitiesProviderParams>((ref, params) async {
   /// * Check if we should clear the cache or not.
   if (_timer != null) {
     _timer = Timer(Duration(milliseconds: 10_000), () {
@@ -27,7 +27,7 @@ final getActivityByIdProvider = FutureProvider.autoDispose.family<Activity, GetA
   }
 
   /// * Make http request.
-  final response = await Dio().get<String>("${dotenv.env["HOST"]}/activities/${params.id}");
+  final response = await Dio().get<String>("${dotenv.env["HOST"]}/activities");
 
   /// * Check response code.
   if (response.statusCode != 200) {
@@ -40,19 +40,18 @@ final getActivityByIdProvider = FutureProvider.autoDispose.family<Activity, GetA
   }
 
   /// * get resp
-  final ResponseData<Map<String, dynamic>> raw = jsonDecode(response.data!);
+  final ResponseData<List> raw = jsonDecode(response.data!);
 
   /// * Parse json data.
-  final activity = Activity.fromJson(raw.data);
+  final activities = raw.data.cast<Map<String, dynamic>>().map((json) => Activity.fromJson(json)).toList();
 
   /// * Cache result.
-  _cached[params] = activity;
+  _cached[params] = activities;
 
   /// * Return activities fetched.
-  return activity;
+  return activities;
 });
 
-class GetActivityByIdProviderParams {
-  final String id;
-  GetActivityByIdProviderParams({required this.id});
+class GetActivitiesProviderParams {
+  GetActivitiesProviderParams();
 }

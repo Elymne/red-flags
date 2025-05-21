@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:red_flags/app/router/router.notifier.dart';
+import 'package:red_flags/app/screens/create_person_screen/states/activities_state.provider.dart';
+import 'package:red_flags/app/screens/create_person_screen/states/companies_state.provider.dart';
+import 'package:red_flags/app/screens/create_person_screen/states/zones_state.dart';
 import 'package:red_flags/app/widgets/page_change_related/slide_widget.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_date_picker.dart';
@@ -19,18 +22,32 @@ class CreatePersonScreen extends ConsumerStatefulWidget {
 
 class _State extends ConsumerState<CreatePersonScreen> {
   /// * The time delay before fetching persons on any textfield changes.
-  Timer? _searchDelay;
+  Timer? _zoneSearchDelay;
+  Timer? _activitySearchDelay;
+  Timer? _companySearchDelay;
 
   /// * Values for each textfield.
   String _firstname = "";
   String _lastname = "";
-  String _birthDate = "";
-  String _zoneID = "";
-  String _activityID = "";
-  String _companyID = "";
+  DateTime? _birthDate;
+  String _zoneName = "";
+  String _activityName = "";
+  String _companyName = "";
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(activitiesStateProvider.notifier).load();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final zonesState = ref.watch(zonesStateProvider);
+    final companiesState = ref.watch(companiesStateProvider);
+    final activitiesState = ref.watch(activitiesStateProvider);
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(screenGlobalMargin),
@@ -52,7 +69,6 @@ class _State extends ConsumerState<CreatePersonScreen> {
                 "${AppLocalizations.of(context)!.firstname}*",
                 onChanged: (value) {
                   _firstname = value;
-                  _onTextfieldChange();
                 },
               ),
             ),
@@ -67,7 +83,6 @@ class _State extends ConsumerState<CreatePersonScreen> {
                 "${AppLocalizations.of(context)!.lastname}*",
                 onChanged: (value) {
                   _lastname = value;
-                  _onTextfieldChange();
                 },
               ),
             ),
@@ -81,8 +96,7 @@ class _State extends ConsumerState<CreatePersonScreen> {
               child: ShakleDatepicker(
                 "${AppLocalizations.of(context)!.birthDate}*",
                 onChanged: (value) {
-                  _zoneID = value;
-                  _onTextfieldChange();
+                  _birthDate = value;
                 },
               ),
             ),
@@ -95,24 +109,13 @@ class _State extends ConsumerState<CreatePersonScreen> {
               duration: Duration(milliseconds: 800),
               child: ShakleTextfield(
                 "${AppLocalizations.of(context)!.zoneName}*",
+                autocompleteValues: zonesState.zones.map((element) => element.name).toList(),
                 onChanged: (value) {
-                  _zoneID = value;
-                  _onTextfieldChange();
-                },
-              ),
-            ),
-
-            /// * Spacer.
-            SizedBox(height: 20),
-
-            /// * Textfield ActivityName
-            SlideWidget(
-              duration: Duration(milliseconds: 1000),
-              child: ShakleTextfield(
-                AppLocalizations.of(context)!.activityName,
-                onChanged: (value) {
-                  _activityID = value;
-                  _onTextfieldChange();
+                  _zoneSearchDelay?.cancel();
+                  _zoneSearchDelay = Timer(Duration(milliseconds: 300), () async {
+                    await ref.read(zonesStateProvider.notifier).search(value);
+                    _zoneName = value;
+                  });
                 },
               ),
             ),
@@ -125,9 +128,32 @@ class _State extends ConsumerState<CreatePersonScreen> {
               duration: Duration(milliseconds: 1200),
               child: ShakleTextfield(
                 AppLocalizations.of(context)!.companyName,
+                autocompleteValues: companiesState.companies.map((element) => element.name).toList(),
                 onChanged: (value) {
-                  _activityID = value;
-                  _onTextfieldChange();
+                  _companySearchDelay?.cancel();
+                  _companySearchDelay = Timer(Duration(milliseconds: 300), () async {
+                    ref.read(companiesStateProvider.notifier).search(value);
+                    _companyName = value;
+                  });
+                },
+              ),
+            ),
+
+            /// * Spacer.
+            SizedBox(height: 20),
+
+            /// * Textfield ActivityName
+            SlideWidget(
+              duration: Duration(milliseconds: 1000),
+              child: ShakleTextfield(
+                AppLocalizations.of(context)!.activityName,
+                autocompleteValues: activitiesState.activities.map((element) => element.name).toList(),
+                onChanged: (value) {
+                  _activitySearchDelay?.cancel();
+                  _activitySearchDelay = Timer(Duration(milliseconds: 300), () async {
+                    // ref.read(activitiesStateProvider.notifier).search(value);
+                    _activityName = value;
+                  });
                 },
               ),
             ),
@@ -172,10 +198,5 @@ class _State extends ConsumerState<CreatePersonScreen> {
         ),
       ),
     );
-  }
-
-  void _onTextfieldChange() {
-    _searchDelay?.cancel();
-    _searchDelay = Timer(Duration(milliseconds: 200), () async {});
   }
 }

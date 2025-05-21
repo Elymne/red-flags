@@ -2,16 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:red_flags/models/company.model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/core/exceptions/bad_response_exception.dart';
+import 'package:red_flags/actions/response.model.dart';
 import 'package:red_flags/core/exceptions/network_exception.dart';
-import 'package:red_flags/models/zone.model.dart';
-import 'package:red_flags/providers/response.model.dart';
+import 'package:red_flags/core/exceptions/bad_response_exception.dart';
 
-final Map<GetZonesProviderParams, List<Zone>> _cached = {};
+final Map<GetCompanyByIdProviderParams, Company> _cached = {};
 Timer? _timer;
 
-final getZonesProvider = FutureProvider.autoDispose.family<List<Zone>, GetZonesProviderParams>((ref, params) async {
+final getCompanyByIdProvider = FutureProvider.autoDispose.family<Company, GetCompanyByIdProviderParams>((ref, params) async {
   /// * Check if we should clear the cache or not.
   if (_timer != null) {
     _timer = Timer(Duration(milliseconds: 10_000), () {
@@ -27,7 +27,7 @@ final getZonesProvider = FutureProvider.autoDispose.family<List<Zone>, GetZonesP
   }
 
   /// * Make http request.
-  final response = await Dio().get<String>("${dotenv.env["HOST"]}/zones", queryParameters: {"name": params.zoneName});
+  final response = await Dio().get<String>("${dotenv.env["HOST"]}/companies/${params.id}");
 
   /// * Check response code.
   if (response.statusCode != 200) {
@@ -40,19 +40,19 @@ final getZonesProvider = FutureProvider.autoDispose.family<List<Zone>, GetZonesP
   }
 
   /// * get resp
-  final ResponseData<List> raw = jsonDecode(response.data!);
+  final ResponseData<Map<String, dynamic>> raw = jsonDecode(response.data!);
 
   /// * Parse json data.
-  final zones = raw.data.cast<Map<String, dynamic>>().map((json) => Zone.fromJson(json)).toList();
+  final company = Company.fromJson(raw.data);
 
   /// * Cache result.
-  _cached[params] = zones;
+  _cached[params] = company;
 
-  /// * Return zones fetched.
-  return zones;
+  /// * Return zone fetched.
+  return company;
 });
 
-class GetZonesProviderParams {
-  final String zoneName;
-  GetZonesProviderParams({required this.zoneName});
+class GetCompanyByIdProviderParams {
+  final String id;
+  GetCompanyByIdProviderParams({required this.id});
 }

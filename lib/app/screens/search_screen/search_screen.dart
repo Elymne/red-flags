@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/person_list_view_screen/person_list_view_screen.dart';
-import 'package:red_flags/app/screens/search_screen/search_screen_state.dart';
+import 'package:red_flags/app/screens/search_screen/states/search_persons_state.dart';
 import 'package:red_flags/app/widgets/page_change_related/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_textfield.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_outlined_button.dart';
@@ -32,7 +32,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(searchScreenState);
+    final state = ref.watch(searchPersonsState);
 
     return Scaffold(
       body: Padding(
@@ -196,7 +196,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
     _searchDelay?.cancel();
     _searchDelay = Timer(Duration(milliseconds: 200), () async {
       await ref
-          .read(searchScreenState.notifier)
+          .read(searchPersonsState.notifier)
           .searchFromInput(
             firstname: _firstname,
             lastname: _lastname,

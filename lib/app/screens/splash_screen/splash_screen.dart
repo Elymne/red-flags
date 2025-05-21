@@ -46,7 +46,6 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
 
     /// * Timer for splashscreen animation duration. Then push to HomeScreen.
     Future.delayed(_splashscreenDuration, () {
-      /// * Check that the context is still available.
       if (!mounted) return;
 
       /// * Navigate.

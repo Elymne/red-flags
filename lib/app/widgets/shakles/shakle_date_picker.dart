@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:red_flags/core/extensions/datetime_extension.dart';
 
-/// TODO : Nothing shaky rn.
 class ShakleDatepicker extends StatefulWidget {
   final String label;
-  final void Function(String) onChanged;
+  final void Function(DateTime) onChanged;
 
   const ShakleDatepicker(this.label, {super.key, required this.onChanged});
 
@@ -31,6 +30,7 @@ class _State extends State<ShakleDatepicker> with TickerProviderStateMixin {
             );
             if (pickedDate != null) {
               setState(() => _selectedDate = pickedDate);
+              widget.onChanged(_selectedDate!);
             }
           },
           child: AbsorbPointer(

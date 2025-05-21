@@ -5,13 +5,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/exceptions/bad_response_exception.dart';
 import 'package:red_flags/core/exceptions/network_exception.dart';
-import 'package:red_flags/models/activity.model.dart';
-import 'package:red_flags/providers/response.model.dart';
+import 'package:red_flags/models/zone.model.dart';
+import 'package:red_flags/actions/response.model.dart';
 
-final Map<GetActivitiesProviderParams, List<Activity>> _cached = {};
+final Map<GetZonesProviderParams, List<Zone>> _cached = {};
 Timer? _timer;
 
-final getActivitiesProvider = FutureProvider.autoDispose.family<List<Activity>, GetActivitiesProviderParams>((ref, params) async {
+final getZonesProvider = FutureProvider.autoDispose.family<List<Zone>, GetZonesProviderParams>((ref, params) async {
   /// * Check if we should clear the cache or not.
   if (_timer != null) {
     _timer = Timer(Duration(milliseconds: 10_000), () {
@@ -27,7 +27,7 @@ final getActivitiesProvider = FutureProvider.autoDispose.family<List<Activity>, 
   }
 
   /// * Make http request.
-  final response = await Dio().get<String>("${dotenv.env["HOST"]}/activities");
+  final response = await Dio().get<String>("${dotenv.env["HOST"]}/zones", queryParameters: {"name": params.zoneName});
 
   /// * Check response code.
   if (response.statusCode != 200) {
@@ -43,15 +43,16 @@ final getActivitiesProvider = FutureProvider.autoDispose.family<List<Activity>, 
   final ResponseData<List> raw = jsonDecode(response.data!);
 
   /// * Parse json data.
-  final activities = raw.data.cast<Map<String, dynamic>>().map((json) => Activity.fromJson(json)).toList();
+  final zones = raw.data.cast<Map<String, dynamic>>().map((json) => Zone.fromJson(json)).toList();
 
   /// * Cache result.
-  _cached[params] = activities;
+  _cached[params] = zones;
 
-  /// * Return activities fetched.
-  return activities;
+  /// * Return zones fetched.
+  return zones;
 });
 
-class GetActivitiesProviderParams {
-  GetActivitiesProviderParams();
+class GetZonesProviderParams {
+  final String zoneName;
+  GetZonesProviderParams({required this.zoneName});
 }

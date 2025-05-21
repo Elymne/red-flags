@@ -5,13 +5,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/exceptions/bad_response_exception.dart';
 import 'package:red_flags/core/exceptions/network_exception.dart';
-import 'package:red_flags/models/person.model.dart';
-import 'package:red_flags/providers/response.model.dart';
+import 'package:red_flags/models/company.model.dart';
+import 'package:red_flags/actions/response.model.dart';
 
-final Map<GetPersonByIdParams, Person> _cached = {};
+final Map<GetCompaniesProviderParams, List<Company>> _cached = {};
 Timer? _timer;
 
-final getDetailedPersonProvider = FutureProvider.autoDispose.family<Person, GetPersonByIdParams>((ref, params) async {
+final getCompaniesProvider = FutureProvider.autoDispose.family<List<Company>, GetCompaniesProviderParams>((ref, params) async {
   /// * Check if we should clear the cache or not.
   if (_timer != null) {
     _timer = Timer(Duration(milliseconds: 10_000), () {
@@ -20,14 +20,14 @@ final getDetailedPersonProvider = FutureProvider.autoDispose.family<Person, GetP
     });
   }
 
-  /// * Check if cached data exists. Return if it's the case.
+  /// * Check if cached data exists. Return if it's teh case.
   final cached = _cached[params];
   if (cached != null) {
     return cached;
   }
 
-  /// * http request.
-  final response = await Dio().get<String>("${dotenv.env["HOST"]}/persons/${params.id}");
+  /// * Make http request.
+  final response = await Dio().get<String>("${dotenv.env["HOST"]}/companies", queryParameters: {"name": params.companyName});
 
   /// * Check response code.
   if (response.statusCode != 200) {
@@ -40,19 +40,19 @@ final getDetailedPersonProvider = FutureProvider.autoDispose.family<Person, GetP
   }
 
   /// * get resp
-  final ResponseData<Map<String, dynamic>> raw = jsonDecode(response.data!);
+  final ResponseData<List> raw = jsonDecode(response.data!);
 
   /// * Parse json data.
-  final person = Person.fromJson(raw.data);
+  final companies = raw.data.cast<Map<String, dynamic>>().map((json) => Company.fromJson(json)).toList();
 
   /// * Cache result.
-  _cached[params] = person;
+  _cached[params] = companies;
 
-  /// * Return result.
-  return person;
+  /// * Return companies fetched.
+  return companies;
 });
 
-class GetPersonByIdParams {
-  final String id;
-  GetPersonByIdParams({required this.id});
+class GetCompaniesProviderParams {
+  final String companyName;
+  GetCompaniesProviderParams({required this.companyName});
 }

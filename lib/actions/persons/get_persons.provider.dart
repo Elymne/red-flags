@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/exceptions/bad_response_exception.dart';
 import 'package:red_flags/core/exceptions/network_exception.dart';
 import 'package:red_flags/models/person.model.dart';
-import 'package:red_flags/providers/response.model.dart';
+import 'package:red_flags/actions/response.model.dart';
 
 final Map<GetPersonsProviderParams, List<Person>> _cached = {};
 Timer? _timer;
@@ -16,6 +16,7 @@ final getPersonsProvider = FutureProvider.autoDispose.family<List<Person>, GetPe
   if (_timer != null) {
     _timer = Timer(Duration(milliseconds: 10_000), () {
       _cached.clear();
+
       _timer = null;
     });
   }

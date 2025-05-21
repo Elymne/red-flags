@@ -2,16 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:red_flags/models/company.model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/providers/response.model.dart';
-import 'package:red_flags/core/exceptions/network_exception.dart';
 import 'package:red_flags/core/exceptions/bad_response_exception.dart';
+import 'package:red_flags/core/exceptions/network_exception.dart';
+import 'package:red_flags/models/zone.model.dart';
+import 'package:red_flags/actions/response.model.dart';
 
-final Map<GetCompanyByIdProviderParams, Company> _cached = {};
+final Map<GetZoneByIdProviderParams, Zone> _cached = {};
 Timer? _timer;
 
-final getZoneByIdProvider = FutureProvider.autoDispose.family<Company, GetCompanyByIdProviderParams>((ref, params) async {
+final getZoneByIdProvider = FutureProvider.autoDispose.family<Zone, GetZoneByIdProviderParams>((ref, params) async {
   /// * Check if we should clear the cache or not.
   if (_timer != null) {
     _timer = Timer(Duration(milliseconds: 10_000), () {
@@ -27,7 +27,7 @@ final getZoneByIdProvider = FutureProvider.autoDispose.family<Company, GetCompan
   }
 
   /// * Make http request.
-  final response = await Dio().get<String>("${dotenv.env["HOST"]}/companies/${params.id}");
+  final response = await Dio().get<String>("${dotenv.env["HOST"]}/zones/${params.id}");
 
   /// * Check response code.
   if (response.statusCode != 200) {
@@ -43,16 +43,16 @@ final getZoneByIdProvider = FutureProvider.autoDispose.family<Company, GetCompan
   final ResponseData<Map<String, dynamic>> raw = jsonDecode(response.data!);
 
   /// * Parse json data.
-  final company = Company.fromJson(raw.data);
+  final zone = Zone.fromJson(raw.data);
 
   /// * Cache result.
-  _cached[params] = company;
+  _cached[params] = zone;
 
   /// * Return zone fetched.
-  return company;
+  return zone;
 });
 
-class GetCompanyByIdProviderParams {
+class GetZoneByIdProviderParams {
   final String id;
-  GetCompanyByIdProviderParams({required this.id});
+  GetZoneByIdProviderParams({required this.id});
 }
