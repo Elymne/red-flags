@@ -25,74 +25,76 @@ class _State extends ConsumerState<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(screenGlobalMargin),
-        child: Column(
-          children: [
-            /// * Header container with page name.
-            TitleContainer(
-              title: AppLocalizations.of(context)!.homeScreenTitle,
-              subtitle: AppLocalizations.of(context)!.homeScreenSubTitle,
-            ),
-
-            /// * Spacer.
-            Expanded(child: SizedBox()),
-
-            /// * Add person to database.
-            SlideWidget(
-              duration: Duration(milliseconds: 200),
-              child: ShakleHomeItem(
-                /// *
-                iconData: Icons.add_outlined,
-                title: AppLocalizations.of(context)!.homeAddOption,
-                onTap: () {
-                  ref.read(routerNotifierprovider.notifier).changeScreen(() {
-                    /// * Navigate.
-                    final navigator = Navigator.of(context);
-                    navigator.push(MaterialPageRoute(builder: (context) => const CreatePersonScreen()));
-                  });
-                },
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(screenGlobalMargin),
+          child: Column(
+            children: [
+              /// * Header container with page name.
+              TitleContainer(
+                title: AppLocalizations.of(context)!.homeScreenTitle,
+                subtitle: AppLocalizations.of(context)!.homeScreenSubTitle,
               ),
-            ),
 
-            /// * Spacer
-            SizedBox(height: 10),
+              /// * Spacer.
+              Expanded(child: SizedBox()),
 
-            /// * Search Named Person.
-            SlideWidget(
-              duration: Duration(milliseconds: 400),
-              child: ShakleHomeItem(
-                /// *
-                iconData: Icons.search_outlined,
-                title: AppLocalizations.of(context)!.homeSearchOption,
-                onTap: () {
-                  ref.read(routerNotifierprovider.notifier).changeScreen(() {
-                    /// * Navigate.
-                    final navigator = Navigator.of(context);
-                    navigator.push(MaterialPageRoute(builder: (context) => const SearchScreen()));
-                  });
-                },
+              /// * Add person to database.
+              SlideWidget(
+                duration: Duration(milliseconds: 200),
+                child: ShakleHomeItem(
+                  /// *
+                  iconData: Icons.add_outlined,
+                  title: AppLocalizations.of(context)!.homeAddOption,
+                  onTap: () {
+                    ref.read(routerNotifierprovider.notifier).changeScreen(() {
+                      /// * Navigate.
+                      final navigator = Navigator.of(context);
+                      navigator.push(MaterialPageRoute(builder: (context) => const CreatePersonScreen()));
+                    });
+                  },
+                ),
               ),
-            ),
 
-            /// * Spacer
-            SizedBox(height: 10),
+              /// * Spacer
+              SizedBox(height: 10),
 
-            /// * Search Unknown Named Person.
-            SlideWidget(
-              duration: Duration(milliseconds: 600),
-              child: ShakleHomeItem(
-                /// *
-                iconData: Icons.perm_camera_mic_outlined,
-                title: "News",
-                isActive: false,
-                onTap: () {},
+              /// * Search Named Person.
+              SlideWidget(
+                duration: Duration(milliseconds: 400),
+                child: ShakleHomeItem(
+                  /// *
+                  iconData: Icons.search_outlined,
+                  title: AppLocalizations.of(context)!.homeSearchOption,
+                  onTap: () {
+                    ref.read(routerNotifierprovider.notifier).changeScreen(() {
+                      /// * Navigate.
+                      final navigator = Navigator.of(context);
+                      navigator.push(MaterialPageRoute(builder: (context) => const SearchScreen()));
+                    });
+                  },
+                ),
               ),
-            ),
 
-            /// * Spacer.
-            Expanded(child: SizedBox()),
-          ],
+              /// * Spacer
+              SizedBox(height: 10),
+
+              /// * Search Unknown Named Person.
+              SlideWidget(
+                duration: Duration(milliseconds: 600),
+                child: ShakleHomeItem(
+                  /// *
+                  iconData: Icons.perm_camera_mic_outlined,
+                  title: "News",
+                  isActive: false,
+                  onTap: () {},
+                ),
+              ),
+
+              /// * Spacer.
+              Expanded(child: SizedBox()),
+            ],
+          ),
         ),
       ),
     );

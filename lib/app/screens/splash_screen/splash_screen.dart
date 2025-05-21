@@ -68,40 +68,42 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
     final pagerHeight = MediaQuery.of(context).size.height / 3;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          /// * Center Title Widget.
-          SlideWidget(
-            duration: Duration(milliseconds: 400),
-            child: Center(child: ShakleText(AppLocalizations.of(context)!.title, style: Theme.of(context).textTheme.displayLarge)),
-          ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            /// * Center Title Widget.
+            SlideWidget(
+              duration: Duration(milliseconds: 400),
+              child: Center(child: ShakleText(AppLocalizations.of(context)!.title, style: Theme.of(context).textTheme.displayLarge)),
+            ),
 
-          /// * Bottom Pager Widget.
-          FadeWidget(
-            duration: Duration(milliseconds: 400),
-            child: Align(
-              alignment: Alignment(0, 1),
-              child: SizedBox(
-                height: pagerHeight,
-                child: PageView.builder(
-                  controller: _pageController,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: 7,
-                  itemBuilder: (context, index) {
-                    /// * I want the two first page to be empty (styling choice).
-                    if (index < 2) return SizedBox(width: screenWidth);
+            /// * Bottom Pager Widget.
+            FadeWidget(
+              duration: Duration(milliseconds: 400),
+              child: Align(
+                alignment: Alignment(0, 1),
+                child: SizedBox(
+                  height: pagerHeight,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 7,
+                    itemBuilder: (context, index) {
+                      /// * I want the two first page to be empty (styling choice).
+                      if (index < 2) return SizedBox(width: screenWidth);
 
-                    /// * For some index, I want the stickman to be shaken with red effect like the title.
-                    if (index == 5) return Image.asset("assets/images/stickman_red.png", fit: BoxFit.contain);
+                      /// * For some index, I want the stickman to be shaken with red effect like the title.
+                      if (index == 5) return Image.asset("assets/images/stickman_red.png", fit: BoxFit.contain);
 
-                    /// * Default stickman wont have any animation.
-                    return SizedBox(width: double.infinity, child: Image.asset("assets/images/stickman_grey.png", fit: BoxFit.contain));
-                  },
+                      /// * Default stickman wont have any animation.
+                      return SizedBox(width: double.infinity, child: Image.asset("assets/images/stickman_grey.png", fit: BoxFit.contain));
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

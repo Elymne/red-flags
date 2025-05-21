@@ -49,152 +49,154 @@ class _State extends ConsumerState<CreatePersonScreen> {
     final activitiesState = ref.watch(activitiesStateProvider);
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(screenGlobalMargin),
-        child: Column(
-          children: [
-            /// * Title
-            TitleContainer(
-              title: AppLocalizations.of(context)!.createScreenTitle,
-              subtitle: AppLocalizations.of(context)!.createScreenSubTitle,
-            ),
-
-            /// * Spacer.
-            Expanded(child: SizedBox()),
-
-            /// * Textfield firstname
-            SlideWidget(
-              duration: Duration(milliseconds: 200),
-              child: ShakleTextfield(
-                "${AppLocalizations.of(context)!.firstname}*",
-                onChanged: (value) {
-                  _firstname = value;
-                },
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(screenGlobalMargin),
+          child: Column(
+            children: [
+              /// * Title
+              TitleContainer(
+                title: AppLocalizations.of(context)!.createScreenTitle,
+                subtitle: AppLocalizations.of(context)!.createScreenSubTitle,
               ),
-            ),
 
-            /// * Spacer.
-            SizedBox(height: 20),
+              /// * Spacer.
+              Expanded(child: SizedBox()),
 
-            /// * Textfield lastname
-            SlideWidget(
-              duration: Duration(milliseconds: 400),
-              child: ShakleTextfield(
-                "${AppLocalizations.of(context)!.lastname}*",
-                onChanged: (value) {
-                  _lastname = value;
-                },
-              ),
-            ),
-
-            /// * Spacer.
-            SizedBox(height: 20),
-
-            /// * Textfield birthDate
-            SlideWidget(
-              duration: Duration(milliseconds: 600),
-              child: ShakleDatepicker(
-                "${AppLocalizations.of(context)!.birthDate}*",
-                onChanged: (value) {
-                  _birthDate = value;
-                },
-              ),
-            ),
-
-            /// * Spacer.
-            SizedBox(height: 20),
-
-            /// * Textfield ZoneName
-            SlideWidget(
-              duration: Duration(milliseconds: 800),
-              child: ShakleTextfield(
-                "${AppLocalizations.of(context)!.zoneName}*",
-                autocompleteValues: zonesState.zones.map((element) => element.name).toList(),
-                onChanged: (value) {
-                  _zoneSearchDelay?.cancel();
-                  _zoneSearchDelay = Timer(Duration(milliseconds: 300), () async {
-                    await ref.read(zonesStateProvider.notifier).search(value);
-                    _zoneName = value;
-                  });
-                },
-              ),
-            ),
-
-            /// * Spacer.
-            SizedBox(height: 20),
-
-            /// * Textfield CompanyName
-            SlideWidget(
-              duration: Duration(milliseconds: 1200),
-              child: ShakleTextfield(
-                AppLocalizations.of(context)!.companyName,
-                autocompleteValues: companiesState.companies.map((element) => element.name).toList(),
-                onChanged: (value) {
-                  _companySearchDelay?.cancel();
-                  _companySearchDelay = Timer(Duration(milliseconds: 300), () async {
-                    ref.read(companiesStateProvider.notifier).search(value);
-                    _companyName = value;
-                  });
-                },
-              ),
-            ),
-
-            /// * Spacer.
-            SizedBox(height: 20),
-
-            /// * Textfield ActivityName
-            SlideWidget(
-              duration: Duration(milliseconds: 1000),
-              child: ShakleTextfield(
-                AppLocalizations.of(context)!.activityName,
-                autocompleteValues: activitiesState.activities.map((element) => element.name).toList(),
-                onChanged: (value) {
-                  _activitySearchDelay?.cancel();
-                  _activitySearchDelay = Timer(Duration(milliseconds: 300), () async {
-                    // ref.read(activitiesStateProvider.notifier).search(value);
-                    _activityName = value;
-                  });
-                },
-              ),
-            ),
-
-            /// * Spacer
-            Expanded(child: SizedBox()),
-
-            /// * Button Disable
-            SlideWidget(
-              duration: Duration(milliseconds: 1400),
-              child: Visibility(
-                visible: true,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: ShakleOutlinedButton(AppLocalizations.of(context)!.createButton, isActive: false, onPressed: () {}),
+              /// * Textfield firstname
+              SlideWidget(
+                duration: Duration(milliseconds: 200),
+                child: ShakleTextfield(
+                  "${AppLocalizations.of(context)!.firstname}*",
+                  onChanged: (value) {
+                    _firstname = value;
+                  },
                 ),
               ),
-            ),
 
-            /// * Button Create
-            SlideWidget(
-              duration: Duration(milliseconds: 1400),
-              child: Visibility(
-                visible: false,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: ShakleOutlinedButton(
-                    AppLocalizations.of(context)!.createButton,
-                    isActive: true,
-                    onPressed: () {
-                      /// * Goto list view person widget.
-                      ref.read(routerNotifierprovider.notifier).changeScreen(() {});
-                    },
+              /// * Spacer.
+              SizedBox(height: 20),
+
+              /// * Textfield lastname
+              SlideWidget(
+                duration: Duration(milliseconds: 400),
+                child: ShakleTextfield(
+                  "${AppLocalizations.of(context)!.lastname}*",
+                  onChanged: (value) {
+                    _lastname = value;
+                  },
+                ),
+              ),
+
+              /// * Spacer.
+              SizedBox(height: 20),
+
+              /// * Textfield birthDate
+              SlideWidget(
+                duration: Duration(milliseconds: 600),
+                child: ShakleDatepicker(
+                  "${AppLocalizations.of(context)!.birthDate}*",
+                  onChanged: (value) {
+                    _birthDate = value;
+                  },
+                ),
+              ),
+
+              /// * Spacer.
+              SizedBox(height: 20),
+
+              /// * Textfield ZoneName
+              SlideWidget(
+                duration: Duration(milliseconds: 800),
+                child: ShakleTextfield(
+                  "${AppLocalizations.of(context)!.zoneName}*",
+                  autocompleteValues: zonesState.zones.map((element) => element.name).toList(),
+                  onChanged: (value) {
+                    _zoneSearchDelay?.cancel();
+                    _zoneSearchDelay = Timer(Duration(milliseconds: 300), () async {
+                      await ref.read(zonesStateProvider.notifier).search(value);
+                      _zoneName = value;
+                    });
+                  },
+                ),
+              ),
+
+              /// * Spacer.
+              SizedBox(height: 20),
+
+              /// * Textfield CompanyName
+              SlideWidget(
+                duration: Duration(milliseconds: 1200),
+                child: ShakleTextfield(
+                  AppLocalizations.of(context)!.companyName,
+                  autocompleteValues: companiesState.companies.map((element) => element.name).toList(),
+                  onChanged: (value) {
+                    _companySearchDelay?.cancel();
+                    _companySearchDelay = Timer(Duration(milliseconds: 300), () async {
+                      ref.read(companiesStateProvider.notifier).search(value);
+                      _companyName = value;
+                    });
+                  },
+                ),
+              ),
+
+              /// * Spacer.
+              SizedBox(height: 20),
+
+              /// * Textfield ActivityName
+              SlideWidget(
+                duration: Duration(milliseconds: 1000),
+                child: ShakleTextfield(
+                  AppLocalizations.of(context)!.activityName,
+                  autocompleteValues: activitiesState.activities.map((element) => element.name).toList(),
+                  onChanged: (value) {
+                    _activitySearchDelay?.cancel();
+                    _activitySearchDelay = Timer(Duration(milliseconds: 300), () async {
+                      // ref.read(activitiesStateProvider.notifier).search(value);
+                      _activityName = value;
+                    });
+                  },
+                ),
+              ),
+
+              /// * Spacer
+              Expanded(child: SizedBox()),
+
+              /// * Button Disable
+              SlideWidget(
+                duration: Duration(milliseconds: 1400),
+                child: Visibility(
+                  visible: true,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: ShakleOutlinedButton(AppLocalizations.of(context)!.createButton, isActive: false, onPressed: () {}),
                   ),
                 ),
               ),
-            ),
 
-            /// * Marge
-            SizedBox(height: 20),
-          ],
+              /// * Button Create
+              SlideWidget(
+                duration: Duration(milliseconds: 1400),
+                child: Visibility(
+                  visible: false,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: ShakleOutlinedButton(
+                      AppLocalizations.of(context)!.createButton,
+                      isActive: true,
+                      onPressed: () {
+                        /// * Goto list view person widget.
+                        ref.read(routerNotifierprovider.notifier).changeScreen(() {});
+                      },
+                    ),
+                  ),
+                ),
+              ),
+
+              /// * Marge
+              SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
