@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// TODO Not sure what I am doing, seem's ugly
 class SquaresBackground extends StatefulWidget {
   const SquaresBackground({super.key});
 
@@ -16,7 +15,6 @@ class _State extends State<SquaresBackground> {
     /// * Using Layout Builder because I need to know the widget size.
     return LayoutBuilder(
       builder: (context, constraints) {
-        print("Largeur max: ${constraints.maxHeight}");
         return Stack(
           children: [
             /// * Left Sticks.

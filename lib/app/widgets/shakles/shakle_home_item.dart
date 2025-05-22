@@ -92,7 +92,6 @@ class _State extends State<ShakleHomeItem> with TickerProviderStateMixin {
                   ),
                   child: Row(
                     children: [
-                      /// TODO Icon.
                       Icon(widget.iconData, color: _colorAnimation.value, size: 40),
 
                       /// * Little spacing.
@@ -122,7 +121,6 @@ class _State extends State<ShakleHomeItem> with TickerProviderStateMixin {
                   ),
                   child: Row(
                     children: [
-                      /// TODO Icon.
                       Icon(widget.iconData, color: Theme.of(context).colorScheme.onSurface, size: 40),
 
                       /// * Little spacing.

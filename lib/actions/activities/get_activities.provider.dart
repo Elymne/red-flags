@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/exceptions/bad_response_exception.dart';
 import 'package:red_flags/core/exceptions/network_exception.dart';
 import 'package:red_flags/models/activity.model.dart';
-import 'package:red_flags/actions/response.model.dart';
 
 final Map<GetActivitiesProviderParams, List<Activity>> _cached = {};
 Timer? _timer;

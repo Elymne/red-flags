@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/app/router/router.notifier.dart';
-import 'package:red_flags/app/screens/detailed_person_screen/detailed_person_screen.dart';
 import 'package:red_flags/models/person.model.dart';
 
 class CardPerson extends ConsumerStatefulWidget {
@@ -16,7 +14,6 @@ class CardPerson extends ConsumerStatefulWidget {
 class _State extends ConsumerState<CardPerson> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    /// TODO Check that portrait exists, else use placeholder.
     final img =
         widget.person.portrait ?? "https://cdn.futura-sciences.com/sources/images/actu/esperance-vie-chiens-chiot-golden-retriever.jpg";
 

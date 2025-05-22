@@ -19,7 +19,6 @@ class ActivitiesStateNotifier extends StateNotifier<ActivitiesState> {
       }
       state = ActivitiesState(status: WidgetStatus.success, activities: activities);
     } catch (err) {
-      print(err);
       state = ActivitiesState(status: WidgetStatus.failure, activities: state.activities);
     }
   }

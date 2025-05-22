@@ -1,9 +1,7 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/detailed_person_screen/detailed_person_screen_state.dart';
-import 'package:red_flags/app/screens/home_screen/home_screen.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
 import 'package:red_flags/app/widgets/routing/shakle_pop_text.dart';
 import 'package:red_flags/app/widgets/routing/slide_widget.dart';

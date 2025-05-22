@@ -240,16 +240,12 @@ class _State extends State<ShakleTextfield> with TickerProviderStateMixin {
   void _onFocusUpdate() {
     setState(() => isFocus = _textfieldFocus.hasFocus);
     if (isFocus) {
-      /// Run loop animation.
       _shakyController1.repeat(reverse: true);
       _shakyController2.repeat(reverse: true);
-      // _colorController.repeat(reverse: true);
       return;
     }
 
-    /// Revert and stop animation.
     _shakyController1.reverse();
     _shakyController2.reverse();
-    // _colorController.stop();
   }
 }
