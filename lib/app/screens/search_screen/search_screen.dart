@@ -2,10 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:red_flags/app/router/router.notifier.dart';
-import 'package:red_flags/app/screens/person_list_view_screen/person_list_view_screen.dart';
+
 import 'package:red_flags/app/screens/search_screen/states/search_persons_state.dart';
-import 'package:red_flags/app/widgets/page_change_related/slide_widget.dart';
+import 'package:red_flags/app/widgets/routing/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_textfield.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_outlined_button.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
@@ -168,14 +167,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
                   child: ShakleOutlinedButton(
                     "${AppLocalizations.of(context)!.searchButton} (${state.persons.length})",
                     isActive: true,
-                    onPressed: () {
-                      /// * Goto list view person widget.
-                      ref.read(routerNotifierprovider.notifier).changeScreen(() {
-                        /// * Navigate.
-                        final navigator = Navigator.of(context);
-                        navigator.push(MaterialPageRoute(builder: (context) => PersonListViewScreenScreen(persons: state.persons)));
-                      });
-                    },
+                    onPressed: () {},
                   ),
                 ),
               ),

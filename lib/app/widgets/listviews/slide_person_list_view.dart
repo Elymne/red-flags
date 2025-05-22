@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:red_flags/app/widgets/page_change_related/slide_widget.dart';
+import 'package:red_flags/app/widgets/routing/slide_widget.dart';
 
 class SlideListView extends StatefulWidget {
   final int itemCount;

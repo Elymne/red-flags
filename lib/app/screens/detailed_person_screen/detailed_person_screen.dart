@@ -5,8 +5,8 @@ import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/detailed_person_screen/detailed_person_screen_state.dart';
 import 'package:red_flags/app/screens/home_screen/home_screen.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
-import 'package:red_flags/app/widgets/page_change_related/shakle_pop_text.dart';
-import 'package:red_flags/app/widgets/page_change_related/slide_widget.dart';
+import 'package:red_flags/app/widgets/routing/shakle_pop_text.dart';
+import 'package:red_flags/app/widgets/routing/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_loading.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_outlined_button.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_text.dart';
@@ -74,16 +74,7 @@ class _State extends ConsumerState<DetailedPersonScreen> with TickerProviderStat
               SizedBox(height: 20),
               SlideWidget(
                 duration: Duration(milliseconds: 800),
-                child: ShakleOutlinedButton(
-                  AppLocalizations.of(context)!.backButton,
-                  onPressed: () {
-                    /// * Back to home menu on error.
-                    ref.read(routerNotifierprovider.notifier).changeScreen(() {
-                      final navigator = Navigator.of(context);
-                      navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
-                    });
-                  },
-                ),
+                child: ShakleOutlinedButton(AppLocalizations.of(context)!.backButton, onPressed: () {}),
               ),
             ],
           ),

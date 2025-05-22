@@ -22,14 +22,8 @@ class _State extends ConsumerState<FadeWidget> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
-    /// *  Initialize the animation controller.
     _animationController = AnimationController(vsync: this, duration: widget.duration);
-
-    /// * Define the fade animation.
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
-
-    /// * On init, I just need to run the animation.
     _animationController.forward();
   }
 
@@ -41,10 +35,13 @@ class _State extends ConsumerState<FadeWidget> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    /// * This is called on page change using routerNotifierprovider.
-    ref.listen(routerNotifierprovider, (previous, next) {
-      if (next.status == RouterStatus.changing) {
+    ref.listen(routerNotifierprovider, (_, next) {
+      if (next.status == RoutingAnimationStatus.reverse) {
         _animationController.reverse();
+        return;
+      }
+      if (next.status == RoutingAnimationStatus.forward) {
+        _animationController.forward();
         return;
       }
     });

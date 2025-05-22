@@ -26,9 +26,6 @@ class _State extends ConsumerState<SlideWidget> with TickerProviderStateMixin {
 
     /// *  Initialize the animation controller.
     _animationController = AnimationController(vsync: this, duration: widget.duration);
-    _animationController.addListener(() {
-      setState(() {});
-    });
 
     /// * Define the slide animation.
     _slideAnimation = Tween<Offset>(
@@ -51,10 +48,13 @@ class _State extends ConsumerState<SlideWidget> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    /// * This is called on page change using routerNotifierprovider.
-    ref.listen(routerNotifierprovider, (previous, next) {
-      if (next.status == RouterStatus.changing) {
+    ref.listen(routerNotifierprovider, (_, next) {
+      if (next.status == RoutingAnimationStatus.reverse) {
         _animationController.reverse();
+        return;
+      }
+      if (next.status == RoutingAnimationStatus.forward) {
+        _animationController.forward();
         return;
       }
     });

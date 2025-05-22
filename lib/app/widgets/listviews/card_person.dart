@@ -35,14 +35,7 @@ class _State extends ConsumerState<CardPerson> with TickerProviderStateMixin {
       ),
       title: Text("${widget.person.lastName} ${widget.person.firstName}"),
       subtitle: Text("${widget.person.zone.name} - ${widget.person.activity}"),
-      onTap: () {
-        /// * Goto list view person widget.
-        ref.read(routerNotifierprovider.notifier).changeScreen(() {
-          /// * Navigate.
-          final navigator = Navigator.of(context);
-          navigator.push(MaterialPageRoute(builder: (context) => DetailedPersonScreen(id: widget.person.id)));
-        });
-      },
+      onTap: () {},
     );
   }
 }

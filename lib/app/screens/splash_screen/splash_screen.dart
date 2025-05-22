@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/home_screen/home_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:red_flags/app/widgets/page_change_related/fade_widget.dart';
-import 'package:red_flags/app/widgets/page_change_related/slide_widget.dart';
+import 'package:red_flags/app/widgets/routing/fade_widget.dart';
+import 'package:red_flags/app/widgets/routing/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_text.dart';
 import 'dart:async';
 
@@ -49,10 +49,7 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
       if (!mounted) return;
 
       /// * Navigate.
-      ref.read(routerNotifierprovider.notifier).changeScreen(() {
-        final navigator = Navigator.of(context);
-        navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
-      });
+      ref.read(routerNotifierprovider.notifier).pushAndRemoveUntil(Navigator.of(context), const HomeScreen());
     });
   }
 
@@ -67,42 +64,46 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
     final screenWidth = MediaQuery.of(context).size.width;
     final pagerHeight = MediaQuery.of(context).size.height / 3;
 
-    return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            /// * Center Title Widget.
-            SlideWidget(
-              duration: Duration(milliseconds: 400),
-              child: Center(child: ShakleText(AppLocalizations.of(context)!.title, style: Theme.of(context).textTheme.displayLarge)),
-            ),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {},
+      child: Scaffold(
+        body: SafeArea(
+          child: Stack(
+            children: [
+              /// * Center Title Widget.
+              SlideWidget(
+                duration: Duration(milliseconds: 400),
+                child: Center(child: ShakleText(AppLocalizations.of(context)!.title, style: Theme.of(context).textTheme.displayLarge)),
+              ),
 
-            /// * Bottom Pager Widget.
-            FadeWidget(
-              duration: Duration(milliseconds: 400),
-              child: Align(
-                alignment: Alignment(0, 1),
-                child: SizedBox(
-                  height: pagerHeight,
-                  child: PageView.builder(
-                    controller: _pageController,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 7,
-                    itemBuilder: (context, index) {
-                      /// * I want the two first page to be empty (styling choice).
-                      if (index < 2) return SizedBox(width: screenWidth);
+              /// * Bottom Pager Widget.
+              FadeWidget(
+                duration: Duration(milliseconds: 400),
+                child: Align(
+                  alignment: Alignment(0, 1),
+                  child: SizedBox(
+                    height: pagerHeight,
+                    child: PageView.builder(
+                      controller: _pageController,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 7,
+                      itemBuilder: (context, index) {
+                        /// * I want the two first page to be empty (styling choice).
+                        if (index < 2) return SizedBox(width: screenWidth);
 
-                      /// * For some index, I want the stickman to be shaken with red effect like the title.
-                      if (index == 5) return Image.asset("assets/images/stickman_red.png", fit: BoxFit.contain);
+                        /// * For some index, I want the stickman to be shaken with red effect like the title.
+                        if (index == 5) return Image.asset("assets/images/stickman_red.png", fit: BoxFit.contain);
 
-                      /// * Default stickman wont have any animation.
-                      return SizedBox(width: double.infinity, child: Image.asset("assets/images/stickman_grey.png", fit: BoxFit.contain));
-                    },
+                        /// * Default stickman wont have any animation.
+                        return SizedBox(width: double.infinity, child: Image.asset("assets/images/stickman_grey.png", fit: BoxFit.contain));
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
