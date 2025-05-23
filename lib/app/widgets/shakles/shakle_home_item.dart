@@ -40,8 +40,6 @@ class _State extends State<ShakleHomeItem> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    super.initState();
-
     /// * Set the text shaky animation for background text. The anim is started or stoped depending of the input focus.
     _shakyController1 = AnimationController(vsync: this, duration: _shakyDurationTic1);
     _shakyAnimation1 = Tween<double>(begin: -1.0, end: 1.0).animate(_shakyController1);
@@ -58,6 +56,7 @@ class _State extends State<ShakleHomeItem> with TickerProviderStateMixin {
     _shakyController1.repeat(reverse: true);
     _shakyController2.repeat(reverse: true);
     // _colorController.repeat(reverse: true);
+    super.initState();
   }
 
   @override

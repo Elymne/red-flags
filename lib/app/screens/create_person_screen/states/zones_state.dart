@@ -19,6 +19,8 @@ class ZonesStateNotifier extends StateNotifier<ZonesState> {
       state = ZonesState(status: WidgetStatus.failure, zones: state.zones);
     }
   }
+
+  void reset() => state = ZonesState(status: WidgetStatus.init, zones: []);
 }
 
 class ZonesState extends WidgetState {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/widgets/listviews/card_person.dart';
-import 'package:red_flags/app/widgets/listviews/slide_person_list_view.dart';
+import 'package:red_flags/app/widgets/listviews/slide_list_view.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/models/person.model.dart';

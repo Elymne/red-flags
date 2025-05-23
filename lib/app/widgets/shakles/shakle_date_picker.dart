@@ -3,9 +3,10 @@ import 'package:red_flags/core/extensions/datetime_extension.dart';
 
 class ShakleDatepicker extends StatefulWidget {
   final String label;
+  final DateTime? selectedDate;
   final void Function(DateTime) onChanged;
 
-  const ShakleDatepicker(this.label, {super.key, required this.onChanged});
+  const ShakleDatepicker(this.label, {super.key, required this.onChanged, this.selectedDate});
 
   @override
   State<StatefulWidget> createState() => _State();
@@ -13,6 +14,12 @@ class ShakleDatepicker extends StatefulWidget {
 
 class _State extends State<ShakleDatepicker> with TickerProviderStateMixin {
   DateTime? _selectedDate;
+
+  @override
+  void initState() {
+    _selectedDate = widget.selectedDate;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

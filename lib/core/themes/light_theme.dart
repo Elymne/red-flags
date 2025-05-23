@@ -46,7 +46,7 @@ final lightTextTheme = TextTheme(
   ),
 
   /// * Card Title.
-  headlineSmall: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 0),
+  headlineSmall: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontSize: 18, fontWeight: FontWeight.normal, letterSpacing: 0),
 
   /// * Title for each body section.
   titleLarge: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.bold, fontSize: 20),

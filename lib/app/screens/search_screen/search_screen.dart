@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'package:red_flags/app/screens/search_screen/states/search_persons_state.dart';
 import 'package:red_flags/app/widgets/routing/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_textfield.dart';
@@ -87,7 +86,6 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                 child: ShakleTextfield(
                   AppLocalizations.of(context)!.birthDate,
-                  autocompleteValues: state.zones.map((zone) => zone.name).toList(),
                   onChanged: (value) {
                     _birthDate = value;
                     _onTextfieldChange();
@@ -133,7 +131,6 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                 child: ShakleTextfield(
                   AppLocalizations.of(context)!.activityName,
-                  autocompleteValues: state.zones.map((zone) => zone.name).toList(),
                   onChanged: (value) {
                     _companyName = value;
                     _onTextfieldChange();
@@ -150,10 +147,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
               duration: Duration(milliseconds: 400),
               child: Visibility(
                 visible: state.persons.isEmpty,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: ShakleOutlinedButton(AppLocalizations.of(context)!.searchButton, isActive: false, onPressed: () {}),
-                ),
+                child: Align(alignment: Alignment.center, child: ShakleOutlinedButton(AppLocalizations.of(context)!.searchButton)),
               ),
             ),
 
@@ -164,11 +158,7 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
                 visible: state.persons.isNotEmpty,
                 child: Align(
                   alignment: Alignment.center,
-                  child: ShakleOutlinedButton(
-                    "${AppLocalizations.of(context)!.searchButton} (${state.persons.length})",
-                    isActive: true,
-                    onPressed: () {},
-                  ),
+                  child: ShakleOutlinedButton("${AppLocalizations.of(context)!.searchButton} (${state.persons.length})"),
                 ),
               ),
             ),
