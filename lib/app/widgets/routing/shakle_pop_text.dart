@@ -3,33 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
 
+/// This is a Shakle pop text widget related to app routing.
+/// This widget listen [routerNotifierprovider] event and changes.
+/// Each time an update occur in [routerNotifierprovider], it notify all widgets that they should forward or reverse animation.
+/// Look inside [routerNotifierprovider] for more details.
 class ShaklePopText extends ConsumerStatefulWidget {
-  /// About text.
   final TextStyle? style;
   final String text;
-
-  /// Text animation.
-  final Duration speedAnimation;
-  final double force;
-
-  /// Idle animation.
+  final Duration animTic;
+  final double animForce;
   final bool hasIdleAnim;
-  final double idleForce;
-
-  /// Special color.
+  final double idleAnimForce;
   final Color? color;
 
   const ShaklePopText(
     this.text, {
     super.key,
     required this.style,
-
-    this.speedAnimation = const Duration(milliseconds: 100),
-    this.force = 1,
-
+    this.animTic = const Duration(milliseconds: 100),
+    this.animForce = 1,
     this.hasIdleAnim = false,
-    this.idleForce = 0.4,
-
+    this.idleAnimForce = 0.4,
     this.color,
   });
 
@@ -38,43 +32,30 @@ class ShaklePopText extends ConsumerStatefulWidget {
 }
 
 class _State extends ConsumerState<ShaklePopText> with TickerProviderStateMixin {
-  // The visual text.
-  late String _displayText = "";
+  late String _currentText = "";
 
-  /// Delay time between each letter poping.
-  Timer? _timer;
+  late final AnimationController _backgroundAnimCtrl;
+  late final Animation<double> _backgroundAnim;
+  final Duration _backgroundShakeTic = Duration(milliseconds: 200);
+  final Duration _backgroundIdleTicc = Duration(milliseconds: 1_600);
 
-  /// Power of movement animation. Lower value will make animation shake less for example.
-  late double _forceAnimation = widget.force;
+  late final AnimationController _foregroundAnimCtrl;
+  late final Animation<double> _foregroundAnim;
+  final Duration _foregroundShakeTic = Duration(milliseconds: 100);
+  final Duration _foregroundIdleTic = Duration(milliseconds: 1_000);
 
-  /// Shake Animation for while text is pop in.
-  late final AnimationController _shakyController1;
-  late final Animation<double> _shakyAnimation1;
-  final Duration _shakyDurationTic1 = Duration(milliseconds: 200);
-  final Duration _idleDurationTic1 = Duration(milliseconds: 1_600);
-
-  /// Shake Animation for while text is pop in.
-  late final AnimationController _shakyController2;
-  late final Animation<double> _shakyAnimation2;
-  final Duration _shakyDurationTic2 = Duration(milliseconds: 100);
-  final Duration _idleDurationTic2 = Duration(milliseconds: 1_000);
-
-  /// Simple background display state.
+  late double _animForce = widget.animForce;
   bool showBackground = true;
+  Timer? _timerTicker;
 
   @override
   void initState() {
     super.initState();
+    _backgroundAnimCtrl = AnimationController(vsync: this, duration: Duration.zero);
+    _backgroundAnim = Tween<double>(begin: -3, end: 3).animate(_backgroundAnimCtrl);
+    _foregroundAnimCtrl = AnimationController(vsync: this, duration: Duration.zero);
+    _foregroundAnim = Tween<double>(begin: -1, end: 1).animate(_foregroundAnimCtrl);
 
-    /// * Set the text shaky animation for background text.
-    _shakyController1 = AnimationController(vsync: this, duration: Duration.zero);
-    _shakyAnimation1 = Tween<double>(begin: -3, end: 3).animate(_shakyController1);
-
-    /// * Set the text shaky animation for frontend text.
-    _shakyController2 = AnimationController(vsync: this, duration: Duration.zero);
-    _shakyAnimation2 = Tween<double>(begin: -1, end: 1).animate(_shakyController2);
-
-    /// * Run the starting animation.
     runAnimation();
   }
 
@@ -85,33 +66,33 @@ class _State extends ConsumerState<ShaklePopText> with TickerProviderStateMixin 
     /// * Start all animation.
     clearTimer();
     setState(() => showBackground = true);
-    _shakyController1.duration = _shakyDurationTic1;
-    _shakyController2.duration = _shakyDurationTic2;
-    _shakyController1.repeat(reverse: true);
-    _shakyController2.repeat(reverse: true);
+    _backgroundAnimCtrl.duration = _backgroundShakeTic;
+    _foregroundAnimCtrl.duration = _foregroundShakeTic;
+    _backgroundAnimCtrl.repeat(reverse: true);
+    _foregroundAnimCtrl.repeat(reverse: true);
 
-    _timer = Timer.periodic(widget.speedAnimation, (_) {
-      if (_displayText.length == widget.text.length) {
+    _timerTicker = Timer.periodic(widget.animTic, (_) {
+      if (_currentText.length == widget.text.length) {
         clearTimer();
         if (widget.hasIdleAnim) {
           /// * Update animation (idle mode).
-          _forceAnimation = widget.idleForce;
-          _shakyController1.duration = _idleDurationTic1;
-          _shakyController2.duration = _idleDurationTic2;
-          _shakyController1.repeat(reverse: true);
-          _shakyController2.repeat(reverse: true);
+          _animForce = widget.idleAnimForce;
+          _backgroundAnimCtrl.duration = _backgroundIdleTicc;
+          _foregroundAnimCtrl.duration = _foregroundIdleTic;
+          _backgroundAnimCtrl.repeat(reverse: true);
+          _foregroundAnimCtrl.repeat(reverse: true);
           return;
         }
 
         /// * Stop Animation and hide text background.
-        _shakyController1.reverse();
-        _shakyController2.reverse();
+        _backgroundAnimCtrl.reverse();
+        _foregroundAnimCtrl.reverse();
         setState(() => showBackground = false);
         return;
       }
 
       /// * Add one letter and notify UI for text changes.
-      setState(() => _displayText += widget.text[_displayText.length]);
+      setState(() => _currentText += widget.text[_currentText.length]);
     });
   }
 
@@ -121,38 +102,38 @@ class _State extends ConsumerState<ShaklePopText> with TickerProviderStateMixin 
     /// * Reverse animation.
     clearTimer();
     setState(() => showBackground = true);
-    _forceAnimation = widget.idleForce;
-    _shakyController1.duration = _shakyDurationTic1;
-    _shakyController2.duration = _shakyDurationTic2;
-    _shakyController1.repeat(reverse: true);
-    _shakyController2.repeat(reverse: true);
+    _animForce = widget.idleAnimForce;
+    _backgroundAnimCtrl.duration = _backgroundShakeTic;
+    _foregroundAnimCtrl.duration = _foregroundShakeTic;
+    _backgroundAnimCtrl.repeat(reverse: true);
+    _foregroundAnimCtrl.repeat(reverse: true);
 
-    _timer = Timer.periodic(widget.speedAnimation, (timer) {
+    _timerTicker = Timer.periodic(widget.animTic, (timer) {
       /// * When text is fully depleted, stop timer + manage animation.
-      if (_displayText.isEmpty) {
+      if (_currentText.isEmpty) {
         clearTimer();
         return;
       }
 
       /// * Pop last letter. (text animation)
-      setState(() => _displayText = _displayText.substring(0, _displayText.length - 1));
+      setState(() => _currentText = _currentText.substring(0, _currentText.length - 1));
     });
   }
 
   /// Clear and nullify timer.
   void clearTimer() {
-    if (_timer != null && _timer!.isActive) {
-      _timer!.cancel();
-      _timer = null;
+    if (_timerTicker != null && _timerTicker!.isActive) {
+      _timerTicker!.cancel();
+      _timerTicker = null;
     }
   }
 
   @override
   void dispose() {
-    _shakyController1.dispose();
-    _shakyController2.dispose();
-    if (_timer != null && _timer!.isActive) {
-      _timer!.cancel();
+    _backgroundAnimCtrl.dispose();
+    _foregroundAnimCtrl.dispose();
+    if (_timerTicker != null && _timerTicker!.isActive) {
+      _timerTicker!.cancel();
     }
     super.dispose();
   }
@@ -175,21 +156,21 @@ class _State extends ConsumerState<ShaklePopText> with TickerProviderStateMixin 
         Visibility(
           visible: showBackground,
           child: AnimatedBuilder(
-            animation: _shakyAnimation1,
+            animation: _backgroundAnim,
             builder: (context, child) {
               return Transform.translate(
-                offset: Offset(_shakyAnimation1.value * _forceAnimation, 0),
-                child: Text(_displayText, style: widget.style?.copyWith(color: widget.color)),
+                offset: Offset(_backgroundAnim.value * _animForce, 0),
+                child: Text(_currentText, style: widget.style?.copyWith(color: widget.color)),
               );
             },
           ),
         ),
         AnimatedBuilder(
-          animation: _shakyAnimation2,
+          animation: _foregroundAnim,
           builder: (context, child) {
             return Transform.translate(
-              offset: Offset(_shakyAnimation2.value * _forceAnimation, 0),
-              child: Text(_displayText, style: widget.style),
+              offset: Offset(_foregroundAnim.value * _animForce, 0),
+              child: Text(_currentText, style: widget.style),
             );
           },
         ),

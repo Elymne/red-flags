@@ -21,14 +21,14 @@ class TitleContainer extends StatelessWidget {
           ShaklePopText(
             title,
             style: Theme.of(context).textTheme.headlineLarge,
-            speedAnimation: Duration(milliseconds: 40),
+            animTic: Duration(milliseconds: 40),
             hasIdleAnim: true,
             color: color,
           ),
           ShaklePopText(
             subtitle,
             style: Theme.of(context).textTheme.headlineMedium,
-            speedAnimation: Duration(milliseconds: 20),
+            animTic: Duration(milliseconds: 20),
             hasIdleAnim: true,
             color: color,
           ),

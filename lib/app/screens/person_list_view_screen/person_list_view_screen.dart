@@ -17,11 +17,6 @@ class PersonListViewScreenScreen extends ConsumerStatefulWidget {
 
 class _State extends ConsumerState<PersonListViewScreenScreen> with TickerProviderStateMixin {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(

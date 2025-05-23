@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
 
-/// Widget linked to page transition.
-/// Will fade in on load and fade out on page change.
+/// This is a FadeIn/Fadeout widget related to app routing.
+/// It use [Opacity] class to mimic fade animation.
+/// This widget listen [routerNotifierprovider] event and changes.
+/// Each time an update occur in [routerNotifierprovider], it notify all widgets that they should forward or reverse animation.
+/// Look inside [routerNotifierprovider] for more details.
 class FadeWidget extends ConsumerStatefulWidget {
   final Widget child;
   final Duration duration;
@@ -15,21 +18,20 @@ class FadeWidget extends ConsumerStatefulWidget {
 }
 
 class _State extends ConsumerState<FadeWidget> with TickerProviderStateMixin {
-  /// * Animation controller for fadeout and slide-in effect.
-  late final AnimationController _animationController;
-  late final Animation<double> _fadeAnimation;
+  late final AnimationController _animCtrl;
+  late final Animation<double> _anim;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: widget.duration);
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
-    _animationController.forward();
+    _animCtrl = AnimationController(vsync: this, duration: widget.duration);
+    _anim = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animCtrl, curve: Curves.easeInOut));
+    _animCtrl.forward();
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _animCtrl.dispose();
     super.dispose();
   }
 
@@ -37,19 +39,19 @@ class _State extends ConsumerState<FadeWidget> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     ref.listen(routerNotifierprovider, (_, next) {
       if (next.status == RoutingAnimationStatus.reverse) {
-        _animationController.reverse();
+        _animCtrl.reverse();
         return;
       }
       if (next.status == RoutingAnimationStatus.forward) {
-        _animationController.forward();
+        _animCtrl.forward();
         return;
       }
     });
 
     return AnimatedBuilder(
-      animation: _animationController,
+      animation: _animCtrl,
       builder: (context, child) {
-        return Opacity(opacity: _fadeAnimation.value, child: widget.child);
+        return Opacity(opacity: _anim.value, child: widget.child);
       },
     );
   }

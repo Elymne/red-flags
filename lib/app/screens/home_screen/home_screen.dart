@@ -17,11 +17,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _State extends ConsumerState<HomeScreen> with TickerProviderStateMixin {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,

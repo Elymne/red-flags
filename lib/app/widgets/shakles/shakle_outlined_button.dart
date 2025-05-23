@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:red_flags/core/themes/light_theme.dart';
 
 class ShakleOutlinedButton extends StatefulWidget {
   final String label;
@@ -12,46 +11,29 @@ class ShakleOutlinedButton extends StatefulWidget {
 }
 
 class _State extends State<ShakleOutlinedButton> with TickerProviderStateMixin {
-  /// Shake Animation (for background color).
   late final AnimationController _backgroundAnimCtrl;
   late final Animation<double> _backgroundAnim;
   final Duration _backgroundAnimDur = Duration(milliseconds: 1_600);
 
-  /// Shake Animation (for front input).
-  late final AnimationController _frontAnimCtrl;
-  late final Animation<double> _frontAnim;
-  final Duration _frontAnimDur = Duration(milliseconds: 1_000);
-
-  /// Background color animation.
-  late final AnimationController _colorAnimCtrl;
-  late final Animation<Color?> _colorAnim;
-  final Duration _colorAnimDur = Duration(milliseconds: 10_000);
+  late final AnimationController _foregroundAnimCtrl;
+  late final Animation<double> _foregroundAnim;
+  final Duration _foregroundAnimDur = Duration(milliseconds: 1_000);
 
   @override
   void initState() {
     super.initState();
-
-    /// * Set the text shaky animation for background text. The anim is started or stoped depending of the input focus.
     _backgroundAnimCtrl = AnimationController(vsync: this, duration: _backgroundAnimDur);
+    _foregroundAnimCtrl = AnimationController(vsync: this, duration: _foregroundAnimDur);
     _backgroundAnim = Tween<double>(begin: -1.2, end: 1.2).animate(_backgroundAnimCtrl);
+    _foregroundAnim = Tween<double>(begin: -1, end: 1).animate(_foregroundAnimCtrl);
     if (widget.onPressed != null) _backgroundAnimCtrl.repeat(reverse: true);
-
-    /// * Set the text shaky animation for frontend text. The anim is started or stoped depending of the input focus.
-    _frontAnimCtrl = AnimationController(vsync: this, duration: _frontAnimDur);
-    _frontAnim = Tween<double>(begin: -1, end: 1).animate(_frontAnimCtrl);
-    if (widget.onPressed != null) _frontAnimCtrl.repeat(reverse: true);
-
-    /// * Set the background color.
-    _colorAnimCtrl = AnimationController(vsync: this, duration: _colorAnimDur);
-    _colorAnim = ColorTween(begin: lightColorScheme.primary, end: lightColorScheme.secondary).animate(_colorAnimCtrl);
-    // if (widget.isActive) _colorController.repeat(reverse: true);
+    if (widget.onPressed != null) _foregroundAnimCtrl.repeat(reverse: true);
   }
 
   @override
   void dispose() {
     _backgroundAnimCtrl.dispose();
-    _frontAnimCtrl.dispose();
-    _colorAnimCtrl.dispose();
+    _foregroundAnimCtrl.dispose();
     super.dispose();
   }
 
@@ -69,10 +51,16 @@ class _State extends State<ShakleOutlinedButton> with TickerProviderStateMixin {
                 child: OutlinedButton(
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: _colorAnim.value ?? Colors.transparent),
+                    side: BorderSide(color: Theme.of(context).colorScheme.primary),
                     padding: EdgeInsets.symmetric(horizontal: 100, vertical: 20),
                   ),
-                  child: Text(widget.label, style: Theme.of(context).textTheme.labelLarge?.copyWith(color: _colorAnim.value)),
+                  child: Text(
+                    widget.label,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      /// *
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
               );
             },
@@ -80,10 +68,10 @@ class _State extends State<ShakleOutlinedButton> with TickerProviderStateMixin {
         ),
 
         AnimatedBuilder(
-          animation: _frontAnim,
+          animation: _foregroundAnim,
           builder: (context, child) {
             return Transform.translate(
-              offset: Offset(_frontAnim.value, _frontAnim.value * 0.5),
+              offset: Offset(_foregroundAnim.value, _foregroundAnim.value * 0.5),
               child: OutlinedButton(
                 onPressed: widget.onPressed,
                 style: OutlinedButton.styleFrom(

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
 
-/// Widget linked to page transition.
-/// Will slide and fadein on load and slide fade out on page change.
+/// This is a FadeIn/Fadeout + Slidin/Slideout widget related to app routing.
+/// It use [Opacity] and [Transform] class to mimic fade animation.
+/// This widget listen [routerNotifierprovider] event and changes.
+/// Each time an update occur in [routerNotifierprovider], it notify all widgets that they should forward or reverse animation.
+/// Look inside [routerNotifierprovider] for more details.
 class SlideWidget extends ConsumerStatefulWidget {
   final Widget child;
   final Duration duration;
@@ -15,34 +18,28 @@ class SlideWidget extends ConsumerStatefulWidget {
 }
 
 class _State extends ConsumerState<SlideWidget> with TickerProviderStateMixin {
-  /// * Animation controller for fadeout and slide-in effect.
-  late final AnimationController _animationController;
-  late final Animation<Offset> _slideAnimation;
-  late final Animation<double> _fadeAnimation;
+  late final AnimationController _animCtrl;
+  late final Animation<Offset> _slideAnim;
+  late final Animation<double> _fadeAnim;
 
   @override
   void initState() {
     super.initState();
+    _animCtrl = AnimationController(vsync: this, duration: widget.duration);
 
-    /// *  Initialize the animation controller.
-    _animationController = AnimationController(vsync: this, duration: widget.duration);
-
-    /// * Define the slide animation.
-    _slideAnimation = Tween<Offset>(
+    _slideAnim = Tween<Offset>(
       begin: Offset(-100, 0),
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
+    ).animate(CurvedAnimation(parent: _animCtrl, curve: Curves.easeInOut));
 
-    /// * Define the fade animation.
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
+    _fadeAnim = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animCtrl, curve: Curves.easeInOut));
 
-    /// * On init, I just need to run the animation.
-    _animationController.forward();
+    _animCtrl.forward();
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _animCtrl.dispose();
     super.dispose();
   }
 
@@ -50,19 +47,19 @@ class _State extends ConsumerState<SlideWidget> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     ref.listen(routerNotifierprovider, (_, next) {
       if (next.status == RoutingAnimationStatus.reverse) {
-        _animationController.reverse();
+        _animCtrl.reverse();
         return;
       }
       if (next.status == RoutingAnimationStatus.forward) {
-        _animationController.forward();
+        _animCtrl.forward();
         return;
       }
     });
 
     return AnimatedBuilder(
-      animation: _animationController,
+      animation: _animCtrl,
       builder: (context, child) {
-        return Opacity(opacity: _fadeAnimation.value, child: Transform.translate(offset: _slideAnimation.value, child: widget.child));
+        return Opacity(opacity: _fadeAnim.value, child: Transform.translate(offset: _slideAnim.value, child: widget.child));
       },
     );
   }

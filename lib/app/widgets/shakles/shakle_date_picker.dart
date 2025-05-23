@@ -17,8 +17,8 @@ class _State extends State<ShakleDatepicker> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    _selectedDate = widget.selectedDate;
     super.initState();
+    _selectedDate = widget.selectedDate;
   }
 
   @override
