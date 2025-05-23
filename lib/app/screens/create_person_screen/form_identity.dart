@@ -27,7 +27,11 @@ class _State extends ConsumerState<FormIdentity> {
           child: ShakleTextfield(
             AppLocalizations.of(context)!.firstname,
             value: widget.formCtrl.firstname,
-            onChanged: (value) => widget.formCtrl.updateValues(firstname: value),
+            onChanged: (value) {
+              setState(() {
+                widget.formCtrl.updateValues(firstname: value);
+              });
+            },
           ),
         ),
         SizedBox(height: 20),
@@ -36,7 +40,11 @@ class _State extends ConsumerState<FormIdentity> {
           child: ShakleTextfield(
             AppLocalizations.of(context)!.lastname,
             value: widget.formCtrl.lastname,
-            onChanged: (value) => widget.formCtrl.updateValues(lastname: value),
+            onChanged: (value) {
+              setState(() {
+                widget.formCtrl.updateValues(lastname: value);
+              });
+            },
           ),
         ),
         SizedBox(height: 20),

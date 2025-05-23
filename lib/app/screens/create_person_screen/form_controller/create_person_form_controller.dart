@@ -4,14 +4,16 @@ import 'package:red_flags/models/company.model.dart';
 import 'package:red_flags/models/zone.model.dart';
 
 class CreatePersonFormController {
-  /// * Simple int flag.
   final ValueNotifier<int> state;
 
+  final List<String> _errors = [];
+  List<String> get errors => _errors;
+
   String _firstname = "";
-  String? get firstname => _firstname;
+  String get firstname => _firstname;
 
   String _lastname = "";
-  String? get lastname => _lastname;
+  String get lastname => _lastname;
 
   DateTime? _birthDate;
   DateTime? get birthDate => _birthDate;
@@ -38,7 +40,9 @@ class CreatePersonFormController {
     _activity = activity ?? _activity;
     _company = company ?? _company;
 
-    if (_firstname.length < 2 || _lastname.length < 2 || _birthDate == null) {
+    _checkErrors();
+
+    if (_firstname.length < 2 && _lastname.length < 2 && _birthDate == null) {
       state.value = 0;
       return;
     }
@@ -49,5 +53,10 @@ class CreatePersonFormController {
     }
 
     state.value = 2;
+  }
+
+  void _checkErrors() {
+    if (_firstname.isNotEmpty && _firstname.length < 2) _errors.add("Firstname should contains 2 or more characters!");
+    if (_lastname.isNotEmpty && _lastname.length < 2) _errors.add("Lastname should contains 2 or more characters!");
   }
 }

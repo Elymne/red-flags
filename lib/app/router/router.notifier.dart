@@ -10,12 +10,17 @@ final routerNotifierprovider = StateNotifierProvider<RouterNotifier, RouterState
 
 class RouterNotifier extends StateNotifier<RouterState> {
   final Ref ref;
+  bool _isFreezed = false;
 
   RouterNotifier(this.ref) : super(RouterState(status: RoutingAnimationStatus.init));
 
   void push(NavigatorState navigator, Widget widget) {
+    if (_isFreezed) return;
+    _isFreezed = true;
+
     state = RouterState(status: RoutingAnimationStatus.reverse, animationDuration: state.animationDuration);
     Future.delayed(state.animationDuration, () async {
+      _isFreezed = false;
       await navigator.push(
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => widget,
@@ -23,13 +28,18 @@ class RouterNotifier extends StateNotifier<RouterState> {
           reverseTransitionDuration: Duration.zero,
         ),
       );
+
       state = RouterState(status: RoutingAnimationStatus.forward, animationDuration: state.animationDuration);
     });
   }
 
   void pushAndRemoveUntil(NavigatorState navigator, Widget widget) {
+    if (_isFreezed) return;
+    _isFreezed = true;
+
     state = RouterState(status: RoutingAnimationStatus.reverse, animationDuration: state.animationDuration);
     Future.delayed(state.animationDuration, () async {
+      _isFreezed = false;
       await navigator.pushAndRemoveUntil(
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => widget,
@@ -43,8 +53,12 @@ class RouterNotifier extends StateNotifier<RouterState> {
   }
 
   void pop(NavigatorState navigator) {
+    if (_isFreezed) return;
+    _isFreezed = true;
+
     state = RouterState(status: RoutingAnimationStatus.reverse, animationDuration: state.animationDuration);
     Future.delayed(state.animationDuration, () async {
+      _isFreezed = false;
       if (!navigator.canPop()) return;
       navigator.pop();
     });

@@ -58,6 +58,7 @@ class _State extends ConsumerState<CreatePersonScreen> {
                     children: [FormIdentity(formCtrl: _formCtrl), FormZone(formCtrl: _formCtrl), FormActivity(formCtrl: _formCtrl)],
                   ),
                 ),
+                SizedBox(height: 40),
                 ValueListenableBuilder<int>(
                   valueListenable: formState,
                   builder: (context, value, _) {

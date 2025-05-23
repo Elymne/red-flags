@@ -16,46 +16,35 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
-  /// Duration of the splashscreen.
-  final _splashscreenDuration = Duration(milliseconds: 3000);
+  late final PageController _pageCtrl;
 
-  /// Pager animation controller.
-  late final PageController _pageController;
-  final _pageSwapDuration = Duration(milliseconds: 400);
-  int _currentPage = 0;
+  final _splashscreenDur = Duration(milliseconds: 3000);
+  final _swapTic = Duration(milliseconds: 400);
 
   @override
   void initState() {
     super.initState();
-
-    /// * Pager controller for my stickman custom animation.
-    _pageController = PageController(initialPage: 0, viewportFraction: 0.6);
-    _pageController.addListener(() {
-      /// * Every time page is moving, we check if the page value is round because it mean that the animation is completed and we can start the new one.
-      if (_pageController.page!.roundToDouble() == _pageController.page && _pageController.page! < 5) {
-        _currentPage += 1;
-        _pageController.animateToPage(_currentPage, duration: _pageSwapDuration, curve: Curves.easeInOut);
+    _pageCtrl = PageController(initialPage: 0, viewportFraction: 0.6);
+    _pageCtrl.addListener(() {
+      if (_pageCtrl.page!.roundToDouble() == _pageCtrl.page && _pageCtrl.page! < 5) {
+        _pageCtrl.animateToPage(_pageCtrl.page == null ? 0 : _pageCtrl.page!.toInt() + 1, duration: _swapTic, curve: Curves.easeInOut);
       }
     });
 
-    /// * We need to wait that the view have been builted before moving the first page.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _currentPage = 1;
-      _pageController.animateToPage(_currentPage, duration: _pageSwapDuration, curve: Curves.easeInOut);
+    Future.delayed(_splashscreenDur, () {
+      if (!mounted) return;
+      ref.read(routerNotifierprovider.notifier).pushAndRemoveUntil(Navigator.of(context), const HomeScreen());
     });
 
-    /// * Timer for splashscreen animation duration. Then push to HomeScreen.
-    Future.delayed(_splashscreenDuration, () {
-      if (!mounted) return;
-
-      /// * Navigate.
-      ref.read(routerNotifierprovider.notifier).pushAndRemoveUntil(Navigator.of(context), const HomeScreen());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      print("Lets go");
+      _pageCtrl.animateToPage(1, duration: _swapTic, curve: Curves.easeInOut);
     });
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _pageCtrl.dispose();
     super.dispose();
   }
 
@@ -63,7 +52,6 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final pagerHeight = MediaQuery.of(context).size.height / 3;
-
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {},
@@ -71,37 +59,29 @@ class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
         body: SafeArea(
           child: Stack(
             children: [
-              /// * Center Title Widget.
               SlideWidget(
                 duration: Duration(milliseconds: 400),
                 child: Center(child: ShakleText(AppLocalizations.of(context)!.title, style: Theme.of(context).textTheme.displayLarge)),
               ),
-
-              /// * Bottom Pager Widget.
-              FadeWidget(
-                duration: Duration(milliseconds: 400),
-                child: Align(
-                  alignment: Alignment(0, 1),
-                  child: SizedBox(
-                    height: pagerHeight,
-                    child: PageView.builder(
-                      controller: _pageController,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 7,
-                      itemBuilder: (context, index) {
-                        /// * I want the two first page to be empty (styling choice).
-                        if (index < 2) return SizedBox(width: screenWidth);
-
-                        /// * For some index, I want the stickman to be shaken with red effect like the title.
-                        if (index == 5) return Image.asset("assets/images/stickman_red.png", fit: BoxFit.contain);
-
-                        /// * Default stickman wont have any animation.
-                        return SizedBox(width: double.infinity, child: Image.asset("assets/images/stickman_grey.png", fit: BoxFit.contain));
-                      },
-                    ),
-                  ),
-                ),
-              ),
+              // FadeWidget(
+              //   duration: Duration(milliseconds: 400),
+              //   child: Align(
+              //     alignment: Alignment(0, 1),
+              //     child: SizedBox(
+              //       height: pagerHeight,
+              //       child: PageView.builder(
+              //         controller: _pageCtrl,
+              //         physics: NeverScrollableScrollPhysics(),
+              //         itemCount: 7,
+              //         itemBuilder: (context, index) {
+              //           if (index < 2) return SizedBox(width: screenWidth);
+              //           if (index == 5) return Image.asset("assets/images/stickman_red.png", fit: BoxFit.contain);
+              //           return SizedBox(width: double.infinity, child: Image.asset("assets/images/stickman_grey.png", fit: BoxFit.contain));
+              //         },
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
