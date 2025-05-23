@@ -1,8 +1,10 @@
 import 'package:red_flags/app/router/router.notifier.dart';
+import 'package:red_flags/app/screens/create_person_screen/form_activity.dart';
 import 'package:red_flags/app/screens/create_person_screen/form_controller/create_person_form_controller.dart';
 import 'package:red_flags/app/screens/create_person_screen/form_identity.dart';
 import 'package:red_flags/app/screens/create_person_screen/form_zone.dart';
-import 'package:red_flags/app/screens/create_person_screen/states/zones_state.dart';
+import 'package:red_flags/app/screens/create_person_screen/states/activities_state.provider.dart';
+import 'package:red_flags/app/screens/create_person_screen/states/zones_state.provider.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
 import 'package:red_flags/app/widgets/routing/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_outlined_button.dart';
@@ -30,6 +32,7 @@ class _State extends ConsumerState<CreatePersonScreen> {
       onPopInvokedWithResult: (didPop, result) {
         if (_pageCtrl.page == 0) {
           ref.read(zonesStateProvider.notifier).reset();
+          ref.read(activitiesStateProvider.notifier).reset();
           ref.read(routerNotifierprovider.notifier).pop(Navigator.of(context));
           return;
         }
@@ -52,7 +55,7 @@ class _State extends ConsumerState<CreatePersonScreen> {
                   child: PageView(
                     controller: _pageCtrl,
                     physics: NeverScrollableScrollPhysics(),
-                    children: [FormIdentity(formCtrl: _formCtrl), FormZone(formCtrl: _formCtrl)],
+                    children: [FormIdentity(formCtrl: _formCtrl), FormZone(formCtrl: _formCtrl), FormActivity(formCtrl: _formCtrl)],
                   ),
                 ),
                 ValueListenableBuilder<int>(

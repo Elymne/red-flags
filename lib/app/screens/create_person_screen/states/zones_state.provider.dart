@@ -25,6 +25,5 @@ class ZonesStateNotifier extends StateNotifier<ZonesState> {
 
 class ZonesState extends WidgetState {
   final List<Zone> zones;
-
   ZonesState({required super.status, required this.zones});
 }

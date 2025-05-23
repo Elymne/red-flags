@@ -21,7 +21,12 @@ class CreatePersonFormController {
   void resetZone() => _zone = null;
 
   Activity? _activity;
+  Activity? get activity => _activity;
+  void resetActivity() => _activity = null;
+
   Company? _company;
+  Company? get company => _company;
+  void resetCompany() => _company = null;
 
   CreatePersonFormController(this.state);
 

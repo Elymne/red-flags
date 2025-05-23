@@ -60,7 +60,7 @@ class _State extends ConsumerState<CardSingleLine> with TickerProviderStateMixin
                 child: Transform.translate(
                   offset: Offset(_backgroundAnim.value, _backgroundAnim.value / 2),
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.transparent,
@@ -70,9 +70,14 @@ class _State extends ConsumerState<CardSingleLine> with TickerProviderStateMixin
                       children: [
                         Icon(widget.icon, color: Theme.of(context).colorScheme.primary),
                         SizedBox(width: 20),
-                        Text(
-                          widget.text,
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Theme.of(context).colorScheme.primary),
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: Text(
+                            widget.text,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Theme.of(context).colorScheme.primary),
+                          ),
                         ),
                       ],
                     ),
@@ -95,7 +100,7 @@ class _State extends ConsumerState<CardSingleLine> with TickerProviderStateMixin
                     if (widget.onTap != null) widget.onTap!();
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.transparent,
@@ -110,7 +115,15 @@ class _State extends ConsumerState<CardSingleLine> with TickerProviderStateMixin
                           color: widget.isActive ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSecondary,
                         ),
                         SizedBox(width: 20),
-                        Text(widget.text, style: Theme.of(context).textTheme.headlineSmall),
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: Text(
+                            widget.text,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                        ),
                       ],
                     ),
                   ),
