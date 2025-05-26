@@ -32,6 +32,10 @@
     "@okButton": {
         "description": "Texte de bouton OKAY."
     },
+    "nextButton": "Suivant",
+    "@nextButton": {
+        "description": "Texte de bouton Suivant."
+    },
     "backButton": "Retour",
     "@backButton": {
         "description": "Texte de bouton Retour."

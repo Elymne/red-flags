@@ -3,9 +3,8 @@ import 'package:red_flags/models/activity.model.dart';
 import 'package:red_flags/models/company.model.dart';
 import 'package:red_flags/models/zone.model.dart';
 
-/// Not a notifier because I want more control over ui rebuild with theses data.
 class PersonFormController {
-  final ValueNotifier<int> state;
+  final ValueNotifier<PersonFormButtonState> state;
 
   String _firstname = "";
   String get firstname => _firstname;
@@ -38,16 +37,28 @@ class PersonFormController {
     _activity = activity ?? _activity;
     _company = company ?? _company;
 
-    if (_firstname.length < 2 && _lastname.length < 2 && _birthDate == null) {
-      state.value = 0;
-      return;
-    }
+    state.value = PersonFormButtonState(
+      isFirstPageValid: _firstname.length >= 2 && _lastname.length >= 2 && _birthDate != null,
+      isSecondPageValid: _zone != null,
+    );
+  }
+}
 
-    if (_zone == null) {
-      state.value = 1;
-      return;
-    }
+class PersonFormButtonState {
+  final bool isFirstPageValid;
+  final bool isSecondPageValid;
 
-    state.value = 2;
+  PersonFormButtonState({required this.isFirstPageValid, required this.isSecondPageValid});
+
+  bool cannotNext(int currentPage) {
+    return (!isFirstPageValid && currentPage == 0) || (isFirstPageValid && !isSecondPageValid && currentPage == 1);
+  }
+
+  bool canNext(int currentPage) {
+    return (isFirstPageValid && currentPage == 0) || (isFirstPageValid && isSecondPageValid && currentPage >= 1 && currentPage < 3);
+  }
+
+  bool canCreate(int currentPage) {
+    return (isFirstPageValid && isSecondPageValid && currentPage == 3);
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_activity.dart';
 import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_company.dart';
@@ -26,56 +27,37 @@ class CreatePersonScreen extends ConsumerStatefulWidget {
 }
 
 class _State extends ConsumerState<CreatePersonScreen> {
+  final formState = ValueNotifier(PersonFormButtonState(isFirstPageValid: false, isSecondPageValid: false));
   late final _pageCtrl = PageController(initialPage: 0)..addListener(() => setState(() {}));
   late final _formCtrl = PersonFormController(formState);
-  final formState = ValueNotifier<int>(0);
-  int? dialog;
+  bool isFreezing = false;
 
   @override
   Widget build(BuildContext context) {
     ref.listen(createPersonResultStateProvider, (_, next) async {
       if (next.status == WidgetStatus.success) {
-        if (dialog != null) {
-          Navigator.of(context).pop();
-          dialog = null;
-        }
-        ref.read(routerNotifierprovider.notifier).push(Navigator.of(context), const HomeScreen());
-        return;
-      }
-
-      if (next.status == WidgetStatus.loading) {
-        if (dialog != null) {
-          Navigator.of(context).pop();
-          dialog = null;
-        }
-        dialog = await showDialog<int>(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) => Center(child: CircularProgressIndicator()),
+        setState(() => isFreezing = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.checkSuccess), backgroundColor: Theme.of(context).colorScheme.primary),
         );
+        ref.read(zonesStateProvider.notifier).reset();
+        ref.read(activitiesStateProvider.notifier).reset();
+        ref.read(companiesStateProvider.notifier).reset();
+        ref.read(createPersonResultStateProvider.notifier).reset();
+        ref.read(routerNotifierprovider.notifier).pushAndRemoveUntil(Navigator.of(context), const HomeScreen());
         return;
       }
 
       if (next.status == WidgetStatus.failure) {
-        if (dialog != null) {
-          Navigator.of(context).pop();
-          dialog = null;
-        }
-        showDialog<void>(
-          context: context,
-          builder:
-              (context) => AlertDialog(
-                title: Text(AppLocalizations.of(context)!.netFailure),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(AppLocalizations.of(context)!.backButton),
-                  ),
-                ],
-              ),
+        setState(() => isFreezing = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.netFailure), backgroundColor: Theme.of(context).colorScheme.error),
         );
+        return;
+      }
+
+      if (next.status == WidgetStatus.loading) {
+        setState(() => isFreezing = true);
       }
     });
 
@@ -94,73 +76,81 @@ class _State extends ConsumerState<CreatePersonScreen> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(screenGlobalMargin),
-            child: Column(
-              children: [
-                TitleContainer(
-                  title: AppLocalizations.of(context)!.createScreenTitle,
-                  subtitle: AppLocalizations.of(context)!.createScreenSubTitle,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                SizedBox(height: 40),
-                Expanded(
-                  child: PageView(
-                    controller: _pageCtrl,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      FormWidgetIdentity(formCtrl: _formCtrl),
-                      FormWidgetZone(formCtrl: _formCtrl),
-                      FormWidgetActivity(formCtrl: _formCtrl),
-                      FormWidgetCompany(formCtrl: _formCtrl),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 40),
-                ValueListenableBuilder<int>(
-                  valueListenable: formState,
-                  builder: (context, value, _) {
-                    return SlideWidget(
-                      duration: Duration(milliseconds: 1000),
-                      child: Column(
+        body: Stack(
+          children: [
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(screenGlobalMargin),
+                child: Column(
+                  children: [
+                    TitleContainer(
+                      title: AppLocalizations.of(context)!.createScreenTitle,
+                      subtitle: AppLocalizations.of(context)!.createScreenSubTitle,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    SizedBox(height: 40),
+                    Expanded(
+                      child: PageView(
+                        controller: _pageCtrl,
+                        physics: NeverScrollableScrollPhysics(),
                         children: [
-                          Visibility(
-                            /// *
-                            visible: value == 0 || value == 1 && _pageCtrl.page == 1,
-                            child: ShakleOutlinedButton("Next"),
-                          ),
-                          Visibility(
-                            visible: value == 1 && _pageCtrl.page == 0 || value == 2 && _pageCtrl.page != 3,
-                            child: ShakleOutlinedButton(
-                              "Next",
-                              onPressed: () {
-                                _pageCtrl.animateToPage(
-                                  _pageCtrl.page!.toInt() + 1,
-                                  duration: Duration(milliseconds: 200),
-                                  curve: Curves.easeIn,
-                                );
-                              },
-                            ),
-                          ),
-                          Visibility(
-                            visible: value == 2 && _pageCtrl.page == 3,
-                            child: ShakleOutlinedButton(
-                              "Create",
-                              onPressed: () {
-                                if (_pageCtrl.page == null) return;
-                                ref.read(createPersonResultStateProvider.notifier).create(_formCtrl);
-                              },
-                            ),
-                          ),
+                          FormWidgetIdentity(formCtrl: _formCtrl),
+                          FormWidgetZone(formCtrl: _formCtrl),
+                          FormWidgetActivity(formCtrl: _formCtrl),
+                          FormWidgetCompany(formCtrl: _formCtrl),
                         ],
                       ),
-                    );
-                  },
+                    ),
+                    SizedBox(height: 40),
+                    ValueListenableBuilder(
+                      valueListenable: formState,
+                      builder: (context, value, _) {
+                        return SlideWidget(
+                          duration: Duration(milliseconds: 1000),
+                          child: Column(
+                            children: [
+                              Visibility(
+                                visible: value.cannotNext(_pageCtrl.page == null ? 0 : _pageCtrl.page!.toInt()),
+                                child: ShakleOutlinedButton(AppLocalizations.of(context)!.nextButton),
+                              ),
+                              Visibility(
+                                visible: value.canNext(_pageCtrl.page == null ? 0 : _pageCtrl.page!.toInt()),
+                                child: ShakleOutlinedButton(
+                                  AppLocalizations.of(context)!.nextButton,
+                                  onPressed: () {
+                                    if (_pageCtrl.page == null) return;
+                                    _pageCtrl.animateToPage(
+                                      _pageCtrl.page!.toInt() + 1,
+                                      duration: Duration(milliseconds: 200),
+                                      curve: Curves.easeIn,
+                                    );
+                                  },
+                                ),
+                              ),
+                              Visibility(
+                                visible: value.canCreate(_pageCtrl.page == null ? 0 : _pageCtrl.page!.toInt()),
+                                child: ShakleOutlinedButton(
+                                  AppLocalizations.of(context)!.createButton,
+                                  onPressed: () {
+                                    ref.read(createPersonResultStateProvider.notifier).create(_formCtrl);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+
+            /// * Loading *
+            if (isFreezing)
+              BackdropFilter(filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5), child: Container(color: Colors.black.withAlpha(100))),
+            if (isFreezing) Center(child: CircularProgressIndicator()),
+          ],
         ),
       ),
     );
