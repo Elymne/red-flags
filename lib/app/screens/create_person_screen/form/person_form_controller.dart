@@ -3,6 +3,7 @@ import 'package:red_flags/models/activity.model.dart';
 import 'package:red_flags/models/company.model.dart';
 import 'package:red_flags/models/zone.model.dart';
 
+/// Not a notifier because I want more control over ui rebuild with theses data.
 class PersonFormController {
   final ValueNotifier<int> state;
 

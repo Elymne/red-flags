@@ -1,4 +1,4 @@
-import 'package:red_flags/app/screens/create_person_screen/form_controller/person_form_controller.dart';
+import 'package:red_flags/app/screens/create_person_screen/form/person_form_controller.dart';
 import 'package:red_flags/app/widgets/routing/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_date_picker.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_textfield.dart';
@@ -6,16 +6,16 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
-class FormIdentity extends ConsumerStatefulWidget {
+class FormWidgetIdentity extends ConsumerStatefulWidget {
   final PersonFormController formCtrl;
 
-  const FormIdentity({super.key, required this.formCtrl});
+  const FormWidgetIdentity({super.key, required this.formCtrl});
 
   @override
-  ConsumerState<FormIdentity> createState() => _State();
+  ConsumerState<FormWidgetIdentity> createState() => _State();
 }
 
-class _State extends ConsumerState<FormIdentity> {
+class _State extends ConsumerState<FormWidgetIdentity> {
   @override
   Widget build(BuildContext context) {
     return Column(

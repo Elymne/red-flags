@@ -1,12 +1,12 @@
 import 'package:red_flags/app/router/router.notifier.dart';
-import 'package:red_flags/app/screens/create_person_screen/form_activity.dart';
-import 'package:red_flags/app/screens/create_person_screen/form_company.dart';
-import 'package:red_flags/app/screens/create_person_screen/form_controller/person_form_controller.dart';
-import 'package:red_flags/app/screens/create_person_screen/form_identity.dart';
-import 'package:red_flags/app/screens/create_person_screen/form_zone.dart';
+import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_activity.dart';
+import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_company.dart';
+import 'package:red_flags/app/screens/create_person_screen/form/person_form_controller.dart';
+import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_identity.dart';
+import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_zone.dart';
 import 'package:red_flags/app/screens/create_person_screen/states/activities_state.provider.dart';
 import 'package:red_flags/app/screens/create_person_screen/states/companies_state.provider.dart';
-import 'package:red_flags/app/screens/create_person_screen/states/create_person_state.provider.dart';
+import 'package:red_flags/app/screens/create_person_screen/states/create_person_result_state.provider.dart';
 import 'package:red_flags/app/screens/create_person_screen/states/zones_state.provider.dart';
 import 'package:red_flags/app/screens/home_screen/home_screen.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
@@ -27,22 +27,58 @@ class CreatePersonScreen extends ConsumerStatefulWidget {
 
 class _State extends ConsumerState<CreatePersonScreen> {
   late final _pageCtrl = PageController(initialPage: 0)..addListener(() => setState(() {}));
-  final formState = ValueNotifier<int>(0);
   late final _formCtrl = PersonFormController(formState);
-
-  @override
-  void initState() {
-    super.initState();
-    ref.listen(createPersonStateProvider, (_, next) {
-      if (next.status == WidgetStatus.success) {
-        ref.read(routerNotifierprovider.notifier).push(Navigator.of(context), const HomeScreen());
-        return;
-      }
-    });
-  }
+  final formState = ValueNotifier<int>(0);
+  int? dialog;
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(createPersonResultStateProvider, (_, next) async {
+      if (next.status == WidgetStatus.success) {
+        if (dialog != null) {
+          Navigator.of(context).pop();
+          dialog = null;
+        }
+        ref.read(routerNotifierprovider.notifier).push(Navigator.of(context), const HomeScreen());
+        return;
+      }
+
+      if (next.status == WidgetStatus.loading) {
+        if (dialog != null) {
+          Navigator.of(context).pop();
+          dialog = null;
+        }
+        dialog = await showDialog<int>(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => Center(child: CircularProgressIndicator()),
+        );
+        return;
+      }
+
+      if (next.status == WidgetStatus.failure) {
+        if (dialog != null) {
+          Navigator.of(context).pop();
+          dialog = null;
+        }
+        showDialog<void>(
+          context: context,
+          builder:
+              (context) => AlertDialog(
+                title: Text(AppLocalizations.of(context)!.netFailure),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(AppLocalizations.of(context)!.backButton),
+                  ),
+                ],
+              ),
+        );
+      }
+    });
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
@@ -50,7 +86,7 @@ class _State extends ConsumerState<CreatePersonScreen> {
           ref.read(zonesStateProvider.notifier).reset();
           ref.read(activitiesStateProvider.notifier).reset();
           ref.read(companiesStateProvider.notifier).reset();
-          ref.read(createPersonStateProvider.notifier).reset();
+          ref.read(createPersonResultStateProvider.notifier).reset();
           ref.read(routerNotifierprovider.notifier).pop(Navigator.of(context));
           return;
         }
@@ -74,10 +110,10 @@ class _State extends ConsumerState<CreatePersonScreen> {
                     controller: _pageCtrl,
                     physics: NeverScrollableScrollPhysics(),
                     children: [
-                      FormIdentity(formCtrl: _formCtrl),
-                      FormZone(formCtrl: _formCtrl),
-                      FormActivity(formCtrl: _formCtrl),
-                      FormCompany(formCtrl: _formCtrl),
+                      FormWidgetIdentity(formCtrl: _formCtrl),
+                      FormWidgetZone(formCtrl: _formCtrl),
+                      FormWidgetActivity(formCtrl: _formCtrl),
+                      FormWidgetCompany(formCtrl: _formCtrl),
                     ],
                   ),
                 ),
@@ -113,7 +149,7 @@ class _State extends ConsumerState<CreatePersonScreen> {
                               "Create",
                               onPressed: () {
                                 if (_pageCtrl.page == null) return;
-                                ref.read(createPersonStateProvider.notifier).create(_formCtrl);
+                                ref.read(createPersonResultStateProvider.notifier).create(_formCtrl);
                               },
                             ),
                           ),

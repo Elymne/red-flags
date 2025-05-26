@@ -1,4 +1,4 @@
-import 'package:red_flags/app/screens/create_person_screen/form_controller/person_form_controller.dart';
+import 'package:red_flags/app/screens/create_person_screen/form/person_form_controller.dart';
 import 'package:red_flags/app/screens/create_person_screen/states/companies_state.provider.dart';
 import 'package:red_flags/app/widgets/listviews/shakle_card.dart';
 import 'package:red_flags/app/widgets/listviews/slide_list_view.dart';
@@ -10,16 +10,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:red_flags/core/states/widget_state.dart';
 
-class FormCompany extends ConsumerStatefulWidget {
+class FormWidgetCompany extends ConsumerStatefulWidget {
   final PersonFormController formCtrl;
 
-  const FormCompany({super.key, required this.formCtrl});
+  const FormWidgetCompany({super.key, required this.formCtrl});
 
   @override
-  ConsumerState<FormCompany> createState() => _State();
+  ConsumerState<FormWidgetCompany> createState() => _State();
 }
 
-class _State extends ConsumerState<FormCompany> {
+class _State extends ConsumerState<FormWidgetCompany> {
   @override
   Widget build(BuildContext context) {
     final companiesState = ref.watch(companiesStateProvider);
