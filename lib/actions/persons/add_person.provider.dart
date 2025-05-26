@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:red_flags/core/exceptions/bad_user_input_exception.dart';
 import 'package:red_flags/core/exceptions/network_exception.dart';
 
 final addPersonProvider = FutureProvider.autoDispose.family<void, AddPersonProviderParams>((ref, params) async {
-  /// * Get zones by name.
-  final response = await Dio().post<String>(
+  final response = await Dio().post<Map<String, dynamic>>(
     "${dotenv.env["HOST"]}/persons",
     data: {
       "firstname": params.firstname,
@@ -17,10 +17,15 @@ final addPersonProvider = FutureProvider.autoDispose.family<void, AddPersonProvi
     },
   );
 
-  /// * Check zones response code.
-  if (response.statusCode != 201) {
-    throw NetworkException(code: response.statusCode!, expected: 200);
+  if (response.statusCode == 201) {
+    return;
   }
+
+  if (response.statusCode == 406) {
+    throw BadUserInputException(details: response.data!["message"]);
+  }
+
+  throw NetworkException(code: response.statusCode!, expected: 201);
 });
 
 class AddPersonProviderParams {

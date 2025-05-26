@@ -1,4 +1,4 @@
-import 'package:red_flags/app/screens/create_person_screen/form/person_form_controller.dart';
+import 'package:red_flags/app/screens/create_person_screen/form/person_form_state.provider.dart';
 import 'package:red_flags/app/screens/create_person_screen/states/activities_state.provider.dart';
 import 'package:red_flags/app/widgets/listviews/shakle_card.dart';
 import 'package:red_flags/app/widgets/listviews/slide_list_view.dart';
@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:red_flags/core/states/widget_state.dart';
 
 class FormWidgetActivity extends ConsumerStatefulWidget {
-  final PersonFormController formCtrl;
+  final PersonFormState formCtrl;
 
   const FormWidgetActivity({super.key, required this.formCtrl});
 

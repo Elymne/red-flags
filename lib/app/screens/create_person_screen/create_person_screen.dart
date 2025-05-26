@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_activity.dart';
 import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_company.dart';
-import 'package:red_flags/app/screens/create_person_screen/form/person_form_controller.dart';
+import 'package:red_flags/app/screens/create_person_screen/form/person_form_state.provider.dart';
 import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_identity.dart';
 import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_zone.dart';
 import 'package:red_flags/app/screens/create_person_screen/states/activities_state.provider.dart';
@@ -29,7 +29,7 @@ class CreatePersonScreen extends ConsumerStatefulWidget {
 class _State extends ConsumerState<CreatePersonScreen> {
   final formState = ValueNotifier(PersonFormButtonState(isFirstPageValid: false, isSecondPageValid: false));
   late final _pageCtrl = PageController(initialPage: 0)..addListener(() => setState(() {}));
-  late final _formCtrl = PersonFormController(formState);
+  late final _formCtrl = PersonFormState(formState);
   bool isFreezing = false;
 
   @override
@@ -38,7 +38,10 @@ class _State extends ConsumerState<CreatePersonScreen> {
       if (next.status == WidgetStatus.success) {
         setState(() => isFreezing = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.checkSuccess), backgroundColor: Theme.of(context).colorScheme.primary),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.personCreationSuccess),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
         );
         ref.read(zonesStateProvider.notifier).reset();
         ref.read(activitiesStateProvider.notifier).reset();
@@ -50,14 +53,26 @@ class _State extends ConsumerState<CreatePersonScreen> {
 
       if (next.status == WidgetStatus.failure) {
         setState(() => isFreezing = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.netFailure), backgroundColor: Theme.of(context).colorScheme.error),
-        );
-        return;
+        if (next.errorIndex == CreatePersonResultState.networkError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(AppLocalizations.of(context)!.netFailure), backgroundColor: Theme.of(context).colorScheme.error),
+          );
+          return;
+        }
+        if (next.errorIndex == CreatePersonResultState.userInputError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.personDuplicationError),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+          return;
+        }
       }
 
       if (next.status == WidgetStatus.loading) {
         setState(() => isFreezing = true);
+        return;
       }
     });
 

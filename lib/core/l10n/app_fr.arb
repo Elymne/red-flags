@@ -44,6 +44,10 @@
     "@createButton": {
         "description": "Texte de bouton Créer."
     },
+    "personCreationSuccess": "Personne ajoutée avec succès.",
+    "@personCreationSuccess": {
+        "description": "Réponse lorsqu'une personne a été créée par l'utilisateur."
+    },
     "createScreenTitle": "Création",
     "@createScreenTitle": {
         "description": "Texte de titre de la page d'ajout d'un redflag."
@@ -111,5 +115,9 @@
     "activityName": "Métier/Activité",
     "@activityName": {
         "description": "Label du champ de texte d'activité ou métier actuelle de la ou les personnes recherchées."
+    },
+    "personDuplicationError": "Cette personne semble déjà exister dans notre base de données.",
+    "@personDuplicationError": {
+        "description": "Un message d'erreur lorsque l'utilisateur rentre un utilisateur qui existe déjà en DB."
     }
 }

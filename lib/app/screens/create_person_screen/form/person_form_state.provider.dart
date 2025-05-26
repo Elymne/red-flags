@@ -3,7 +3,7 @@ import 'package:red_flags/models/activity.model.dart';
 import 'package:red_flags/models/company.model.dart';
 import 'package:red_flags/models/zone.model.dart';
 
-class PersonFormController {
+class PersonFormState {
   final ValueNotifier<PersonFormButtonState> state;
 
   String _firstname = "";
@@ -27,7 +27,7 @@ class PersonFormController {
   Company? get company => _company;
   void resetCompany() => _company = null;
 
-  PersonFormController(this.state);
+  PersonFormState(this.state);
 
   void updateValues({String? firstname, String? lastname, DateTime? birthDate, Zone? zone, Activity? activity, Company? company}) {
     _firstname = firstname ?? _firstname;
