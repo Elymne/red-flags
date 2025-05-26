@@ -46,14 +46,23 @@ class _State extends State<ShakleDatepicker> with TickerProviderStateMixin {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  _selectedDate == null ? widget.label : _selectedDate!.format(),
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: _selectedDate == null ? Theme.of(context).colorScheme.onSurfaceVariant : Theme.of(context).colorScheme.onSurface,
-                  ),
+                Row(
+                  children: [
+                    Icon(Icons.calendar_today_outlined, color: Theme.of(context).colorScheme.primary),
+                    SizedBox(width: 20),
+                    Text(
+                      _selectedDate == null ? widget.label : _selectedDate!.format(),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color:
+                            _selectedDate == null
+                                ? Theme.of(context).colorScheme.onSurfaceVariant
+                                : Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 10),
-                Container(height: 1, width: double.infinity, color: Theme.of(context).colorScheme.outline),
+                Container(height: 2, width: double.infinity, color: Theme.of(context).colorScheme.outline),
               ],
             ),
           ),

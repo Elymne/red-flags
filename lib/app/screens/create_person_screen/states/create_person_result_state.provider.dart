@@ -29,7 +29,7 @@ class CreatePersonResultStateNotifier extends StateNotifier<CreatePersonResultSt
         ).future,
       );
       state = CreatePersonResultState(status: WidgetStatus.success);
-    } on BadUserInputException catch (e) {
+    } on BadUserInputException {
       state = CreatePersonResultState(status: WidgetStatus.failure, errorIndex: CreatePersonResultState.userInputError);
     } catch (e) {
       state = CreatePersonResultState(status: WidgetStatus.failure, errorIndex: CreatePersonResultState.userInputError);

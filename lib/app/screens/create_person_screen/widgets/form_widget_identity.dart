@@ -27,6 +27,7 @@ class _State extends ConsumerState<FormWidgetIdentity> {
           child: ShakleTextfield(
             AppLocalizations.of(context)!.firstname,
             value: widget.formCtrl.firstname,
+            icon: Icons.person_2_outlined,
             onChanged: (value) {
               setState(() {
                 widget.formCtrl.updateValues(firstname: value);
@@ -40,6 +41,7 @@ class _State extends ConsumerState<FormWidgetIdentity> {
           child: ShakleTextfield(
             AppLocalizations.of(context)!.lastname,
             value: widget.formCtrl.lastname,
+            icon: Icons.person_2_outlined,
             onChanged: (value) {
               setState(() {
                 widget.formCtrl.updateValues(lastname: value);

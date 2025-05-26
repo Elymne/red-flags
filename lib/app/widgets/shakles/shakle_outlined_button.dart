@@ -51,7 +51,7 @@ class _State extends State<ShakleOutlinedButton> with TickerProviderStateMixin {
                 child: OutlinedButton(
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                    side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
                     padding: EdgeInsets.symmetric(horizontal: 100, vertical: 20),
                   ),
                   child: Text(
@@ -77,6 +77,7 @@ class _State extends State<ShakleOutlinedButton> with TickerProviderStateMixin {
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(
                     color: widget.onPressed != null ? Theme.of(context).colorScheme.outline : Theme.of(context).colorScheme.outlineVariant,
+                    width: 2,
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 100, vertical: 20),
                 ),
