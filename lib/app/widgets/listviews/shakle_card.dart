@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CardSingleLine extends ConsumerStatefulWidget {
+class ShakleCard extends ConsumerStatefulWidget {
   final String text;
+  final String? subtext;
   final IconData? icon;
   final bool isActive;
   final void Function()? onTap;
 
-  const CardSingleLine({super.key, required this.text, this.icon, this.isActive = false, this.onTap});
+  const ShakleCard({super.key, required this.text, this.subtext, this.icon, this.isActive = false, this.onTap});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _State();
 }
 
-class _State extends ConsumerState<CardSingleLine> with TickerProviderStateMixin {
+class _State extends ConsumerState<ShakleCard> with TickerProviderStateMixin {
   late final AnimationController _backgroundAnimCtrl;
   late final Animation<double> _backgroundAnim;
   final Duration _backgroundAnimTic = Duration(milliseconds: 400);
@@ -72,11 +73,25 @@ class _State extends ConsumerState<CardSingleLine> with TickerProviderStateMixin
                         SizedBox(width: 20),
                         Flexible(
                           fit: FlexFit.loose,
-                          child: Text(
-                            widget.text,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Theme.of(context).colorScheme.primary),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.text,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Theme.of(context).colorScheme.primary),
+                              ),
+                              Visibility(
+                                visible: widget.subtext != null,
+                                child: Text(
+                                  widget.subtext ?? "",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.primary),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -117,11 +132,25 @@ class _State extends ConsumerState<CardSingleLine> with TickerProviderStateMixin
                         SizedBox(width: 20),
                         Flexible(
                           fit: FlexFit.loose,
-                          child: Text(
-                            widget.text,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headlineSmall,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.text,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.headlineSmall,
+                              ),
+                              Visibility(
+                                visible: widget.subtext != null,
+                                child: Text(
+                                  widget.subtext ?? "",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],

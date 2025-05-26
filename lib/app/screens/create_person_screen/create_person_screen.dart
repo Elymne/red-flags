@@ -1,14 +1,19 @@
 import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/create_person_screen/form_activity.dart';
-import 'package:red_flags/app/screens/create_person_screen/form_controller/create_person_form_controller.dart';
+import 'package:red_flags/app/screens/create_person_screen/form_company.dart';
+import 'package:red_flags/app/screens/create_person_screen/form_controller/person_form_controller.dart';
 import 'package:red_flags/app/screens/create_person_screen/form_identity.dart';
 import 'package:red_flags/app/screens/create_person_screen/form_zone.dart';
 import 'package:red_flags/app/screens/create_person_screen/states/activities_state.provider.dart';
+import 'package:red_flags/app/screens/create_person_screen/states/companies_state.provider.dart';
+import 'package:red_flags/app/screens/create_person_screen/states/create_person_state.provider.dart';
 import 'package:red_flags/app/screens/create_person_screen/states/zones_state.provider.dart';
+import 'package:red_flags/app/screens/home_screen/home_screen.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
 import 'package:red_flags/app/widgets/routing/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_outlined_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:red_flags/core/states/widget_state.dart';
 import 'package:red_flags/core/themes/style_constant.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +26,20 @@ class CreatePersonScreen extends ConsumerStatefulWidget {
 }
 
 class _State extends ConsumerState<CreatePersonScreen> {
-  late final _pageCtrl = PageController(initialPage: 0);
-  late final _formCtrl = CreatePersonFormController(formState);
+  late final _pageCtrl = PageController(initialPage: 0)..addListener(() => setState(() {}));
   final formState = ValueNotifier<int>(0);
+  late final _formCtrl = PersonFormController(formState);
+
+  @override
+  void initState() {
+    super.initState();
+    ref.listen(createPersonStateProvider, (_, next) {
+      if (next.status == WidgetStatus.success) {
+        ref.read(routerNotifierprovider.notifier).push(Navigator.of(context), const HomeScreen());
+        return;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +49,8 @@ class _State extends ConsumerState<CreatePersonScreen> {
         if (_pageCtrl.page == 0) {
           ref.read(zonesStateProvider.notifier).reset();
           ref.read(activitiesStateProvider.notifier).reset();
+          ref.read(companiesStateProvider.notifier).reset();
+          ref.read(createPersonStateProvider.notifier).reset();
           ref.read(routerNotifierprovider.notifier).pop(Navigator.of(context));
           return;
         }
@@ -55,7 +73,12 @@ class _State extends ConsumerState<CreatePersonScreen> {
                   child: PageView(
                     controller: _pageCtrl,
                     physics: NeverScrollableScrollPhysics(),
-                    children: [FormIdentity(formCtrl: _formCtrl), FormZone(formCtrl: _formCtrl), FormActivity(formCtrl: _formCtrl)],
+                    children: [
+                      FormIdentity(formCtrl: _formCtrl),
+                      FormZone(formCtrl: _formCtrl),
+                      FormActivity(formCtrl: _formCtrl),
+                      FormCompany(formCtrl: _formCtrl),
+                    ],
                   ),
                 ),
                 SizedBox(height: 40),
@@ -66,22 +89,16 @@ class _State extends ConsumerState<CreatePersonScreen> {
                       duration: Duration(milliseconds: 1000),
                       child: Column(
                         children: [
-                          Visibility(visible: value == 0, child: ShakleOutlinedButton("Next")),
                           Visibility(
-                            visible: value == 1,
-                            child: ShakleOutlinedButton(
-                              "Next",
-                              onPressed: () {
-                                _pageCtrl.animateToPage(1, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                              },
-                            ),
+                            /// *
+                            visible: value == 0 || value == 1 && _pageCtrl.page == 1,
+                            child: ShakleOutlinedButton("Next"),
                           ),
                           Visibility(
-                            visible: value == 2 && _pageCtrl.page != 4,
+                            visible: value == 1 && _pageCtrl.page == 0 || value == 2 && _pageCtrl.page != 3,
                             child: ShakleOutlinedButton(
                               "Next",
                               onPressed: () {
-                                if (_pageCtrl.page == null) return;
                                 _pageCtrl.animateToPage(
                                   _pageCtrl.page!.toInt() + 1,
                                   duration: Duration(milliseconds: 200),
@@ -91,16 +108,12 @@ class _State extends ConsumerState<CreatePersonScreen> {
                             ),
                           ),
                           Visibility(
-                            visible: value == 2 && _pageCtrl.page == 4,
+                            visible: value == 2 && _pageCtrl.page == 3,
                             child: ShakleOutlinedButton(
                               "Create",
                               onPressed: () {
                                 if (_pageCtrl.page == null) return;
-                                _pageCtrl.animateToPage(
-                                  _pageCtrl.page!.toInt() + 1,
-                                  duration: Duration(milliseconds: 200),
-                                  curve: Curves.easeIn,
-                                );
+                                ref.read(createPersonStateProvider.notifier).create(_formCtrl);
                               },
                             ),
                           ),

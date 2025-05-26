@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/core/exceptions/bad_response_exception.dart';
 import 'package:red_flags/core/exceptions/network_exception.dart';
 
 final addPersonProvider = FutureProvider.autoDispose.family<void, AddPersonProviderParams>((ref, params) async {
@@ -22,11 +21,6 @@ final addPersonProvider = FutureProvider.autoDispose.family<void, AddPersonProvi
   if (response.statusCode != 201) {
     throw NetworkException(code: response.statusCode!, expected: 200);
   }
-
-  /// * Check zones response data.
-  if (response.data == null) {
-    throw BadResponseException(type: response.data.runtimeType, expected: String);
-  }
 });
 
 class AddPersonProviderParams {
@@ -34,8 +28,8 @@ class AddPersonProviderParams {
   final String lastname;
   final DateTime birthDate;
   final String zoneID;
-  final String companyID;
-  final String activityID;
+  final String? companyID;
+  final String? activityID;
   AddPersonProviderParams({
     required this.firstname,
     required this.lastname,

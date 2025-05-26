@@ -1,5 +1,5 @@
 import 'package:red_flags/app/screens/create_person_screen/form_controller/person_form_controller.dart';
-import 'package:red_flags/app/screens/create_person_screen/states/zones_state.provider.dart';
+import 'package:red_flags/app/screens/create_person_screen/states/companies_state.provider.dart';
 import 'package:red_flags/app/widgets/listviews/shakle_card.dart';
 import 'package:red_flags/app/widgets/listviews/slide_list_view.dart';
 import 'package:red_flags/app/widgets/routing/slide_widget.dart';
@@ -10,19 +10,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:red_flags/core/states/widget_state.dart';
 
-class FormZone extends ConsumerStatefulWidget {
+class FormCompany extends ConsumerStatefulWidget {
   final PersonFormController formCtrl;
 
-  const FormZone({super.key, required this.formCtrl});
+  const FormCompany({super.key, required this.formCtrl});
 
   @override
-  ConsumerState<FormZone> createState() => _State();
+  ConsumerState<FormCompany> createState() => _State();
 }
 
-class _State extends ConsumerState<FormZone> {
+class _State extends ConsumerState<FormCompany> {
   @override
   Widget build(BuildContext context) {
-    final zonesState = ref.watch(zonesStateProvider);
+    final companiesState = ref.watch(companiesStateProvider);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -31,31 +31,30 @@ class _State extends ConsumerState<FormZone> {
         SlideWidget(
           duration: Duration(milliseconds: 200),
           child: ShakleTextfield(
-            AppLocalizations.of(context)!.zoneName,
+            AppLocalizations.of(context)!.companyName,
             onSubmitted: (value) {
               setState(() {
-                widget.formCtrl.resetZone();
-                ref.read(zonesStateProvider.notifier).search(value);
+                widget.formCtrl.resetCompany();
+                ref.read(companiesStateProvider.notifier).search(value);
               });
             },
           ),
         ),
         SizedBox(height: 20),
         Visibility(
-          visible: zonesState.status == WidgetStatus.success,
+          visible: companiesState.status == WidgetStatus.success,
           child: Expanded(
             child: SlideListView(
-              itemCount: zonesState.zones.length,
+              itemCount: companiesState.companies.length,
               itemBuilder: (_, index) {
-                final zone = zonesState.zones[index];
+                final company = companiesState.companies[index];
                 return ShakleCard(
-                  text: zone.name,
+                  text: company.name,
+                  subtext: company.address,
                   icon: Icons.location_on,
-                  isActive: zone.id == widget.formCtrl.zone?.id,
+                  isActive: company.id == widget.formCtrl.company?.id,
                   onTap: () {
-                    setState(() {
-                      widget.formCtrl.updateValues(zone: zone);
-                    });
+                    setState(() => widget.formCtrl.updateValues(company: company));
                   },
                 );
               },
@@ -63,11 +62,11 @@ class _State extends ConsumerState<FormZone> {
           ),
         ),
         Visibility(
-          visible: zonesState.status == WidgetStatus.loading,
+          visible: companiesState.status == WidgetStatus.loading,
           child: Padding(padding: EdgeInsets.only(top: 100), child: SizedBox(height: 40, width: 40, child: ShakleLoading())),
         ),
         Visibility(
-          visible: zonesState.status == WidgetStatus.failure,
+          visible: companiesState.status == WidgetStatus.failure,
           child: Padding(
             padding: const EdgeInsets.only(top: 100),
             child: Text(

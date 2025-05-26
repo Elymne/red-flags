@@ -59,8 +59,9 @@ class _ChildState extends State<AnimatedChild> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    final mutiplierDuration = widget.index > 10 ? 0 : widget.index;
-    _slideDuration = Duration(milliseconds: 600 + (100) * mutiplierDuration);
+    // final mutiplierDuration = widget.index > 10 ? 0 : widget.index;
+    final mutiplierDuration = 0;
+    _slideDuration = Duration(milliseconds: 200 + (50) * mutiplierDuration);
   }
 
   @override

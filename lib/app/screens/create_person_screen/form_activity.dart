@@ -1,6 +1,6 @@
-import 'package:red_flags/app/screens/create_person_screen/form_controller/create_person_form_controller.dart';
+import 'package:red_flags/app/screens/create_person_screen/form_controller/person_form_controller.dart';
 import 'package:red_flags/app/screens/create_person_screen/states/activities_state.provider.dart';
-import 'package:red_flags/app/widgets/listviews/card_single_line.dart';
+import 'package:red_flags/app/widgets/listviews/shakle_card.dart';
 import 'package:red_flags/app/widgets/listviews/slide_list_view.dart';
 import 'package:red_flags/app/widgets/routing/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_loading.dart';
@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:red_flags/core/states/widget_state.dart';
 
 class FormActivity extends ConsumerStatefulWidget {
-  final CreatePersonFormController formCtrl;
+  final PersonFormController formCtrl;
 
   const FormActivity({super.key, required this.formCtrl});
 
@@ -48,7 +48,7 @@ class _State extends ConsumerState<FormActivity> {
               itemCount: activitiesState.activities.length,
               itemBuilder: (_, index) {
                 final activity = activitiesState.activities[index];
-                return CardSingleLine(
+                return ShakleCard(
                   text: activity.name,
                   icon: Icons.location_on,
                   isActive: activity.id == widget.formCtrl.activity?.id,
@@ -63,6 +63,16 @@ class _State extends ConsumerState<FormActivity> {
         Visibility(
           visible: activitiesState.status == WidgetStatus.loading,
           child: Padding(padding: EdgeInsets.only(top: 100), child: SizedBox(height: 40, width: 40, child: ShakleLoading())),
+        ),
+        Visibility(
+          visible: activitiesState.status == WidgetStatus.failure,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 100),
+            child: Text(
+              AppLocalizations.of(context)!.netFailure,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.error),
+            ),
+          ),
         ),
       ],
     );

@@ -3,11 +3,8 @@ import 'package:red_flags/models/activity.model.dart';
 import 'package:red_flags/models/company.model.dart';
 import 'package:red_flags/models/zone.model.dart';
 
-class CreatePersonFormController {
+class PersonFormController {
   final ValueNotifier<int> state;
-
-  final List<String> _errors = [];
-  List<String> get errors => _errors;
 
   String _firstname = "";
   String get firstname => _firstname;
@@ -30,7 +27,7 @@ class CreatePersonFormController {
   Company? get company => _company;
   void resetCompany() => _company = null;
 
-  CreatePersonFormController(this.state);
+  PersonFormController(this.state);
 
   void updateValues({String? firstname, String? lastname, DateTime? birthDate, Zone? zone, Activity? activity, Company? company}) {
     _firstname = firstname ?? _firstname;
@@ -39,8 +36,6 @@ class CreatePersonFormController {
     _zone = zone ?? _zone;
     _activity = activity ?? _activity;
     _company = company ?? _company;
-
-    _checkErrors();
 
     if (_firstname.length < 2 && _lastname.length < 2 && _birthDate == null) {
       state.value = 0;
@@ -53,10 +48,5 @@ class CreatePersonFormController {
     }
 
     state.value = 2;
-  }
-
-  void _checkErrors() {
-    if (_firstname.isNotEmpty && _firstname.length < 2) _errors.add("Firstname should contains 2 or more characters!");
-    if (_lastname.isNotEmpty && _lastname.length < 2) _errors.add("Lastname should contains 2 or more characters!");
   }
 }

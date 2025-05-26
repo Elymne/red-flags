@@ -19,6 +19,8 @@ class CompaniesStateNotifier extends StateNotifier<CompaniesState> {
       state = CompaniesState(status: WidgetStatus.failure, companies: state.companies);
     }
   }
+
+  void reset() => state = CompaniesState(status: WidgetStatus.init, companies: []);
 }
 
 class CompaniesState extends WidgetState {
