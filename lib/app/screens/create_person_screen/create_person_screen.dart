@@ -12,8 +12,8 @@ import 'package:red_flags/app/screens/create_person_screen/states/zones_state.pr
 import 'package:red_flags/app/screens/home_screen/home_screen.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
 import 'package:red_flags/app/widgets/routing/slide_widget.dart';
-import 'package:red_flags/app/widgets/shakles/shakle_outlined_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:red_flags/app/widgets/shakles/shakle_text_button.dart';
 import 'package:red_flags/core/states/widget_state.dart';
 import 'package:red_flags/core/themes/style_constant.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -120,38 +120,62 @@ class _State extends ConsumerState<CreatePersonScreen> {
                     ValueListenableBuilder(
                       valueListenable: formState,
                       builder: (context, value, _) {
-                        return SlideWidget(
-                          duration: Duration(milliseconds: 1000),
-                          child: Column(
-                            children: [
-                              Visibility(
-                                visible: value.cannotNext(_pageCtrl.page == null ? 0 : _pageCtrl.page!.toInt()),
-                                child: ShakleOutlinedButton(AppLocalizations.of(context)!.nextButton),
-                              ),
-                              Visibility(
-                                visible: value.canNext(_pageCtrl.page == null ? 0 : _pageCtrl.page!.toInt()),
-                                child: ShakleOutlinedButton(
-                                  AppLocalizations.of(context)!.nextButton,
-                                  onPressed: () {
-                                    if (_pageCtrl.page == null) return;
-                                    _pageCtrl.animateToPage(
-                                      _pageCtrl.page!.toInt() + 1,
-                                      duration: Duration(milliseconds: 200),
-                                      curve: Curves.easeIn,
-                                    );
-                                  },
+                        return Align(
+                          alignment: Alignment.centerRight,
+                          child: SlideWidget(
+                            duration: Duration(milliseconds: 1000),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Visibility(
+                                  visible: _pageCtrl.page != null ? _pageCtrl.page!.toInt() > 0 : false,
+                                  child: ShakleTextButton(
+                                    AppLocalizations.of(context)!.previousButton,
+                                    onPressed: () {
+                                      if (_pageCtrl.page == null) return;
+                                      _pageCtrl.animateToPage(
+                                        _pageCtrl.page!.toInt() - 1,
+                                        duration: Duration(milliseconds: 200),
+                                        curve: Curves.easeIn,
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ),
-                              Visibility(
-                                visible: value.canCreate(_pageCtrl.page == null ? 0 : _pageCtrl.page!.toInt()),
-                                child: ShakleOutlinedButton(
-                                  AppLocalizations.of(context)!.createButton,
-                                  onPressed: () {
-                                    ref.read(createPersonResultStateProvider.notifier).create(_formCtrl);
-                                  },
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Visibility(
+                                      visible: value.cannotNext(_pageCtrl.page == null ? 0 : _pageCtrl.page!.toInt()),
+                                      child: ShakleTextButton(AppLocalizations.of(context)!.nextButton),
+                                    ),
+                                    Visibility(
+                                      visible: value.canNext(_pageCtrl.page == null ? 0 : _pageCtrl.page!.toInt()),
+                                      child: ShakleTextButton(
+                                        AppLocalizations.of(context)!.nextButton,
+                                        onPressed: () {
+                                          if (_pageCtrl.page == null) return;
+                                          _pageCtrl.animateToPage(
+                                            _pageCtrl.page!.toInt() + 1,
+                                            duration: Duration(milliseconds: 200),
+                                            curve: Curves.easeIn,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    Visibility(
+                                      visible: value.canCreate(_pageCtrl.page == null ? 0 : _pageCtrl.page!.toInt()),
+                                      child: ShakleTextButton(
+                                        AppLocalizations.of(context)!.createButton,
+                                        onPressed: () {
+                                          ref.read(createPersonResultStateProvider.notifier).create(_formCtrl);
+                                        },
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         );
                       },

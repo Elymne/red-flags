@@ -1,63 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:red_flags/core/themes/light_theme.dart';
 
 class ShakleTextButton extends StatefulWidget {
   final String label;
-  final bool isActive;
-  final void Function() onPressed;
+  final void Function()? onPressed;
 
-  const ShakleTextButton(this.label, {super.key, required this.onPressed, this.isActive = true});
+  const ShakleTextButton(this.label, {super.key, this.onPressed});
 
   @override
   State<StatefulWidget> createState() => _State();
 }
 
 class _State extends State<ShakleTextButton> with TickerProviderStateMixin {
-  /// Underline animation when active.
-  late final AnimationController _underlineController;
-  late final Animation<double> _underlineAnimation;
-  final Duration _underlineDuration = Duration(milliseconds: 1_000);
+  late final AnimationController _backgroundAnimCtrl;
+  late final Animation<double> _backgroundAnim;
+  final Duration _backgroundAnimTic = Duration(milliseconds: 1_600);
 
-  /// Shake Animation (for background color).
-  late final AnimationController _shakyController1;
-  late final Animation<double> _shakyAnimation1;
-  final Duration _shakyDurationTic1 = Duration(milliseconds: 1_600);
-
-  /// Shake Animation (for front input).
-  late final AnimationController _shakyController2;
-  late final Animation<double> _shakyAnimation2;
-  final Duration _shakyDurationTic2 = Duration(milliseconds: 1_000);
-
-  /// Background color animation.
-  late final AnimationController _colorController;
-  late final Animation<Color?> _colorAnimation;
-  final Duration _colorDurationTic = Duration(milliseconds: 10_000);
+  late final AnimationController _foregroundAnimCtrl;
+  late final Animation<double> _foregroundAnim;
+  final Duration _foregroundAnimTic = Duration(milliseconds: 1_000);
 
   @override
   void initState() {
     super.initState();
-
-    /// * Set the text shaky animation for background text. The anim is started or stoped depending of the input focus.
-    _shakyController1 = AnimationController(vsync: this, duration: _shakyDurationTic1);
-    _shakyAnimation1 = Tween<double>(begin: -1.2, end: 1.2).animate(_shakyController1);
-    if (widget.isActive) _shakyController1.repeat(reverse: true);
-
-    /// * Set the text shaky animation for frontend text. The anim is started or stoped depending of the input focus.
-    _shakyController2 = AnimationController(vsync: this, duration: _shakyDurationTic2);
-    _shakyAnimation2 = Tween<double>(begin: -1, end: 1).animate(_shakyController2);
-    if (widget.isActive) _shakyController2.repeat(reverse: true);
-
-    /// * Set the background color.
-    _colorController = AnimationController(vsync: this, duration: _colorDurationTic);
-    _colorAnimation = ColorTween(begin: lightColorScheme.primary, end: lightColorScheme.secondary).animate(_colorController);
-    // if (widget.isActive) _colorController.repeat(reverse: true);
+    _backgroundAnimCtrl = AnimationController(vsync: this, duration: _backgroundAnimTic);
+    _foregroundAnimCtrl = AnimationController(vsync: this, duration: _foregroundAnimTic);
+    _backgroundAnim = Tween<double>(begin: -1.2, end: 1.2).animate(_backgroundAnimCtrl);
+    _foregroundAnim = Tween<double>(begin: -1, end: 1).animate(_foregroundAnimCtrl);
+    if (widget.onPressed != null) _backgroundAnimCtrl.repeat(reverse: true);
+    if (widget.onPressed != null) _foregroundAnimCtrl.repeat(reverse: true);
   }
 
   @override
   void dispose() {
-    _shakyController1.dispose();
-    _shakyController2.dispose();
-    _colorController.dispose();
+    _backgroundAnimCtrl.dispose();
+    _foregroundAnimCtrl.dispose();
     super.dispose();
   }
 
@@ -65,41 +41,36 @@ class _State extends State<ShakleTextButton> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        if (widget.isActive)
-          AnimatedBuilder(
-            animation: _shakyController1,
+        Visibility(
+          child: AnimatedBuilder(
+            animation: _backgroundAnimCtrl,
             builder: (context, child) {
               return Transform.translate(
-                offset: Offset(_shakyAnimation1.value, _shakyAnimation1.value * 0.5),
-                child: OutlinedButton(
+                offset: Offset(_backgroundAnim.value, _backgroundAnim.value * 0.5),
+                child: TextButton(
                   onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: _colorAnimation.value ?? Colors.transparent),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20)),
+                  child: Text(
+                    widget.label,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Theme.of(context).colorScheme.primary),
                   ),
-
-                  child: Text(widget.label, style: Theme.of(context).textTheme.labelLarge?.copyWith(color: _colorAnimation.value)),
                 ),
               );
             },
           ),
+        ),
         AnimatedBuilder(
-          animation: _shakyAnimation2,
+          animation: _foregroundAnim,
           builder: (context, child) {
             return Transform.translate(
-              offset: Offset(_shakyAnimation2.value, _shakyAnimation2.value * 0.5),
-              child: OutlinedButton(
-                onPressed: widget.isActive ? widget.onPressed : null,
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(
-                    color: widget.isActive ? Theme.of(context).colorScheme.outline : Theme.of(context).colorScheme.outlineVariant,
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                ),
+              offset: Offset(_foregroundAnim.value, _foregroundAnim.value * 0.5),
+              child: TextButton(
+                onPressed: widget.onPressed,
+                style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20)),
                 child: Text(
                   widget.label,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: widget.isActive ? Theme.of(context).colorScheme.outline : Theme.of(context).colorScheme.outlineVariant,
+                    color: widget.onPressed != null ? Theme.of(context).colorScheme.outline : Theme.of(context).colorScheme.outlineVariant,
                   ),
                 ),
               ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/screens/detailed_person_screen/detailed_person_screen_state.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
-import 'package:red_flags/app/widgets/routing/shakle_pop_text.dart';
+import 'package:red_flags/app/widgets/routing/title_pop_text.dart';
 import 'package:red_flags/app/widgets/routing/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_loading.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_outlined_button.dart';
@@ -107,24 +107,8 @@ class _State extends ConsumerState<DetailedPersonScreen> with TickerProviderStat
                   Container(color: const Color.fromARGB(255, 99, 219, 203)),
 
                   /// * Description Bloc.
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ShaklePopText(
-                        AppLocalizations.of(context)!.descriptionTitle,
-                        style: Theme.of(context).textTheme.titleLarge,
-                        hasIdleAnim: false,
-                        animForce: 0.4,
-                        animTic: Duration(milliseconds: 10),
-                      ),
-                      SizedBox(height: 10),
-                      ShaklePopText(
-                        personProvider.person!.description!,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        hasIdleAnim: false,
-                        animForce: 0.4,
-                        animTic: Duration(milliseconds: 10),
-                      ),
+                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      
                     ],
                   ),
                 ],

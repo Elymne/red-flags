@@ -40,7 +40,7 @@ final lightTextTheme = TextTheme(
   headlineMedium: GoogleFonts.nunitoSans(
     color: lightColorScheme.onSurface,
     fontSize: 20,
-    fontWeight: FontWeight.w100,
+    fontWeight: FontWeight.normal,
     letterSpacing: 0,
     height: 1.2,
   ),
@@ -67,7 +67,7 @@ final lightTextTheme = TextTheme(
   bodySmall: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.normal, fontSize: 12),
 
   /// * Button Text.
-  labelLarge: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.normal, fontSize: 18),
+  labelLarge: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.bold, fontSize: 18),
 
   /// ! (Not USED)
   labelMedium: GoogleFonts.nunitoSans(color: lightColorScheme.onSurface, fontWeight: FontWeight.normal),

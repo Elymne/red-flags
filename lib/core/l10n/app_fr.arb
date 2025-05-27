@@ -40,6 +40,10 @@
     "@backButton": {
         "description": "Texte de bouton Retour."
     },
+    "previousButton": "Précédent",
+    "@previousButton": {
+        "description": "Texte de bouton Précédent."
+    },
     "createButton": "Créer",
     "@createButton": {
         "description": "Texte de bouton Créer."

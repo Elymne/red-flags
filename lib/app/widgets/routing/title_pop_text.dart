@@ -7,7 +7,7 @@ import 'package:red_flags/app/router/router.notifier.dart';
 /// This widget listen [routerNotifierprovider] event and changes.
 /// Each time an update occur in [routerNotifierprovider], it notify all widgets that they should forward or reverse animation.
 /// Look inside [routerNotifierprovider] for more details.
-class ShaklePopText extends ConsumerStatefulWidget {
+class TitlePopText extends ConsumerStatefulWidget {
   final TextStyle? style;
   final String text;
   final Duration animTic;
@@ -16,7 +16,7 @@ class ShaklePopText extends ConsumerStatefulWidget {
   final double idleAnimForce;
   final Color? color;
 
-  const ShaklePopText(
+  const TitlePopText(
     this.text, {
     super.key,
     required this.style,
@@ -31,7 +31,7 @@ class ShaklePopText extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _State();
 }
 
-class _State extends ConsumerState<ShaklePopText> with TickerProviderStateMixin {
+class _State extends ConsumerState<TitlePopText> with TickerProviderStateMixin {
   late String _currentText = "";
 
   late final AnimationController _backgroundAnimCtrl;
