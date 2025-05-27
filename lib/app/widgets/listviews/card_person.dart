@@ -18,7 +18,7 @@ class _State extends ConsumerState<CardPerson> with TickerProviderStateMixin {
         widget.person.portrait ?? "https://cdn.futura-sciences.com/sources/images/actu/esperance-vie-chiens-chiot-golden-retriever.jpg";
 
     return ListTile(
-      tileColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+      tileColor: Theme.of(context).colorScheme.surfaceContainer,
       splashColor: Theme.of(context).colorScheme.primary.withAlpha(100),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
