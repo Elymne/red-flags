@@ -7,7 +7,7 @@ import 'package:red_flags/app/widgets/layouts/title_container.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/app/widgets/routing/fade_widget.dart';
 import 'package:red_flags/app/widgets/routing/slide_widget.dart';
-import 'package:red_flags/app/widgets/shakles/shakle_home_item.dart';
+import 'package:red_flags/app/widgets/shakles/shakle_text_button.dart';
 import 'package:red_flags/core/themes/style_constant.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -38,14 +38,14 @@ class _State extends ConsumerState<HomeScreen> {
             FadeWidget(
               duration: Duration(milliseconds: 1000),
               child: Transform.translate(
-                offset: Offset(width * 0.3, height * 0.6),
+                offset: Offset(width * 0.9, height * 0.8),
                 child: WaveBackground(color: Theme.of(context).colorScheme.primary),
               ),
             ),
             FadeWidget(
               duration: Duration(milliseconds: 1000),
               child: Transform.translate(
-                offset: Offset(width * 0.3, height * 0.5),
+                offset: Offset(width * 0.8, height * 0.7),
                 child: WaveBackground(color: Theme.of(context).colorScheme.primary),
               ),
             ),
@@ -53,6 +53,7 @@ class _State extends ConsumerState<HomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(screenGlobalMargin),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TitleContainer(
                       title: AppLocalizations.of(context)!.homeScreenTitle,
@@ -60,54 +61,34 @@ class _State extends ConsumerState<HomeScreen> {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     Expanded(child: SizedBox()),
-                    Expanded(
-                      child: SlideWidget(
-                        duration: Duration(milliseconds: 200),
-                        child: ShakleHomeItem(
-                          iconPath: "assets/icons/search.svg",
-                          title: AppLocalizations.of(context)!.homeAddOption,
-                          onTap: () {
-                            ref.read(routerNotifierprovider.notifier).push(Navigator.of(context), const CreatePersonScreen());
-                          },
-                        ),
+                    SlideWidget(
+                      duration: Duration(milliseconds: 200),
+                      child: Row(
+                        children: [
+                          ShakleTextButton(
+                            AppLocalizations.of(context)!.homeAddOption,
+                            onPressed: () {
+                              ref.read(routerNotifierprovider.notifier).push(Navigator.of(context), const CreatePersonScreen());
+                            },
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(height: 10),
-                    Expanded(
-                      child: SlideWidget(
-                        duration: Duration(milliseconds: 400),
-                        child: ShakleHomeItem(
-                          iconPath: "assets/icons/search.svg",
-                          title: AppLocalizations.of(context)!.homeSearchOption,
-                          onTap: () {},
-                        ),
-                      ),
+                    SlideWidget(
+                      duration: Duration(milliseconds: 400),
+                      child: ShakleTextButton(AppLocalizations.of(context)!.homeSearchOption, onPressed: () {}),
                     ),
                     SizedBox(height: 10),
-
-                    Expanded(
-                      child: SlideWidget(
-                        duration: Duration(milliseconds: 600),
-                        child: ShakleHomeItem(
-                          iconPath: "assets/icons/search.svg",
-                          title: AppLocalizations.of(context)!.homeNews,
-                          onTap: () {},
-                        ),
-                      ),
+                    SlideWidget(
+                      duration: Duration(milliseconds: 600),
+                      child: ShakleTextButton(AppLocalizations.of(context)!.homeNews, onPressed: () {}),
                     ),
                     SizedBox(height: 10),
-
-                    Expanded(
-                      child: SlideWidget(
-                        duration: Duration(milliseconds: 800),
-                        child: ShakleHomeItem(
-                          iconPath: "assets/icons/search.svg",
-                          title: AppLocalizations.of(context)!.homeOptions,
-                          onTap: () {},
-                        ),
-                      ),
+                    SlideWidget(
+                      duration: Duration(milliseconds: 600),
+                      child: ShakleTextButton(AppLocalizations.of(context)!.homeOptions, onPressed: () {}),
                     ),
-
                     Expanded(child: SizedBox()),
                   ],
                 ),

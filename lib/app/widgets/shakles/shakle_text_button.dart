@@ -13,11 +13,11 @@ class ShakleTextButton extends StatefulWidget {
 class _State extends State<ShakleTextButton> with TickerProviderStateMixin {
   late final AnimationController _backgroundAnimCtrl;
   late final Animation<double> _backgroundAnim;
-  final Duration _backgroundAnimTic = Duration(milliseconds: 1_600);
+  final Duration _backgroundAnimTic = Duration(milliseconds: 2_000);
 
   late final AnimationController _foregroundAnimCtrl;
   late final Animation<double> _foregroundAnim;
-  final Duration _foregroundAnimTic = Duration(milliseconds: 1_000);
+  final Duration _foregroundAnimTic = Duration(milliseconds: 1_600);
 
   @override
   void initState() {
