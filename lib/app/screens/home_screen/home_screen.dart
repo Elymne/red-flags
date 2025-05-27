@@ -60,59 +60,54 @@ class _State extends ConsumerState<HomeScreen> {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     Expanded(child: SizedBox()),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: FadeWidget(
-                            duration: Duration(milliseconds: 200),
-                            child: ShakleHomeItem(
-                              iconData: Icons.add_moderator_outlined,
-                              title: AppLocalizations.of(context)!.homeAddOption,
-                              onTap: () {
-                                ref.read(routerNotifierprovider.notifier).push(Navigator.of(context), const CreatePersonScreen());
-                              },
-                            ),
-                          ),
+                    Expanded(
+                      child: SlideWidget(
+                        duration: Duration(milliseconds: 200),
+                        child: ShakleHomeItem(
+                          iconPath: "assets/icons/search.svg",
+                          title: AppLocalizations.of(context)!.homeAddOption,
+                          onTap: () {
+                            ref.read(routerNotifierprovider.notifier).push(Navigator.of(context), const CreatePersonScreen());
+                          },
                         ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: FadeWidget(
-                            duration: Duration(milliseconds: 400),
-                            child: ShakleHomeItem(
-                              iconData: Icons.person_search_outlined,
-                              title: AppLocalizations.of(context)!.homeSearchOption,
-                              onTap: () {},
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                     SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: FadeWidget(
-                            duration: Duration(milliseconds: 600),
-                            child: ShakleHomeItem(
-                              iconData: Icons.perm_camera_mic_outlined,
-                              title: AppLocalizations.of(context)!.homeNews,
-                              onTap: () {},
-                            ),
-                          ),
+                    Expanded(
+                      child: SlideWidget(
+                        duration: Duration(milliseconds: 400),
+                        child: ShakleHomeItem(
+                          iconPath: "assets/icons/search.svg",
+                          title: AppLocalizations.of(context)!.homeSearchOption,
+                          onTap: () {},
                         ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: FadeWidget(
-                            duration: Duration(milliseconds: 800),
-                            child: ShakleHomeItem(
-                              iconData: Icons.perm_camera_mic_outlined,
-                              title: AppLocalizations.of(context)!.homeOptions,
-                              onTap: () {},
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
+                    SizedBox(height: 10),
+
+                    Expanded(
+                      child: SlideWidget(
+                        duration: Duration(milliseconds: 600),
+                        child: ShakleHomeItem(
+                          iconPath: "assets/icons/search.svg",
+                          title: AppLocalizations.of(context)!.homeNews,
+                          onTap: () {},
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+
+                    Expanded(
+                      child: SlideWidget(
+                        duration: Duration(milliseconds: 800),
+                        child: ShakleHomeItem(
+                          iconPath: "assets/icons/search.svg",
+                          title: AppLocalizations.of(context)!.homeOptions,
+                          onTap: () {},
+                        ),
+                      ),
+                    ),
+
                     Expanded(child: SizedBox()),
                   ],
                 ),
