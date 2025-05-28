@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:red_flags/app/screens/home_screen.dart';
-import 'package:red_flags/core/light_theme.dart';
+import 'package:red_flags/app/screens/create_person_screen/create_person_screen.dart';
+import 'package:red_flags/core/themes/light_theme.dart';
 
 class WebApp extends StatelessWidget {
   const WebApp({super.key});
 
-  // This widget is the root of your application.
+  /// * This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // Run the views and styles.
+    /// * Run the views and styles.
     return MaterialApp(
       title: "Red-Flags",
       localizationsDelegates: const [
@@ -20,9 +20,9 @@ class WebApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      locale: const Locale('fr'),
+      locale: const Locale("fr"),
       theme: CustomTheme.lightTheme,
-      home: const HomeScreen(),
+      home: CreatePersonScreen(),
     );
   }
 }

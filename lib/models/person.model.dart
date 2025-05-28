@@ -1,25 +1,62 @@
+import 'package:red_flags/models/activity.model.dart';
+import 'package:red_flags/models/company.model.dart';
+import 'package:red_flags/models/zone.model.dart';
+
 class Person {
   final String id;
   final String firstName;
   final String lastName;
-  final DateTime createdDate;
-  final DateTime updatedDate;
-  final String cityName;
+  final DateTime birthDate;
 
-  Person({required this.id, required this.firstName, required this.lastName, required this.createdDate, required this.updatedDate, required this.cityName});
+  /// *
+  final Zone zone;
+  final Activity activity;
+  final Company company;
+
+  /// *
+  final DateTime createdAt;
+
+  /// *
+  final String? portrait;
+  final String? description;
+
+  Person({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.birthDate,
+
+    /// *
+    required this.zone,
+    required this.activity,
+    required this.company,
+
+    /// *
+    required this.createdAt,
+
+    /// *
+    this.portrait,
+    this.description,
+  });
 
   factory Person.fromJson(Map<String, dynamic> json) {
     return Person(
-      id: json['id'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      createdDate: DateTime.parse(json['createdDate']),
-      updatedDate: DateTime.parse(json['updatedDate']),
-      cityName: json['cityName'],
-    );
-  }
+      id: json["ID"] as String,
+      firstName: json["firstName"] as String,
+      lastName: json["lastName"] as String,
+      birthDate: DateTime.fromMillisecondsSinceEpoch(json["birthDate"]),
 
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'firstName': firstName, 'lastName': lastName, 'createdDate': createdDate.toIso8601String(), 'updatedDate': updatedDate.toIso8601String(), 'cityName': cityName};
+      /// *
+      zone: Zone.fromJson(json["zone"]),
+      activity: Activity.fromJson(json["activity"]),
+      company: Company.fromJson(json["company"]),
+
+      /// *
+      createdAt: DateTime.fromMillisecondsSinceEpoch(json["createdAt"]),
+
+      /// * Nullable.
+      portrait: json["portrait"] as String?,
+      description: json["portrait"] as String?,
+    );
   }
 }
