@@ -6,13 +6,13 @@ import 'package:red_flags/domain/entities/person.entity.dart';
 import 'package:red_flags/domain/repositories/person_repository.dart';
 
 class GetPersonByID extends Usecase<Either<FailureType, Person>, GetPersonByIDParams> {
-  final PersonRepository zoneRepository;
+  final PersonRepository personRepository;
 
-  GetPersonByID({required this.zoneRepository});
+  GetPersonByID({required this.personRepository});
 
   @override
   Future<Either<FailureType, Person>> perform(GetPersonByIDParams params) async {
-    return await zoneRepository.findOneByID(params.id);
+    return await personRepository.findOneByID(params.id);
   }
 }
 
