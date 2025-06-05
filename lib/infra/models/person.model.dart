@@ -1,3 +1,4 @@
+import 'package:red_flags/domain/entities/person.entity.dart';
 import 'package:red_flags/infra/models/activity.model.dart';
 import 'package:red_flags/infra/models/company.model.dart';
 import 'package:red_flags/infra/models/zone.model.dart';
@@ -26,6 +27,36 @@ class PersonModel {
     this.portrait,
     this.description,
   });
+
+  factory PersonModel.fromEntity(Person entity) {
+    return PersonModel(
+      id: entity.id,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
+      birthDate: entity.birthDate,
+      zone: ZoneModel.fromEntity(entity.zone),
+      activity: ActivityModel.fromEntity(entity.activity),
+      company: CompanyModel.fromEntity(entity.company),
+      createdAt: entity.createdAt,
+      portrait: entity.portrait,
+      description: entity.description,
+    );
+  }
+
+  Person toEntity() {
+    return Person(
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      birthDate: birthDate,
+      zone: zone.toEntity(),
+      activity: activity.toEntity(),
+      company: company.toEntity(),
+      createdAt: createdAt,
+      portrait: portrait,
+      description: description,
+    );
+  }
 
   factory PersonModel.fromJson(Map<String, dynamic> json) {
     return PersonModel(

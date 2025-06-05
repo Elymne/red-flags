@@ -1,5 +1,5 @@
 import 'package:red_flags/core/results/either.dart';
-import 'package:red_flags/core/results/failure_type.enum.dart';
+import 'package:red_flags/core/results/failure.dart';
 import 'package:red_flags/core/usecases/Params.dart';
 import 'package:red_flags/core/usecases/usecase.dart';
 import 'package:red_flags/domain/entities/activity.entity.dart';
@@ -12,7 +12,7 @@ class SearchActivities extends Usecase<Either<FailureType, List<Activity>>, Sear
 
   @override
   Future<Either<FailureType, List<Activity>>> perform(SearchActivitiesParams params) async {
-    return await activityRepository.find(name: params.name);
+    return await activityRepository.find(params.name);
   }
 }
 

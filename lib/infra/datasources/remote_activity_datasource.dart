@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/results/either.dart';
 import 'package:red_flags/core/results/failure.dart';
-import 'package:red_flags/core/results/failure_type.enum.dart';
 import 'package:red_flags/core/results/success.dart';
 import 'package:red_flags/infra/models/activity.model.dart';
 
@@ -13,13 +12,13 @@ final remoteActivityDatasourceProvider = Provider((ref) {
 });
 
 class RemoteActivityDatasource {
-  final Dio dio;
+  final Dio _dio;
 
-  RemoteActivityDatasource({required this.dio});
+  RemoteActivityDatasource({required Dio dio}) : _dio = dio;
 
   Future<Either<FailureType, List<ActivityModel>>> fetchManyByName(String activityName) async {
     try {
-      final response = await dio.get<String>("${dotenv.env["HOST"]}/activities", queryParameters: {"name": activityName});
+      final response = await _dio.get<String>("${dotenv.env["HOST"]}/activities", queryParameters: {"name": activityName});
 
       if (response.statusCode != 200) {
         return Failure(FailureType.network);
@@ -40,7 +39,7 @@ class RemoteActivityDatasource {
 
   Future<Either<FailureType, ActivityModel>> fetchOneByID(String id) async {
     try {
-      final response = await dio.get<String>("${dotenv.env["HOST"]}/activities/$id");
+      final response = await _dio.get<String>("${dotenv.env["HOST"]}/activities/$id");
 
       if (response.statusCode != 200) {
         return Failure(FailureType.network);

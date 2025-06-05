@@ -1,5 +1,5 @@
 import 'package:red_flags/core/results/either.dart';
-import 'package:red_flags/core/results/failure_type.enum.dart';
+import 'package:red_flags/core/results/failure.dart';
 import 'package:red_flags/core/usecases/Params.dart';
 import 'package:red_flags/core/usecases/usecase.dart';
 import 'package:red_flags/domain/entities/activity.entity.dart';
@@ -12,7 +12,7 @@ class GetActivityByID extends Usecase<Either<FailureType, Activity>, GetActivity
 
   @override
   Future<Either<FailureType, Activity>> perform(GetActivityByIdParams params) async {
-    return await activityRepository.findOneByID(id: params.id);
+    return await activityRepository.findOneByID(params.id);
   }
 }
 

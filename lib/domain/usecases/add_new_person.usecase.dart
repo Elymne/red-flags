@@ -1,5 +1,5 @@
 import 'package:red_flags/core/results/either.dart';
-import 'package:red_flags/core/results/failure_type.enum.dart';
+import 'package:red_flags/core/results/failure.dart';
 import 'package:red_flags/core/usecases/Params.dart';
 import 'package:red_flags/core/usecases/usecase.dart';
 import 'package:red_flags/domain/repositories/person_repository.dart';
@@ -12,12 +12,12 @@ class AddNewPerson extends Usecase<Either<FailureType, Null>, AddNewPersonParams
   @override
   Future<Either<FailureType, Null>> perform(AddNewPersonParams params) async {
     return await personRepository.addOne(
-      firstname: params.firstname,
-      lastname: params.lastname,
-      birthDate: params.birthDate,
-      activityID: params.activityID,
-      companyID: params.companyID,
-      zoneID: params.zoneID,
+      params.firstname,
+      params.lastname,
+      params.birthDate,
+      params.activityID,
+      params.zoneID,
+      params.companyID,
     );
   }
 }

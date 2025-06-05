@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/results/either.dart';
 import 'package:red_flags/core/results/failure.dart';
-import 'package:red_flags/core/results/failure_type.enum.dart';
 import 'package:red_flags/core/results/success.dart';
 import 'package:red_flags/infra/models/zone.model.dart';
 
@@ -13,13 +12,13 @@ final remoteZoneDatasourceProvider = Provider((ref) {
 });
 
 class RemoteZoneDatasource {
-  final Dio dio;
+  final Dio _dio;
 
-  RemoteZoneDatasource({required this.dio});
+  RemoteZoneDatasource({required Dio dio}) : _dio = dio;
 
   Future<Either<FailureType, List<ZoneModel>>> fetchManyByName(String zoneName) async {
     try {
-      final response = await dio.get<String>("${dotenv.env["HOST"]}/zones", queryParameters: {"name": zoneName});
+      final response = await _dio.get<String>("${dotenv.env["HOST"]}/zones", queryParameters: {"name": zoneName});
 
       if (response.statusCode != 200) {
         return Failure(FailureType.network);
@@ -40,7 +39,7 @@ class RemoteZoneDatasource {
 
   Future<Either<FailureType, ZoneModel>> fetchOneByID(String id) async {
     try {
-      final response = await dio.get<String>("${dotenv.env["HOST"]}/zones/$id");
+      final response = await _dio.get<String>("${dotenv.env["HOST"]}/zones/$id");
 
       if (response.statusCode != 200) {
         return Failure(FailureType.network);

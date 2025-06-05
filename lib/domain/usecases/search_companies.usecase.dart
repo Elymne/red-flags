@@ -1,5 +1,5 @@
 import 'package:red_flags/core/results/either.dart';
-import 'package:red_flags/core/results/failure_type.enum.dart';
+import 'package:red_flags/core/results/failure.dart';
 import 'package:red_flags/core/usecases/Params.dart';
 import 'package:red_flags/core/usecases/usecase.dart';
 import 'package:red_flags/domain/entities/company.entity.dart';
@@ -12,7 +12,7 @@ class SearchCompanies extends Usecase<Either<FailureType, List<Company>>, Search
 
   @override
   Future<Either<FailureType, List<Company>>> perform(SearchCompaniesParams params) async {
-    return await companyRepository.find(name: params.name);
+    return await companyRepository.find(params.name);
   }
 }
 

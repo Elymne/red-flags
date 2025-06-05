@@ -1,5 +1,5 @@
 import 'package:red_flags/core/results/either.dart';
-import 'package:red_flags/core/results/failure_type.enum.dart';
+import 'package:red_flags/core/results/failure.dart';
 import 'package:red_flags/core/usecases/Params.dart';
 import 'package:red_flags/core/usecases/usecase.dart';
 import 'package:red_flags/domain/entities/zone.entity.dart';
@@ -12,7 +12,7 @@ class GetZoneByID extends Usecase<Either<FailureType, Zone>, GetZoneByIDParams> 
 
   @override
   Future<Either<FailureType, Zone>> perform(GetZoneByIDParams params) async {
-    return await zoneRepository.findOneByID(id: params.id);
+    return await zoneRepository.findOneByID(params.id);
   }
 }
 

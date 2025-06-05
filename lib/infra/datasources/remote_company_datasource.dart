@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/results/either.dart';
 import 'package:red_flags/core/results/failure.dart';
-import 'package:red_flags/core/results/failure_type.enum.dart';
 import 'package:red_flags/core/results/success.dart';
 import 'package:red_flags/infra/models/company.model.dart';
 
@@ -13,13 +12,13 @@ final remoteCompanyDatasourceProvider = Provider((ref) {
 });
 
 class RemoteCompanyDatasource {
-  final Dio dio;
+  final Dio _dio;
 
-  RemoteCompanyDatasource({required this.dio});
+  RemoteCompanyDatasource({required Dio dio}) : _dio = dio;
 
   Future<Either<FailureType, List<CompanyModel>>> fetchManyByName(String companyName) async {
     try {
-      final response = await dio.get<String>("${dotenv.env["HOST"]}/companies", queryParameters: {"name": companyName});
+      final response = await _dio.get<String>("${dotenv.env["HOST"]}/companies", queryParameters: {"name": companyName});
 
       if (response.statusCode != 200) {
         return Failure(FailureType.network);
@@ -40,7 +39,7 @@ class RemoteCompanyDatasource {
 
   Future<Either<FailureType, CompanyModel>> fetchOneByID(String id) async {
     try {
-      final response = await dio.get<String>("${dotenv.env["HOST"]}/companies/$id");
+      final response = await _dio.get<String>("${dotenv.env["HOST"]}/companies/$id");
 
       if (response.statusCode != 200) {
         return Failure(FailureType.network);

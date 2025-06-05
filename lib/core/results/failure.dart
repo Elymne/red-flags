@@ -16,3 +16,5 @@ class Failure<F, S> extends Either<F, S> {
   @override
   bool isSuccess() => false;
 }
+
+enum FailureType { network, exception, unknown }
