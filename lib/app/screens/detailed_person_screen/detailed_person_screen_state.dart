@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/states/widget_state.dart';
-import 'package:red_flags/models/person.model.dart';
+import 'package:red_flags/domain/models/person.model.dart';
 
 final detailedPersonScreenState = StateNotifierProvider<DetailedPersonScreenNotifier, DetailedPersonScreenState>((ref) {
   return DetailedPersonScreenNotifier(ref);

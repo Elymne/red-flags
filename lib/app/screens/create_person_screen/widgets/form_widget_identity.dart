@@ -1,10 +1,10 @@
-import 'package:red_flags/app/screens/create_person_screen/form/person_form_state.provider.dart';
+import 'package:red_flags/app/screens/create_person_screen/person_form_state.dart';
 import 'package:red_flags/app/widgets/routing/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_date_picker.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_textfield.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:red_flags/core/l10n/app_localizations.dart';
 
 class FormWidgetIdentity extends ConsumerStatefulWidget {
   final PersonFormState formCtrl;

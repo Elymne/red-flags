@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/models/person.model.dart';
+import 'package:red_flags/domain/models/person.model.dart';
 
 class CardPerson extends ConsumerStatefulWidget {
   final Person person;

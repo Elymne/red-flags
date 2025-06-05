@@ -2,9 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:red_flags/core/l10n/app_localizations.dart';
 import 'package:red_flags/core/themes/light_theme.dart';
-
 import 'package:red_flags/app/screens/splash_screen/splash_screen.dart';
 
 class MobileApp extends StatelessWidget {

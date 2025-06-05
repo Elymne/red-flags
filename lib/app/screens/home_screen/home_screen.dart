@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/create_person_screen/create_person_screen.dart';
+import 'package:red_flags/app/screens/search_screen/search_screen.dart';
 import 'package:red_flags/app/widgets/backgrounds/waves_background.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:red_flags/app/widgets/routing/fade_widget.dart';
 import 'package:red_flags/app/widgets/routing/slide_widget.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_text_button.dart';
+import 'package:red_flags/core/l10n/app_localizations.dart';
 import 'package:red_flags/core/themes/style_constant.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -77,7 +78,12 @@ class _State extends ConsumerState<HomeScreen> {
                     SizedBox(height: 10),
                     SlideWidget(
                       duration: Duration(milliseconds: 400),
-                      child: ShakleTextButton(AppLocalizations.of(context)!.homeSearchOption, onPressed: () {}),
+                      child: ShakleTextButton(
+                        AppLocalizations.of(context)!.homeSearchOption,
+                        onPressed: () {
+                          ref.read(routerNotifierprovider.notifier).push(Navigator.of(context), const SearchScreen());
+                        },
+                      ),
                     ),
                     SizedBox(height: 10),
                     SlideWidget(
@@ -86,7 +92,7 @@ class _State extends ConsumerState<HomeScreen> {
                     ),
                     SizedBox(height: 10),
                     SlideWidget(
-                      duration: Duration(milliseconds: 600),
+                      duration: Duration(milliseconds: 800),
                       child: ShakleTextButton(AppLocalizations.of(context)!.homeOptions, onPressed: () {}),
                     ),
                     Expanded(child: SizedBox()),

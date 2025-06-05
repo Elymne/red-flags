@@ -1,4 +1,3 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/screens/detailed_person_screen/detailed_person_screen_state.dart';
@@ -9,6 +8,7 @@ import 'package:red_flags/app/widgets/shakles/shakle_outlined_button.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_text.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_text_button.dart';
 import 'package:red_flags/core/extensions/string_extension.dart';
+import 'package:red_flags/core/l10n/app_localizations.dart';
 import 'package:red_flags/core/states/widget_state.dart';
 import 'package:red_flags/core/themes/style_constant.dart';
 

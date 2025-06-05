@@ -52,7 +52,7 @@
     "@personCreationSuccess": {
         "description": "Réponse lorsqu'une personne a été créée par l'utilisateur."
     },
-    "createScreenTitle": "Création",
+    "createScreenTitle": "Ajout",
     "@createScreenTitle": {
         "description": "Texte de titre de la page d'ajout d'un redflag."
     },
@@ -92,11 +92,11 @@
     "@homeScreenSubTitle": {
         "description": "Sous-titre de la homepage."
     },
-    "searchScreenTitle": "Exploration",
+    "searchScreenTitle": "Recherche",
     "@searchScreenTitle": {
-        "description": "Titre Navigation de la page de recherche par nom/prénom."
+        "description": "Titre Navigation de la page de recherche par nom/prénom et autre."
     },
-    "searchScreenSubTitle": "Recherche précise",
+    "searchScreenSubTitle": "Par nom, prénom…",
     "@searchScreenSubTitle": {
         "description": "Sous-titre Navigation de la page de recherche."
     },

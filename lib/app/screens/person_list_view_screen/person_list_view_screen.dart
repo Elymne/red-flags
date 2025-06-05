@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/app/widgets/listviews/card_person.dart';
 import 'package:red_flags/app/widgets/listviews/slide_list_view.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:red_flags/models/person.model.dart';
+import 'package:red_flags/core/l10n/app_localizations.dart';
+import 'package:red_flags/domain/models/person.model.dart';
 
 class PersonListViewScreenScreen extends ConsumerStatefulWidget {
   final List<Person> persons;

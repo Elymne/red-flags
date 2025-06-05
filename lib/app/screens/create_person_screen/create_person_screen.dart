@@ -2,18 +2,19 @@ import 'dart:ui';
 import 'package:red_flags/app/router/router.notifier.dart';
 import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_activity.dart';
 import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_company.dart';
-import 'package:red_flags/app/screens/create_person_screen/form/person_form_state.provider.dart';
+import 'package:red_flags/app/screens/create_person_screen/person_form_state.dart';
 import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_identity.dart';
 import 'package:red_flags/app/screens/create_person_screen/widgets/form_widget_zone.dart';
-import 'package:red_flags/app/screens/create_person_screen/states/activities_state.provider.dart';
-import 'package:red_flags/app/screens/create_person_screen/states/companies_state.provider.dart';
-import 'package:red_flags/app/screens/create_person_screen/states/create_person_result_state.provider.dart';
-import 'package:red_flags/app/screens/create_person_screen/states/zones_state.provider.dart';
+import 'package:red_flags/app/states/activities_state.provider.dart';
+import 'package:red_flags/app/states/companies_state.provider.dart';
+import 'package:red_flags/app/states/create_person_result_state.provider.dart';
+import 'package:red_flags/app/states/zones_state.provider.dart';
 import 'package:red_flags/app/screens/home_screen/home_screen.dart';
 import 'package:red_flags/app/widgets/layouts/title_container.dart';
 import 'package:red_flags/app/widgets/routing/slide_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:red_flags/app/widgets/shakles/shakle_loading.dart';
 import 'package:red_flags/app/widgets/shakles/shakle_text_button.dart';
+import 'package:red_flags/core/l10n/app_localizations.dart';
 import 'package:red_flags/core/states/widget_state.dart';
 import 'package:red_flags/core/themes/style_constant.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -187,8 +188,11 @@ class _State extends ConsumerState<CreatePersonScreen> {
 
             /// * Loading *
             if (isFreezing)
-              BackdropFilter(filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5), child: Container(color: Colors.black.withAlpha(100))),
-            if (isFreezing) Center(child: CircularProgressIndicator()),
+              BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Container(color: Theme.of(context).colorScheme.outline.withAlpha(100)),
+              ),
+            if (isFreezing) Center(child: ShakleLoading()),
           ],
         ),
       ),
