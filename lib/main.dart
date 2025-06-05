@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:red_flags/app/mobile_app.dart';
-import 'package:red_flags/app/web_app.dart';
+import 'package:red_flags/presentation/mobile_app.dart';
+import 'package:red_flags/presentation/web_app.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';

@@ -1,0 +1,18 @@
+import 'package:red_flags/core/results/either.dart';
+
+class Failure<F, S> extends Either<F, S> {
+  final F value;
+
+  Failure(this.value);
+
+  @override
+  T fold<T>(T Function(F failure) failureFunc, T Function(S success) successFunc) {
+    return failureFunc(value);
+  }
+
+  @override
+  bool isFailure() => true;
+
+  @override
+  bool isSuccess() => false;
+}
