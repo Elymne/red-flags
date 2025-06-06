@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:red_flags/presentation/screens/create_person_screen/create_person_screen.dart';
 import 'package:red_flags/core/l10n/app_localizations.dart';
 import 'package:red_flags/core/themes/light_theme.dart';
+import 'package:red_flags/presentation/screens/splash_screen/splash_screen.dart';
 
 class WebApp extends StatelessWidget {
   const WebApp({super.key});
@@ -22,7 +22,7 @@ class WebApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       locale: const Locale("fr"),
       theme: CustomTheme.lightTheme,
-      home: CreatePersonScreen(),
+      home: SplashScreen(),
     );
   }
 }

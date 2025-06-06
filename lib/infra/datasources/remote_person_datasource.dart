@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/core/results/either.dart';
-import 'package:red_flags/core/results/failure.dart';
-import 'package:red_flags/core/results/success.dart';
+import 'package:red_flags/core/result/either.dart';
+import 'package:red_flags/core/result/failure.dart';
+import 'package:red_flags/core/result/success.dart';
 import 'package:red_flags/infra/models/person.model.dart';
 
 final remotePersonDatasourceProvider = Provider((ref) {

@@ -4,9 +4,8 @@ import 'package:red_flags/presentation/router/router.notifier.dart';
 import 'package:red_flags/presentation/screens/home_screen/home_screen.dart';
 import 'package:red_flags/presentation/widgets/routing/slide_widget.dart';
 import 'package:red_flags/presentation/widgets/shakles/shakle_text.dart';
-import 'dart:async';
-
 import 'package:red_flags/core/l10n/app_localizations.dart';
+import 'dart:async';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -17,7 +16,6 @@ class SplashScreen extends ConsumerStatefulWidget {
 
 class _State extends ConsumerState<SplashScreen> with TickerProviderStateMixin {
   late final PageController _pageCtrl;
-
   final _splashscreenDur = Duration(milliseconds: 3000);
   final _swapTic = Duration(milliseconds: 400);
 

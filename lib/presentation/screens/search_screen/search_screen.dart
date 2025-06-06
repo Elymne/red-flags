@@ -10,7 +10,7 @@ import 'package:red_flags/presentation/widgets/shakles/shakle_textfield.dart';
 import 'package:red_flags/presentation/widgets/shakles/shakle_outlined_button.dart';
 import 'package:red_flags/presentation/widgets/layouts/title_container.dart';
 import 'package:red_flags/core/l10n/app_localizations.dart';
-import 'package:red_flags/core/states/reactive_state.dart';
+import 'package:red_flags/core/reactive/reactive_state.dart';
 import 'package:red_flags/core/themes/style_constant.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {

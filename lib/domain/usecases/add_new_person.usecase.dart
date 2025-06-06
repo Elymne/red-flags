@@ -1,7 +1,7 @@
-import 'package:red_flags/core/results/either.dart';
-import 'package:red_flags/core/results/failure.dart';
+import 'package:red_flags/core/result/either.dart';
+import 'package:red_flags/core/result/failure.dart';
 import 'package:red_flags/core/usecases/Params.dart';
-import 'package:red_flags/core/usecases/usecase.dart';
+import 'package:red_flags/core/usecase/usecase.dart';
 import 'package:red_flags/domain/repositories/person_repository.dart';
 
 class AddNewPerson extends Usecase<Either<FailureType, Null>, AddNewPersonParams> {

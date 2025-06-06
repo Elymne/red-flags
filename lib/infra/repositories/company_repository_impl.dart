@@ -1,6 +1,6 @@
-import 'package:red_flags/core/results/either.dart';
-import 'package:red_flags/core/results/failure.dart';
-import 'package:red_flags/core/results/success.dart';
+import 'package:red_flags/core/result/either.dart';
+import 'package:red_flags/core/result/failure.dart';
+import 'package:red_flags/core/result/success.dart';
 import 'package:red_flags/domain/entities/company.entity.dart';
 import 'package:red_flags/domain/repositories/company_repository.dart';
 import 'package:red_flags/infra/datasources/remote_company_datasource.dart';

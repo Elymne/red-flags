@@ -1,4 +1,4 @@
-import 'package:red_flags/core/results/either.dart';
+import 'package:red_flags/core/result/either.dart';
 
 class Failure<F extends FailureType, S> extends Either<F, S> {
   final F value;

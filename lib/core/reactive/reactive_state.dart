@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:red_flags/core/results/failure.dart';
+import 'package:red_flags/core/result/failure.dart';
 
 abstract class ReactiveState<T> {
   final T data;

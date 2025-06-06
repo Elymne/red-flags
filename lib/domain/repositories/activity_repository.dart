@@ -1,5 +1,5 @@
-import 'package:red_flags/core/results/either.dart';
-import 'package:red_flags/core/results/failure.dart';
+import 'package:red_flags/core/result/either.dart';
+import 'package:red_flags/core/result/failure.dart';
 import 'package:red_flags/domain/entities/activity.entity.dart';
 
 abstract class ActivityRepository {
