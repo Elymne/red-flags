@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/core/states/widget_state.dart';
+import 'package:red_flags/core/states/reactive_state.dart';
 import 'package:red_flags/domain/entities/person.entity.dart';
 
 final detailedPersonScreenState = StateNotifierProvider<DetailedPersonScreenNotifier, DetailedPersonScreenState>((ref) {
@@ -9,7 +9,7 @@ final detailedPersonScreenState = StateNotifierProvider<DetailedPersonScreenNoti
 class DetailedPersonScreenNotifier extends StateNotifier<DetailedPersonScreenState> {
   final Ref ref;
 
-  DetailedPersonScreenNotifier(this.ref) : super(DetailedPersonScreenState(status: WidgetStatus.init, person: null));
+  DetailedPersonScreenNotifier(this.ref) : super(DetailedPersonScreenState(status: DataStatus.inactive, person: null));
 
   Future<void> find(String id) async {
     // try {
@@ -30,7 +30,7 @@ class DetailedPersonScreenNotifier extends StateNotifier<DetailedPersonScreenSta
   }
 }
 
-class DetailedPersonScreenState extends WidgetState {
+class DetailedPersonScreenState extends ReactiveWidget {
   final Person? person;
 
   DetailedPersonScreenState({required super.status, required this.person});

@@ -12,13 +12,17 @@
     "@checkSuccess": {
         "description": "Message signifiant que l'application est prête à être utilisé."
     },
-    "netFailure": "Impossible d'accéder au serveur",
-    "@netFailure": {
+    "errorFailure": "Une erreur interne s'est produite",
+    "@errorFailure": {
         "description": "Message signifiant que l'application n'arrive pas à se connecter au serveur."
     },
-    "applicationFailure": "Une erreur interne s'est produite…",
-    "@applicationFailure": {
-        "description": "Message signifiant que l'application a détecté une erreur et ne peux pas continuer l'action en cours."
+    "errorNetwork": "Une erreur s'est produite avec le serveur",
+    "@errorNetwork": {
+        "description": "Message signifiant que l'application n'arrive pas à se connecter au serveur."
+    },
+    "errorUnknown": "Une erreur d'origine inconnu s'est produite sur l'application",
+    "@errorUnknown": {
+        "description": "Message signifiant que l'application n'arrive pas à se connecter au serveur."
     },
     "accessButton": "Accéder",
     "@accessButton": {

@@ -5,17 +5,17 @@ import 'package:red_flags/presentation/screens/create_person_screen/widgets/form
 import 'package:red_flags/presentation/screens/create_person_screen/person_form_state.dart';
 import 'package:red_flags/presentation/screens/create_person_screen/widgets/form_widget_identity.dart';
 import 'package:red_flags/presentation/screens/create_person_screen/widgets/form_widget_zone.dart';
-import 'package:red_flags/presentation/states/activities_state.provider.dart';
-import 'package:red_flags/presentation/states/companies_state.provider.dart';
-import 'package:red_flags/presentation/states/create_person_result_state.provider.dart';
-import 'package:red_flags/presentation/states/zones_state.provider.dart';
+import 'package:red_flags/presentation/viewmodels/activities.provider.dart';
+import 'package:red_flags/presentation/viewmodels/companies.provider.dart';
+import 'package:red_flags/presentation/viewmodels/new_person.provider.dart';
+import 'package:red_flags/presentation/viewmodels/zones.provider.dart';
 import 'package:red_flags/presentation/screens/home_screen/home_screen.dart';
 import 'package:red_flags/presentation/widgets/layouts/title_container.dart';
 import 'package:red_flags/presentation/widgets/routing/slide_widget.dart';
 import 'package:red_flags/presentation/widgets/shakles/shakle_loading.dart';
 import 'package:red_flags/presentation/widgets/shakles/shakle_text_button.dart';
 import 'package:red_flags/core/l10n/app_localizations.dart';
-import 'package:red_flags/core/states/widget_state.dart';
+import 'package:red_flags/core/states/reactive_state.dart';
 import 'package:red_flags/core/themes/style_constant.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +35,8 @@ class _State extends ConsumerState<CreatePersonScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(createPersonResultStateProvider, (_, next) async {
-      if (next.status == WidgetStatus.success) {
+    ref.listen(newPersonProvider, (_, next) async {
+      if (next.status == DataStatus.success) {
         setState(() => isFreezing = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -45,22 +45,22 @@ class _State extends ConsumerState<CreatePersonScreen> {
           ),
         );
         ref.read(zonesStateProvider.notifier).reset();
-        ref.read(activitiesStateProvider.notifier).reset();
-        ref.read(companiesStateProvider.notifier).reset();
-        ref.read(createPersonResultStateProvider.notifier).reset();
+        ref.read(activitiesProvider.notifier).reset();
+        ref.read(companiesProvider.notifier).reset();
+        ref.read(newPersonProvider.notifier).reset();
         ref.read(routerNotifierprovider.notifier).pushAndRemoveUntil(Navigator.of(context), const HomeScreen());
         return;
       }
 
-      if (next.status == WidgetStatus.failure) {
+      if (next.status == DataStatus.failure) {
         setState(() => isFreezing = false);
-        if (next.errorIndex == CreatePersonResultState.networkError) {
+        if (next.errorIndex == NewPersonState.networkError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(AppLocalizations.of(context)!.netFailure), backgroundColor: Theme.of(context).colorScheme.error),
           );
           return;
         }
-        if (next.errorIndex == CreatePersonResultState.userInputError) {
+        if (next.errorIndex == NewPersonState.userInputError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(AppLocalizations.of(context)!.personDuplicationError),
@@ -71,7 +71,7 @@ class _State extends ConsumerState<CreatePersonScreen> {
         }
       }
 
-      if (next.status == WidgetStatus.loading) {
+      if (next.status == DataStatus.loading) {
         setState(() => isFreezing = true);
         return;
       }
@@ -82,9 +82,9 @@ class _State extends ConsumerState<CreatePersonScreen> {
       onPopInvokedWithResult: (didPop, result) {
         if (_pageCtrl.page == 0) {
           ref.read(zonesStateProvider.notifier).reset();
-          ref.read(activitiesStateProvider.notifier).reset();
-          ref.read(companiesStateProvider.notifier).reset();
-          ref.read(createPersonResultStateProvider.notifier).reset();
+          ref.read(activitiesProvider.notifier).reset();
+          ref.read(companiesProvider.notifier).reset();
+          ref.read(newPersonProvider.notifier).reset();
           ref.read(routerNotifierprovider.notifier).pop(Navigator.of(context));
           return;
         }
@@ -169,7 +169,7 @@ class _State extends ConsumerState<CreatePersonScreen> {
                                       child: ShakleTextButton(
                                         AppLocalizations.of(context)!.createButton,
                                         onPressed: () {
-                                          ref.read(createPersonResultStateProvider.notifier).create(_formCtrl);
+                                          ref.read(newPersonProvider.notifier).create(_formCtrl);
                                         },
                                       ),
                                     ),

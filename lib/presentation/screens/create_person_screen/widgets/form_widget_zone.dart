@@ -1,5 +1,5 @@
 import 'package:red_flags/presentation/screens/create_person_screen/person_form_state.dart';
-import 'package:red_flags/presentation/states/zones_state.provider.dart';
+import 'package:red_flags/presentation/viewmodels/zones.provider.dart';
 import 'package:red_flags/presentation/widgets/listviews/shakle_card.dart';
 import 'package:red_flags/presentation/widgets/listviews/slide_list_view.dart';
 import 'package:red_flags/presentation/widgets/routing/slide_widget.dart';
@@ -8,7 +8,7 @@ import 'package:red_flags/presentation/widgets/shakles/shakle_textfield.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:red_flags/core/l10n/app_localizations.dart';
-import 'package:red_flags/core/states/widget_state.dart';
+import 'package:red_flags/core/states/reactive_state.dart';
 
 class FormWidgetZone extends ConsumerStatefulWidget {
   final PersonFormState formCtrl;
@@ -42,7 +42,7 @@ class _State extends ConsumerState<FormWidgetZone> {
         ),
         SizedBox(height: 20),
         Visibility(
-          visible: zonesState.status == WidgetStatus.success,
+          visible: zonesState.status == DataStatus.success,
           child: Expanded(
             child: SlideListView(
               itemCount: zonesState.zones.length,
@@ -63,11 +63,11 @@ class _State extends ConsumerState<FormWidgetZone> {
           ),
         ),
         Visibility(
-          visible: zonesState.status == WidgetStatus.loading,
+          visible: zonesState.status == DataStatus.loading,
           child: Padding(padding: EdgeInsets.only(top: 100), child: SizedBox(height: 40, width: 40, child: ShakleLoading())),
         ),
         Visibility(
-          visible: zonesState.status == WidgetStatus.failure,
+          visible: zonesState.status == DataStatus.failure,
           child: Padding(
             padding: const EdgeInsets.only(top: 100),
             child: Text(

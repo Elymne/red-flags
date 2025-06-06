@@ -9,7 +9,7 @@ import 'package:red_flags/presentation/widgets/shakles/shakle_text.dart';
 import 'package:red_flags/presentation/widgets/shakles/shakle_text_button.dart';
 import 'package:red_flags/core/extensions/string_extension.dart';
 import 'package:red_flags/core/l10n/app_localizations.dart';
-import 'package:red_flags/core/states/widget_state.dart';
+import 'package:red_flags/core/states/reactive_state.dart';
 import 'package:red_flags/core/themes/style_constant.dart';
 
 class DetailedPersonScreen extends ConsumerStatefulWidget {
@@ -44,17 +44,17 @@ class _State extends ConsumerState<DetailedPersonScreen> with TickerProviderStat
     final personProvider = ref.watch(detailedPersonScreenState);
 
     /// * On init, display nothing.
-    if (personProvider.status == WidgetStatus.init) {
+    if (personProvider.status == DataStatus.inactive) {
       return Scaffold(body: SizedBox());
     }
 
     /// * Display a loading weel.
-    if (personProvider.status == WidgetStatus.loading) {
+    if (personProvider.status == DataStatus.loading) {
       return Expanded(child: Center(child: const ShakleLoading()));
     }
 
     /// * Display error message + backbutton on error.
-    if (personProvider.status == WidgetStatus.failure) {
+    if (personProvider.status == DataStatus.failure) {
       return Expanded(
         child: Center(
           child: Column(

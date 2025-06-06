@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/presentation/router/router.notifier.dart';
 import 'package:red_flags/presentation/screens/search_screen/search_person_form.dart';
-import 'package:red_flags/presentation/states/simple_search_state.provider.dart';
+import 'package:red_flags/presentation/viewmodels/simple_search_state.provider.dart';
 import 'package:red_flags/presentation/widgets/routing/slide_widget.dart';
 import 'package:red_flags/presentation/widgets/shakles/shakle_loading.dart';
 import 'package:red_flags/presentation/widgets/shakles/shakle_textfield.dart';
 import 'package:red_flags/presentation/widgets/shakles/shakle_outlined_button.dart';
 import 'package:red_flags/presentation/widgets/layouts/title_container.dart';
 import 'package:red_flags/core/l10n/app_localizations.dart';
-import 'package:red_flags/core/states/widget_state.dart';
+import 'package:red_flags/core/states/reactive_state.dart';
 import 'package:red_flags/core/themes/style_constant.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
@@ -69,18 +69,18 @@ class _State extends ConsumerState<SearchScreen> with TickerProviderStateMixin {
                 ),
                 SizedBox(height: 60),
                 Visibility(
-                  visible: simpleSeachState.status == WidgetStatus.loading,
+                  visible: simpleSeachState.status == DataStatus.loading,
                   child: Padding(padding: EdgeInsets.only(top: 100), child: SizedBox(height: 40, width: 40, child: ShakleLoading())),
                 ),
                 Visibility(
-                  visible: simpleSeachState.status == WidgetStatus.success && simpleSeachState.persons.isEmpty,
+                  visible: simpleSeachState.status == DataStatus.success && simpleSeachState.persons.isEmpty,
                   child: SlideWidget(
                     duration: Duration(milliseconds: 400),
                     child: Align(alignment: Alignment.center, child: Text("Not found")),
                   ),
                 ),
                 Visibility(
-                  visible: simpleSeachState.status == WidgetStatus.failure,
+                  visible: simpleSeachState.status == DataStatus.failure,
                   child: SlideWidget(
                     duration: Duration(milliseconds: 400),
                     child: Align(alignment: Alignment.center, child: Text("OUTCH")),
