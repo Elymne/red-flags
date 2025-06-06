@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/di/repository_providers.dart';
 import 'package:red_flags/domain/usecases/add_new_person.usecase.dart';
+import 'package:red_flags/domain/usecases/check_new_person_form.usecase.dart';
 import 'package:red_flags/domain/usecases/get_activity_by_id.usecase.dart';
 import 'package:red_flags/domain/usecases/get_company_by_id.usecase.dart';
 import 'package:red_flags/domain/usecases/get_person_by_id.usecase.dart';
@@ -44,4 +45,8 @@ final searchPersonsProvider = Provider((ref) {
 
 final searchZonesProvider = Provider((ref) {
   return SearchZones(zoneRepository: ref.read(zoneRepositoryProvider));
+});
+
+final checkPersonFormProvider = Provider((ref) {
+  return CheckNewPersonForm();
 });

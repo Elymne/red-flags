@@ -1,9 +1,9 @@
 import 'package:red_flags/core/result/either.dart';
 import 'package:red_flags/core/result/failure.dart';
-import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/core/result/success.dart';
 import 'package:red_flags/domain/entities/activity.entity.dart';
 import 'package:red_flags/domain/repositories/activity_repository.dart';
+import 'package:red_flags/infra/datasources/datasource_failure.enum.dart';
 import 'package:red_flags/infra/datasources/remote_activity_datasource.dart';
 
 class ActivityRepositoryImpl implements ActivityRepository {
@@ -12,7 +12,7 @@ class ActivityRepositoryImpl implements ActivityRepository {
   ActivityRepositoryImpl({required this.remoteActivityDatasource});
 
   @override
-  Future<Either<FailureType, List<Activity>>> find(String name) async {
+  Future<Either<DatasourceFailure, List<Activity>>> find(String name) async {
     final result = await remoteActivityDatasource.fetchManyByName(name);
     return result.fold(
       (type) {
@@ -25,7 +25,7 @@ class ActivityRepositoryImpl implements ActivityRepository {
   }
 
   @override
-  Future<Either<FailureType, Activity>> findOneByID(String id) async {
+  Future<Either<DatasourceFailure, Activity>> findOneByID(String id) async {
     final result = await remoteActivityDatasource.fetchOneByID(id);
     return result.fold(
       (type) {

@@ -4,8 +4,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/result/either.dart';
 import 'package:red_flags/core/result/failure.dart';
-import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/core/result/success.dart';
+import 'package:red_flags/infra/datasources/datasource_failure.enum.dart';
 import 'package:red_flags/infra/models/person.model.dart';
 
 final remotePersonDatasourceProvider = Provider((ref) {
@@ -17,7 +17,7 @@ class RemotePersonDatasource {
 
   RemotePersonDatasource({required Dio dio}) : _dio = dio;
 
-  Future<Either<FailureType, List<PersonModel>>> fetchMany({
+  Future<Either<DatasourceFailure, List<PersonModel>>> fetchMany({
     String? firstname,
     String? lastname,
     DateTime? birthDate,
@@ -39,11 +39,11 @@ class RemotePersonDatasource {
       );
 
       if (response.statusCode != 200) {
-        return Failure(FailureType.network);
+        return Failure(DatasourceFailure.network);
       }
 
       if (response.data == null) {
-        return Failure(FailureType.network);
+        return Failure(DatasourceFailure.wrongResult);
       }
 
       final List<dynamic> raw = jsonDecode(response.data!)["data"];
@@ -51,20 +51,20 @@ class RemotePersonDatasource {
 
       return Success(persons);
     } catch (err) {
-      return Failure(FailureType.exception);
+      return Failure(DatasourceFailure.exception);
     }
   }
 
-  Future<Either<FailureType, PersonModel>> fetchOnebyID(String id) async {
+  Future<Either<DatasourceFailure, PersonModel>> fetchOnebyID(String id) async {
     try {
       final response = await _dio.get<String>("${dotenv.env["HOST"]}/persons/$id");
 
       if (response.statusCode != 200) {
-        return Failure(FailureType.network);
+        return Failure(DatasourceFailure.network);
       }
 
       if (response.data == null) {
-        return Failure(FailureType.network);
+        return Failure(DatasourceFailure.wrongResult);
       }
 
       final Map<String, dynamic> raw = jsonDecode(response.data!)["data"];
@@ -72,11 +72,11 @@ class RemotePersonDatasource {
 
       return Success(person);
     } catch (err) {
-      return Failure(FailureType.exception);
+      return Failure(DatasourceFailure.exception);
     }
   }
 
-  Future<Either<FailureType, Null>> addOne({
+  Future<Either<DatasourceFailure, Null>> addOne({
     required String firstname,
     required String lastname,
     required DateTime birthDate,
@@ -97,17 +97,17 @@ class RemotePersonDatasource {
         },
       );
 
-      if (response.statusCode == 406) {
-        return Failure(FailureType.badInput);
+      if (response.statusCode == 403) {
+        return Failure(DatasourceFailure.duplication);
       }
 
       if (response.statusCode != 200) {
-        return Failure(FailureType.network);
+        return Failure(DatasourceFailure.network);
       }
 
       return Success(null);
     } catch (err) {
-      return Failure(FailureType.exception);
+      return Failure(DatasourceFailure.exception);
     }
   }
 }

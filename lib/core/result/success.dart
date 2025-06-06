@@ -1,7 +1,6 @@
 import 'package:red_flags/core/result/either.dart';
-import 'package:red_flags/core/result/failure_type.dart';
 
-class Success<F extends FailureType, S> extends Either<F, S> {
+class Success<F, S> extends Either<F, S> {
   final S value;
 
   Success(this.value);

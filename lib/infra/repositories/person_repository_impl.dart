@@ -1,9 +1,9 @@
 import 'package:red_flags/core/result/either.dart';
 import 'package:red_flags/core/result/failure.dart';
-import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/core/result/success.dart';
 import 'package:red_flags/domain/entities/person.entity.dart';
 import 'package:red_flags/domain/repositories/person_repository.dart';
+import 'package:red_flags/infra/datasources/datasource_failure.enum.dart';
 import 'package:red_flags/infra/datasources/remote_person_datasource.dart';
 
 class PersonRepositoryImpl implements PersonRepository {
@@ -12,7 +12,7 @@ class PersonRepositoryImpl implements PersonRepository {
   PersonRepositoryImpl({required this.remotePersonDatasource});
 
   @override
-  Future<Either<FailureType, Null>> addOne(
+  Future<Either<DatasourceFailure, Null>> addOne(
     String firstname,
     String lastname,
     DateTime birthDate,
@@ -39,7 +39,7 @@ class PersonRepositoryImpl implements PersonRepository {
   }
 
   @override
-  Future<Either<FailureType, List<Person>>> find({
+  Future<Either<DatasourceFailure, List<Person>>> find({
     String? firstname,
     String? lastname,
     DateTime? birthDate,
@@ -66,7 +66,7 @@ class PersonRepositoryImpl implements PersonRepository {
   }
 
   @override
-  Future<Either<FailureType, Person>> findOneByID(String id) async {
+  Future<Either<DatasourceFailure, Person>> findOneByID(String id) async {
     final result = await remotePersonDatasource.fetchOnebyID(id);
     return result.fold(
       (type) {

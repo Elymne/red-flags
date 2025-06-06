@@ -1,9 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:red_flags/core/result/failure_type.dart';
 
-abstract class ReactiveState<T> {
+abstract class ReactiveState<T, F> {
   final T data;
-  final FailureType? failureType;
+  final F? failureType;
   final ReactiveStateStatus status;
 
   ReactiveState({required this.status, required this.data, this.failureType});
@@ -12,11 +11,11 @@ abstract class ReactiveState<T> {
     Widget Function() onPause,
     Widget Function() onLoading,
     Widget Function(T data) onSuccess,
-    Widget Function(FailureType failureType) onFailure,
+    Widget Function(F? failureType) onFailure,
   ) {
     if (status == ReactiveStateStatus.loading) return onLoading();
     if (status == ReactiveStateStatus.success) return onSuccess(data);
-    if (status == ReactiveStateStatus.failure) return onFailure(failureType ?? FailureType.unknown);
+    if (status == ReactiveStateStatus.failure) return onFailure(failureType);
     return onPause();
   }
 }

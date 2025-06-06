@@ -1,9 +1,9 @@
 import 'package:red_flags/core/result/either.dart';
-import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/domain/entities/person.entity.dart';
+import 'package:red_flags/infra/datasources/datasource_failure.enum.dart';
 
 abstract class PersonRepository {
-  Future<Either<FailureType, List<Person>>> find({
+  Future<Either<DatasourceFailure, List<Person>>> find({
     String? firstname,
     String? lastname,
     DateTime? birthDate,
@@ -12,9 +12,9 @@ abstract class PersonRepository {
     String? companyID,
   });
 
-  Future<Either<FailureType, Person>> findOneByID(String id);
+  Future<Either<DatasourceFailure, Person>> findOneByID(String id);
 
-  Future<Either<FailureType, Null>> addOne(
+  Future<Either<DatasourceFailure, Null>> addOne(
     String firstname,
     String lastname,
     DateTime birthDate,

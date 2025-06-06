@@ -1,16 +1,16 @@
 import 'package:red_flags/core/result/either.dart';
-import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/core/usecase/params.dart';
 import 'package:red_flags/core/usecase/usecase.dart';
 import 'package:red_flags/domain/repositories/person_repository.dart';
+import 'package:red_flags/infra/datasources/datasource_failure.enum.dart';
 
-class AddNewPerson extends Usecase<Either<FailureType, Null>, AddNewPersonParams> {
+class AddNewPerson extends Usecase<Either<DatasourceFailure, Null>, AddNewPersonParams> {
   final PersonRepository personRepository;
 
   AddNewPerson({required this.personRepository});
 
   @override
-  Future<Either<FailureType, Null>> perform(AddNewPersonParams params) async {
+  Future<Either<DatasourceFailure, Null>> perform(AddNewPersonParams params) async {
     return await personRepository.addOne(
       params.firstname,
       params.lastname,

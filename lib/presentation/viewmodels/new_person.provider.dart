@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/di/usecases_providers.dart';
 import 'package:red_flags/domain/usecases/add_new_person.usecase.dart';
 import 'package:red_flags/core/reactive/reactive_state.dart';
+import 'package:red_flags/infra/datasources/datasource_failure.enum.dart';
 
 final newPersonProvider = StateNotifierProvider<CreatePersonResultStateNotifier, NewPersonState>((ref) {
   return CreatePersonResultStateNotifier(ref.read(addNewPersonProvider));
@@ -43,13 +43,13 @@ class CreatePersonResultStateNotifier extends StateNotifier<NewPersonState> {
         },
       );
     } catch (e) {
-      state = NewPersonState(status: ReactiveStateStatus.failure, failureType: FailureType.unknown);
+      state = NewPersonState(status: ReactiveStateStatus.failure, failureType: DatasourceFailure.exception);
     }
   }
 
   void reset() => state = NewPersonState(status: ReactiveStateStatus.inactive);
 }
 
-class NewPersonState extends ReactiveState<Null> {
+class NewPersonState extends ReactiveState<Null, DatasourceFailure> {
   NewPersonState({required super.status, super.data, super.failureType});
 }

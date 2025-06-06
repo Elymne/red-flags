@@ -4,8 +4,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/result/either.dart';
 import 'package:red_flags/core/result/failure.dart';
-import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/core/result/success.dart';
+import 'package:red_flags/infra/datasources/datasource_failure.enum.dart';
 import 'package:red_flags/infra/models/zone.model.dart';
 
 final remoteZoneDatasourceProvider = Provider((ref) {
@@ -17,16 +17,16 @@ class RemoteZoneDatasource {
 
   RemoteZoneDatasource({required Dio dio}) : _dio = dio;
 
-  Future<Either<FailureType, List<ZoneModel>>> fetchManyByName(String zoneName) async {
+  Future<Either<DatasourceFailure, List<ZoneModel>>> fetchManyByName(String zoneName) async {
     try {
       final response = await _dio.get<String>("${dotenv.env["HOST"]}/zones", queryParameters: {"name": zoneName});
 
       if (response.statusCode != 200) {
-        return Failure(FailureType.network);
+        return Failure(DatasourceFailure.network);
       }
 
       if (response.data == null) {
-        return Failure(FailureType.network);
+        return Failure(DatasourceFailure.wrongResult);
       }
 
       final List<dynamic> raw = jsonDecode(response.data!)["data"];
@@ -34,20 +34,20 @@ class RemoteZoneDatasource {
 
       return Success(zones);
     } catch (err) {
-      return Failure(FailureType.exception);
+      return Failure(DatasourceFailure.exception);
     }
   }
 
-  Future<Either<FailureType, ZoneModel>> fetchOneByID(String id) async {
+  Future<Either<DatasourceFailure, ZoneModel>> fetchOneByID(String id) async {
     try {
       final response = await _dio.get<String>("${dotenv.env["HOST"]}/zones/$id");
 
       if (response.statusCode != 200) {
-        return Failure(FailureType.network);
+        return Failure(DatasourceFailure.network);
       }
 
       if (response.data == null) {
-        return Failure(FailureType.network);
+        return Failure(DatasourceFailure.wrongResult);
       }
 
       final Map<String, dynamic> raw = jsonDecode(response.data!)["data"];
@@ -55,7 +55,7 @@ class RemoteZoneDatasource {
 
       return Success(activity);
     } catch (err) {
-      return Failure(FailureType.exception);
+      return Failure(DatasourceFailure.exception);
     }
   }
 }

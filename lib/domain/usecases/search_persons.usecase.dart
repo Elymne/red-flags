@@ -1,17 +1,17 @@
 import 'package:red_flags/core/result/either.dart';
-import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/core/usecase/params.dart';
 import 'package:red_flags/core/usecase/usecase.dart';
 import 'package:red_flags/domain/entities/person.entity.dart';
 import 'package:red_flags/domain/repositories/person_repository.dart';
+import 'package:red_flags/infra/datasources/datasource_failure.enum.dart';
 
-class SearchPersons extends Usecase<Either<FailureType, List<Person>>, SearchPersonsParams> {
+class SearchPersons extends Usecase<Either<DatasourceFailure, List<Person>>, SearchPersonsParams> {
   final PersonRepository personRepository;
 
   SearchPersons({required this.personRepository});
 
   @override
-  Future<Either<FailureType, List<Person>>> perform(SearchPersonsParams params) async {
+  Future<Either<DatasourceFailure, List<Person>>> perform(SearchPersonsParams params) async {
     return await personRepository.find(
       firstname: params.firstname,
       lastname: params.lastname,

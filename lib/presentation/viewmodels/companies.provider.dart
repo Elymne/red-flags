@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/reactive/reactive_state.dart';
-import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/di/usecases_providers.dart';
 import 'package:red_flags/domain/entities/company.entity.dart';
 import 'package:red_flags/domain/usecases/search_companies.usecase.dart';
+import 'package:red_flags/infra/datasources/datasource_failure.enum.dart';
 
 final companiesProvider = StateNotifierProvider<CompaniesStateNotifier, CompaniesState>((ref) {
   return CompaniesStateNotifier(ref.read(searchCompaniesProvider));
@@ -27,13 +27,13 @@ class CompaniesStateNotifier extends StateNotifier<CompaniesState> {
         },
       );
     } catch (err) {
-      state = CompaniesState(status: ReactiveStateStatus.failure, data: [], failureType: FailureType.unknown);
+      state = CompaniesState(status: ReactiveStateStatus.failure, data: [], failureType: DatasourceFailure.exception);
     }
   }
 
   void reset() => state = CompaniesState(status: ReactiveStateStatus.inactive, data: []);
 }
 
-class CompaniesState extends ReactiveState<List<Company>> {
+class CompaniesState extends ReactiveState<List<Company>, DatasourceFailure> {
   CompaniesState({required super.status, required super.data, super.failureType});
 }

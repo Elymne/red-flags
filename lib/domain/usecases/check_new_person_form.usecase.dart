@@ -1,73 +1,33 @@
 import 'package:red_flags/core/result/either.dart';
-import 'package:red_flags/core/result/failure.dart';
-import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/core/result/success.dart';
 import 'package:red_flags/core/usecase/params.dart';
 import 'package:red_flags/core/usecase/usecase.dart';
-import 'package:red_flags/domain/repositories/activity_repository.dart';
-import 'package:red_flags/domain/repositories/company_repository.dart';
-import 'package:red_flags/domain/repositories/person_repository.dart';
-import 'package:red_flags/domain/repositories/zone_repository.dart';
+import 'package:red_flags/infra/datasources/datasource_failure.enum.dart';
 
-class CheckNewPersonForm extends Usecase<Either<FailureType, bool>, CheckNewPersonFormParams> {
-  final ActivityRepository activityRepository;
-  final ZoneRepository zoneRepository;
-  final CompanyRepository companyRepository;
-  final PersonRepository personRepository;
+enum PersonFormInfo { tooShortFirstname, tooShortLastname, tooYoung }
 
-  CheckNewPersonForm({
-    required this.activityRepository,
-    required this.zoneRepository,
-    required this.companyRepository,
-    required this.personRepository,
-  });
+class CheckNewPersonForm extends Usecase<Either<DatasourceFailure, List<PersonFormInfo>>, CheckNewPersonFormParams> {
+  CheckNewPersonForm();
 
   @override
-  Future<Either<FailureType, bool>> perform(CheckNewPersonFormParams params) async {
-    if (params.firstname == null ||
-        params.firstname!.isEmpty ||
-        params.lastname == null ||
-        params.lastname!.isEmpty ||
-        params.birthDate == null ||
-        params.activityID == null ||
-        params.zoneID == null ||
-        params.companyID == null) {
-      return Success(false);
+  Future<Either<DatasourceFailure, List<PersonFormInfo>>> perform(CheckNewPersonFormParams params) async {
+    final List<PersonFormInfo> infos = [];
+    if (params.firstname != null && params.firstname!.length < 2) {
+      infos.add(PersonFormInfo.tooShortFirstname);
     }
 
-    final results = await Future.wait([
-      activityRepository.findOneByID(params.activityID!),
-      zoneRepository.findOneByID(params.zoneID!),
-      companyRepository.findOneByID(params.companyID!),
-    ]);
+    if (params.lastname != null && params.lastname!.length < 2) {
+      infos.add(PersonFormInfo.tooShortLastname);
+    }
 
-    for (var result in results) {
-      if (result.isFailure()) {
-        return Failure((result as Failure).value);
+    if (params.birthDate != null) {
+      final age = DateTime.now().difference(params.birthDate!).inDays / 365.25;
+      if (age < 18.0) {
+        infos.add(PersonFormInfo.tooYoung);
       }
     }
 
-    // * Fetch persons that correspond to inputs.
-    final personsResult = await personRepository.find(
-      activityID: params.activityID,
-      companyID: params.companyID,
-      birthDate: params.birthDate,
-      firstname: params.firstname,
-      lastname: params.lastname,
-      zoneID: params.zoneID,
-    );
-
-    final isOk = personsResult.fold<int>((failureType) => 0, (persons) => persons.isNotEmpty ? 1 : 2);
-
-    if (isOk == 0) {
-      return Failure((personsResult as Failure).value);
-    }
-
-    if (isOk == 1) {
-      return Success(false);
-    }
-
-    return Success(true);
+    return Success(infos);
   }
 }
 
@@ -75,9 +35,6 @@ class CheckNewPersonFormParams extends Params {
   final String? firstname;
   final String? lastname;
   final DateTime? birthDate;
-  final String? activityID;
-  final String? zoneID;
-  final String? companyID;
 
-  CheckNewPersonFormParams({this.firstname, this.lastname, this.birthDate, this.activityID, this.zoneID, this.companyID});
+  CheckNewPersonFormParams({this.firstname, this.lastname, this.birthDate});
 }
