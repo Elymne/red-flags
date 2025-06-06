@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/core/result/failure.dart';
+import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/di/usecases_providers.dart';
 import 'package:red_flags/domain/usecases/add_new_person.usecase.dart';
 import 'package:red_flags/core/reactive/reactive_state.dart';

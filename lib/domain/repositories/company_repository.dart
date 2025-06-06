@@ -1,5 +1,5 @@
 import 'package:red_flags/core/result/either.dart';
-import 'package:red_flags/core/result/failure.dart';
+import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/domain/entities/company.entity.dart';
 
 abstract class CompanyRepository {

@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/result/either.dart';
 import 'package:red_flags/core/result/failure.dart';
+import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/core/result/success.dart';
 import 'package:red_flags/infra/models/person.model.dart';
 
@@ -95,6 +96,10 @@ class RemotePersonDatasource {
           companyID: companyID,
         },
       );
+
+      if (response.statusCode == 406) {
+        return Failure(FailureType.badInput);
+      }
 
       if (response.statusCode != 200) {
         return Failure(FailureType.network);

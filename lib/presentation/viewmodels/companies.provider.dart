@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/reactive/reactive_state.dart';
-import 'package:red_flags/core/result/failure.dart';
+import 'package:red_flags/core/result/failure_type.dart';
 import 'package:red_flags/di/usecases_providers.dart';
 import 'package:red_flags/domain/entities/company.entity.dart';
 import 'package:red_flags/domain/usecases/search_companies.usecase.dart';

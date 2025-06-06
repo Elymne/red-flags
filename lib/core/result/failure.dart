@@ -1,4 +1,5 @@
 import 'package:red_flags/core/result/either.dart';
+import 'package:red_flags/core/result/failure_type.dart';
 
 class Failure<F extends FailureType, S> extends Either<F, S> {
   final F value;
@@ -16,5 +17,3 @@ class Failure<F extends FailureType, S> extends Either<F, S> {
   @override
   bool isSuccess() => false;
 }
-
-enum FailureType { network, exception, unknown }
