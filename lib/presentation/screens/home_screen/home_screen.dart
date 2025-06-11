@@ -81,7 +81,7 @@ class _State extends ConsumerState<HomeScreen> {
                       child: ShakleTextButton(
                         AppLocalizations.of(context)!.homeSearchOption,
                         onPressed: () {
-                          ref.read(routerNotifierprovider.notifier).push(Navigator.of(context), const SearchScreen());
+                          // ref.read(routerNotifierprovider.notifier).push(Navigator.of(context), const SearchScreen());
                         },
                       ),
                     ),

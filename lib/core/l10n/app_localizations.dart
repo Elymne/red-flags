@@ -115,14 +115,20 @@ abstract class AppLocalizations {
   /// Message signifiant que l'application n'arrive pas à se connecter au serveur.
   ///
   /// In fr, this message translates to:
-  /// **'Impossible d\'accéder au serveur'**
-  String get netFailure;
+  /// **'Une erreur interne s\'est produite'**
+  String get errorFailure;
 
-  /// Message signifiant que l'application a détecté une erreur et ne peux pas continuer l'action en cours.
+  /// Message signifiant que l'application n'arrive pas à se connecter au serveur.
   ///
   /// In fr, this message translates to:
-  /// **'Une erreur interne s\'est produite…'**
-  String get applicationFailure;
+  /// **'Une erreur s\'est produite avec le serveur'**
+  String get errorNetwork;
+
+  /// Message signifiant que l'application n'arrive pas à se connecter au serveur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une erreur d\'origine inconnu s\'est produite sur l\'application'**
+  String get errorUnknown;
 
   /// Texte de bouton d'accès à une ressource (vue, page, données…).
   ///

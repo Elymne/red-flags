@@ -1,4 +1,4 @@
-import 'package:red_flags/presentation/screens/create_person_screen/person_form_state.dart';
+import 'package:red_flags/presentation/viewmodels/person_form.provider.dart';
 import 'package:red_flags/presentation/widgets/routing/slide_widget.dart';
 import 'package:red_flags/presentation/widgets/shakles/shakle_date_picker.dart';
 import 'package:red_flags/presentation/widgets/shakles/shakle_textfield.dart';
@@ -7,9 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:red_flags/core/l10n/app_localizations.dart';
 
 class FormWidgetIdentity extends ConsumerStatefulWidget {
-  final PersonFormState formCtrl;
-
-  const FormWidgetIdentity({super.key, required this.formCtrl});
+  const FormWidgetIdentity({super.key});
 
   @override
   ConsumerState<FormWidgetIdentity> createState() => _State();
@@ -18,6 +16,8 @@ class FormWidgetIdentity extends ConsumerStatefulWidget {
 class _State extends ConsumerState<FormWidgetIdentity> {
   @override
   Widget build(BuildContext context) {
+    final personFormNotifier = ref.read(personFormProvider.notifier);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
@@ -26,12 +26,10 @@ class _State extends ConsumerState<FormWidgetIdentity> {
           duration: Duration(milliseconds: 200),
           child: ShakleTextfield(
             AppLocalizations.of(context)!.firstname,
-            value: widget.formCtrl.firstname,
+            value: personFormNotifier.firstname,
             icon: Icons.person_2_outlined,
             onChanged: (value) {
-              setState(() {
-                widget.formCtrl.updateValues(firstname: value);
-              });
+              personFormNotifier.onFormUpdate(firstname: value);
             },
           ),
         ),
@@ -40,12 +38,10 @@ class _State extends ConsumerState<FormWidgetIdentity> {
           duration: Duration(milliseconds: 400),
           child: ShakleTextfield(
             AppLocalizations.of(context)!.lastname,
-            value: widget.formCtrl.lastname,
+            value: personFormNotifier.lastname,
             icon: Icons.person_2_outlined,
             onChanged: (value) {
-              setState(() {
-                widget.formCtrl.updateValues(lastname: value);
-              });
+              personFormNotifier.onFormUpdate(lastname: value);
             },
           ),
         ),
@@ -54,8 +50,10 @@ class _State extends ConsumerState<FormWidgetIdentity> {
           duration: Duration(milliseconds: 600),
           child: ShakleDatepicker(
             AppLocalizations.of(context)!.birthDate,
-            selectedDate: widget.formCtrl.birthDate,
-            onChanged: (value) => widget.formCtrl.updateValues(birthDate: value),
+            selectedDate: personFormNotifier.birthDate,
+            onChanged: (value) {
+              personFormNotifier.onFormUpdate(birthDate: value);
+            },
           ),
         ),
       ],

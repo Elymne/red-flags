@@ -2,9 +2,12 @@ import 'package:red_flags/core/result/either.dart';
 import 'package:red_flags/core/result/success.dart';
 import 'package:red_flags/core/usecase/params.dart';
 import 'package:red_flags/core/usecase/usecase.dart';
+import 'package:red_flags/domain/entities/activity.entity.dart';
+import 'package:red_flags/domain/entities/company.entity.dart';
+import 'package:red_flags/domain/entities/zone.entity.dart';
 import 'package:red_flags/infra/datasources/datasource_failure.enum.dart';
 
-enum PersonFormInfo { tooShortFirstname, tooShortLastname, tooYoung }
+enum PersonFormInfo { tooShortFirstname, tooShortLastname, tooYoung, imcomplete }
 
 class CheckNewPersonForm extends Usecase<Either<DatasourceFailure, List<PersonFormInfo>>, CheckNewPersonFormParams> {
   CheckNewPersonForm();
@@ -27,6 +30,15 @@ class CheckNewPersonForm extends Usecase<Either<DatasourceFailure, List<PersonFo
       }
     }
 
+    if (params.firstname == null &&
+        params.lastname == null &&
+        params.birthDate == null &&
+        params.zone == null &&
+        params.company == null &&
+        params.activity == null) {
+      infos.add(PersonFormInfo.imcomplete);
+    }
+
     return Success(infos);
   }
 }
@@ -35,6 +47,9 @@ class CheckNewPersonFormParams extends Params {
   final String? firstname;
   final String? lastname;
   final DateTime? birthDate;
+  final Zone? zone;
+  final Company? company;
+  final Activity? activity;
 
-  CheckNewPersonFormParams({this.firstname, this.lastname, this.birthDate});
+  CheckNewPersonFormParams({this.firstname, this.lastname, this.birthDate, this.zone, this.company, this.activity});
 }

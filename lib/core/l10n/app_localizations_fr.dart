@@ -18,10 +18,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get checkSuccess => 'Chargement terminé!';
 
   @override
-  String get netFailure => 'Impossible d\'accéder au serveur';
+  String get errorFailure => 'Une erreur interne s\'est produite';
 
   @override
-  String get applicationFailure => 'Une erreur interne s\'est produite…';
+  String get errorNetwork => 'Une erreur s\'est produite avec le serveur';
+
+  @override
+  String get errorUnknown =>
+      'Une erreur d\'origine inconnu s\'est produite sur l\'application';
 
   @override
   String get accessButton => 'Accéder';

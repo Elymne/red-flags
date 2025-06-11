@@ -13,8 +13,8 @@ final lightColorScheme = ColorScheme(
   error: Color(0xFFFF0000),
   onError: Color(0xFFFFFFFF),
 
-  surface: Color.fromARGB(255, 255, 253, 251),
-  surfaceContainer: Color.fromARGB(255, 255, 255, 255),
+  surface: Color(0xFFFFFDFB),
+  surfaceContainer: Color(0xFFFFFFFF),
   onSurface: Color(0xFF3A3A3A),
   onSurfaceVariant: Color(0xFF888888),
 
