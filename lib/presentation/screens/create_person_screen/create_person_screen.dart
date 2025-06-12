@@ -95,7 +95,7 @@ class _State extends ConsumerState<CreatePersonScreen> {
                       subtitle: AppLocalizations.of(context)!.createScreenSubTitle,
                       color: Theme.of(context).colorScheme.primary,
                     ),
-                    SizedBox(height: 40),
+                    SizedBox(height: 10),
                     Expanded(
                       child: PageView(
                         controller: _pageCtrl,
@@ -103,8 +103,6 @@ class _State extends ConsumerState<CreatePersonScreen> {
                         children: [FormWidgetIdentity(), FormWidgetZone(), FormWidgetActivity(), FormWidgetCompany()],
                       ),
                     ),
-                    SizedBox(height: 40),
-                    SizedBox(height: 40),
                   ],
                 ),
               ),

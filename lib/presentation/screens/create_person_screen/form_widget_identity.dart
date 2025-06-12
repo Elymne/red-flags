@@ -1,10 +1,11 @@
 import 'package:red_flags/presentation/viewmodels/person_form.provider.dart';
+import 'package:red_flags/presentation/widgets/forms/form_button.dart';
+import 'package:red_flags/presentation/widgets/forms/form_date_picker.dart';
+import 'package:red_flags/presentation/widgets/forms/form_textfield.dart';
+import 'package:red_flags/presentation/widgets/forms/form_textfield_button.dart';
 import 'package:red_flags/presentation/widgets/routing/slide_widget.dart';
-import 'package:red_flags/presentation/widgets/shakles/shakle_date_picker.dart';
-import 'package:red_flags/presentation/widgets/shakles/shakle_textfield.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:red_flags/core/l10n/app_localizations.dart';
 
 class FormWidgetIdentity extends ConsumerStatefulWidget {
   const FormWidgetIdentity({super.key});
@@ -24,38 +25,27 @@ class _State extends ConsumerState<FormWidgetIdentity> {
       children: [
         SlideWidget(
           duration: Duration(milliseconds: 200),
-          child: ShakleTextfield(
-            AppLocalizations.of(context)!.firstname,
-            value: personFormNotifier.firstname,
-            icon: Icons.person_2_outlined,
-            onChanged: (value) {
-              personFormNotifier.onFormUpdate(firstname: value);
-            },
-          ),
+          child: FormTextfield(icon: Icons.abc, label: "Nom", value: "", onSubmitted: (value) {}),
         ),
-        SizedBox(height: 20),
         SlideWidget(
           duration: Duration(milliseconds: 400),
-          child: ShakleTextfield(
-            AppLocalizations.of(context)!.lastname,
-            value: personFormNotifier.lastname,
-            icon: Icons.person_2_outlined,
-            onChanged: (value) {
-              personFormNotifier.onFormUpdate(lastname: value);
-            },
-          ),
+          child: FormTextfield(icon: Icons.abc, label: "Prénom", value: "", onSubmitted: (value) {}),
         ),
-        SizedBox(height: 20),
         SlideWidget(
           duration: Duration(milliseconds: 600),
-          child: ShakleDatepicker(
-            AppLocalizations.of(context)!.birthDate,
-            selectedDate: personFormNotifier.birthDate,
-            onChanged: (value) {
-              personFormNotifier.onFormUpdate(birthDate: value);
-            },
-          ),
+          child: FormDatePicker(icon: Icons.abc, label: "Date de Naissance", onSubmitted: (value) {}),
         ),
+        SlideWidget(
+          duration: Duration(milliseconds: 800),
+          child: FormTextfieldButton(icon: Icons.abc, label: "Région", value: "", onSubmitted: (value) {}),
+        ),
+        SlideWidget(
+          duration: Duration(milliseconds: 1000),
+          child: FormTextfieldButton(icon: Icons.abc, label: "Nom", value: "", onSubmitted: (value) {}),
+        ),
+        SizedBox(height: 20),
+        SlideWidget(duration: Duration(milliseconds: 1200), child: FormButton(onPressed: () {}, text: "Créer")),
+        SizedBox(height: 20),
       ],
     );
   }

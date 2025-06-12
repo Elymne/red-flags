@@ -15,6 +15,7 @@ final lightColorScheme = ColorScheme(
 
   surface: Color(0xFFFFFDFB),
   surfaceContainer: Color(0xFFFFFFFF),
+  surfaceContainerLow: Color(0xFFF0F0F0),
   onSurface: Color(0xFF3A3A3A),
   onSurfaceVariant: Color(0xFF888888),
 
