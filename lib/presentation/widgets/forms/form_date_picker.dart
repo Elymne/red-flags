@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/core/extensions/datetime_extension.dart';
 
-class FormDatePicker extends StatefulWidget {
+class FormDatePicker extends ConsumerStatefulWidget {
   final String label;
   final DateTime? value;
   final IconData icon;
@@ -10,10 +11,10 @@ class FormDatePicker extends StatefulWidget {
   const FormDatePicker({required this.label, required this.icon, this.value, required this.onSubmitted, super.key});
 
   @override
-  State<StatefulWidget> createState() => _State();
+  ConsumerState<ConsumerStatefulWidget> createState() => _State();
 }
 
-class _State extends State<FormDatePicker> with TickerProviderStateMixin {
+class _State extends ConsumerState<FormDatePicker> with TickerProviderStateMixin {
   DateTime? _selectedDate;
 
   @override
@@ -26,7 +27,6 @@ class _State extends State<FormDatePicker> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        /// * The picker.
         GestureDetector(
           onTap: () async {
             DateTime? pickedDate = await showDatePicker(

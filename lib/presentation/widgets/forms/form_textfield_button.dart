@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/presentation/widgets/forms/form_visibility.provider.dart';
 
 class FormTextfieldButton extends ConsumerStatefulWidget {
   final String label;
   final String value;
   final IconData icon;
+  final void Function() onTap;
 
-  final void Function(String value) onSubmitted;
-
-  const FormTextfieldButton({required this.label, required this.value, required this.icon, required this.onSubmitted, super.key});
+  const FormTextfieldButton({required this.label, required this.value, required this.icon, required this.onTap, super.key});
 
   @override
   ConsumerState<FormTextfieldButton> createState() => _FormTextfieldButtonState();
@@ -18,10 +16,10 @@ class FormTextfieldButton extends ConsumerStatefulWidget {
 class _FormTextfieldButtonState extends ConsumerState<FormTextfieldButton> {
   @override
   Widget build(BuildContext context) {
-    final formFocusState = ref.watch(formFocusProvider);
-
-    return Visibility(
-      visible: formFocusState.data,
+    return GestureDetector(
+      onTap: () {
+        widget.onTap();
+      },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -37,9 +35,23 @@ class _FormTextfieldButtonState extends ConsumerState<FormTextfieldButton> {
               Icon(widget.icon, color: Theme.of(context).colorScheme.primary),
               SizedBox(width: 14),
               if (widget.value.isEmpty)
-                Text(widget.label, style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurfaceVariant)),
+                Expanded(
+                  child: Text(
+                    widget.label,
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                    style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  ),
+                ),
               if (widget.value.isNotEmpty)
-                Text(widget.label, style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurface)),
+                Expanded(
+                  child: Text(
+                    widget.value,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurface),
+                  ),
+                ),
             ],
           ),
         ),

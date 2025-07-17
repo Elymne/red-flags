@@ -7,11 +7,11 @@ class LinkModel {
   LinkModel({required this.id, required this.value});
 
   factory LinkModel.fromJson(Map<String, dynamic> json) {
-    return LinkModel(id: json['id'] as String, value: json['value'] as String);
+    return LinkModel(id: json['ID'] as String, value: json['value'] as String);
   }
 
   Map<String, dynamic> toJson() {
-    return {'id': id, 'value': value};
+    return {'ID': id, 'value': value};
   }
 
   static LinkModel fromEntity(Link entity) {

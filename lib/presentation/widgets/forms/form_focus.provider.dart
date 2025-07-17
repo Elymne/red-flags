@@ -7,11 +7,11 @@ final formFocusProvider = StateNotifierProvider<FormFocusStateNotifier, FormFocu
 });
 
 class FormFocusStateNotifier extends StateNotifier<FormFocusState> {
-  FormFocusStateNotifier() : super(FormFocusState(status: ReactiveStateStatus.inactive, data: true));
+  FormFocusStateNotifier() : super(FormFocusState(status: ReactiveStateStatus.inactive, data: false));
 
-  void setVisibility(bool isVisible) => state = FormFocusState(status: ReactiveStateStatus.inactive, data: isVisible);
+  void hasFocus(bool value) => state = FormFocusState(status: ReactiveStateStatus.inactive, data: value);
 
-  void reset() => state = FormFocusState(status: ReactiveStateStatus.inactive, data: true);
+  void reset() => state = FormFocusState(status: ReactiveStateStatus.inactive, data: false);
 }
 
 class FormFocusState extends ReactiveState<bool, DatasourceFailure> {

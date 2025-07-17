@@ -8,11 +8,11 @@ class CompanyModel {
   CompanyModel({required this.id, required this.name, required this.address});
 
   factory CompanyModel.fromJson(Map<String, dynamic> json) {
-    return CompanyModel(id: json['id'] as String, name: json['name'] as String, address: json['address'] as String);
+    return CompanyModel(id: json['ID'] as String, name: json['name'] as String, address: json['address'] as String);
   }
 
   Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name, 'address': address};
+    return {'ID': id, 'name': name, 'address': address};
   }
 
   // Assuming you have a CompanyEntity class defined elsewhere

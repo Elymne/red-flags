@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_flags/presentation/widgets/forms/form_visibility.provider.dart';
+import 'package:red_flags/presentation/widgets/forms/form_focus.provider.dart';
 
 class FormTextfield extends ConsumerStatefulWidget {
   final String label;
@@ -15,59 +15,51 @@ class FormTextfield extends ConsumerStatefulWidget {
 }
 
 class _State extends ConsumerState<FormTextfield> {
-  final FocusNode focus = FocusNode();
-  bool hasFocus = false;
+  final FocusNode _focus = FocusNode();
+  final TextEditingController _textCtrl = TextEditingController();
+  bool _hasFocus = false;
 
   @override
   void initState() {
     super.initState();
-    focus.addListener(onFocusChange);
+    _focus.addListener(onFocusChange);
+    _textCtrl.text = widget.value;
   }
 
   @override
   void dispose() {
-    focus.addListener(onFocusChange);
+    _focus.addListener(onFocusChange);
     super.dispose();
   }
 
   void onFocusChange() {
     final formFocusNotifier = ref.read(formFocusProvider.notifier);
-    if (focus.hasFocus) {
-      hasFocus = true;
-      formFocusNotifier.setVisibility(false);
-      return;
-    }
-
-    hasFocus = false;
-    formFocusNotifier.setVisibility(true);
-    return;
+    _hasFocus = _focus.hasFocus;
+    formFocusNotifier.hasFocus(_focus.hasFocus);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final formFocusState = ref.watch(formFocusProvider);
-
-    return Visibility(
-      visible: formFocusState.data || hasFocus,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        decoration: BoxDecoration(
-          color: hasFocus ? Theme.of(context).colorScheme.surfaceContainerLow : Theme.of(context).colorScheme.surfaceContainer,
-          borderRadius: BorderRadius.circular(30.0),
-          boxShadow: [
-            if (hasFocus == false) BoxShadow(color: Colors.grey.withAlpha(40), spreadRadius: 2, blurRadius: 2, offset: Offset(0, 2)),
-          ],
-        ),
-        child: TextField(
-          onSubmitted: (value) => widget.onSubmitted(value),
-          focusNode: focus,
-          decoration: InputDecoration(
-            prefixIcon: Icon(widget.icon, color: Theme.of(context).colorScheme.primary),
-            hintText: widget.label,
-            contentPadding: EdgeInsets.symmetric(vertical: 14.0),
-            border: InputBorder.none,
-          ),
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      decoration: BoxDecoration(
+        color: _hasFocus ? Theme.of(context).colorScheme.surfaceContainerLow : Theme.of(context).colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(30.0),
+        boxShadow: [
+          if (_hasFocus == false) BoxShadow(color: Colors.grey.withAlpha(40), spreadRadius: 2, blurRadius: 2, offset: Offset(0, 2)),
+        ],
+      ),
+      child: TextField(
+        controller: _textCtrl,
+        onSubmitted: (value) => widget.onSubmitted(value),
+        focusNode: _focus,
+        decoration: InputDecoration(
+          prefixIcon: Icon(widget.icon, color: Theme.of(context).colorScheme.primary),
+          hintText: widget.label,
+          contentPadding: EdgeInsets.symmetric(vertical: 14.0),
+          border: InputBorder.none,
         ),
       ),
     );

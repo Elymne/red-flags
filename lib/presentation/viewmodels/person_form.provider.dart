@@ -13,6 +13,7 @@ final personFormProvider = StateNotifierProvider<PersonFormStateNotifier, Person
 
 class PersonFormStateNotifier extends StateNotifier<PersonFormState> {
   final CheckNewPersonForm checkNewPersonForm;
+
   String? _firstname;
   String? get firstname => _firstname;
   void resetFirstname() => _firstname = null;
@@ -37,7 +38,8 @@ class PersonFormStateNotifier extends StateNotifier<PersonFormState> {
   Company? get company => _company;
   void resetCompany() => _company = null;
 
-  PersonFormStateNotifier(this.checkNewPersonForm) : super(PersonFormState(status: ReactiveStateStatus.inactive, data: []));
+  PersonFormStateNotifier(this.checkNewPersonForm)
+    : super(PersonFormState(status: ReactiveStateStatus.inactive, data: [PersonFormInfo.imcomplete]));
 
   Future<void> onFormUpdate({
     String? firstname,
@@ -48,11 +50,37 @@ class PersonFormStateNotifier extends StateNotifier<PersonFormState> {
     Company? company,
   }) async {
     //* Check here
+    if (firstname != null) _firstname = firstname;
+    if (lastname != null) _lastname = lastname;
+    if (birthDate != null) _birthDate = birthDate;
+    if (zone != null) _zone = zone;
+    if (company != null) _company = company;
+    if (activity != null) _activity = activity;
+
+    final result = await checkNewPersonForm.perform(
+      CheckNewPersonFormParams(
+        firstname: _firstname,
+        lastname: _lastname,
+        birthDate: _birthDate,
+        activity: _activity,
+        company: _company,
+        zone: _zone,
+      ),
+    );
+
+    result.fold(
+      (failureType) {
+        state = PersonFormState(status: ReactiveStateStatus.failure, data: [PersonFormInfo.error], failureType: failureType);
+      },
+      (infos) {
+        state = PersonFormState(status: ReactiveStateStatus.success, data: infos);
+      },
+    );
   }
 
   void reset() {
-    _firstname = null;
-    _lastname = null;
+    _firstname = "";
+    _lastname = "";
     _birthDate = null;
     _zone = null;
     _activity = null;

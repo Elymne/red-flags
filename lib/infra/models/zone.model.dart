@@ -7,11 +7,11 @@ class ZoneModel {
   ZoneModel({required this.id, required this.name});
 
   factory ZoneModel.fromJson(Map<String, dynamic> json) {
-    return ZoneModel(id: json['id'] as String, name: json['name'] as String);
+    return ZoneModel(id: json['ID'] as String, name: json['name'] as String);
   }
 
   Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name};
+    return {'ID': id, 'name': name};
   }
 
   factory ZoneModel.fromEntity(Zone entity) {

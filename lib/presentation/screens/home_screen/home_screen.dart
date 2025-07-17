@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/presentation/router/router.notifier.dart';
 import 'package:red_flags/presentation/screens/create_person_screen/create_person_screen.dart';
-import 'package:red_flags/presentation/screens/search_screen/search_screen.dart';
 import 'package:red_flags/presentation/widgets/backgrounds/waves_background.dart';
 import 'package:red_flags/presentation/widgets/layouts/title_container.dart';
 import 'package:red_flags/presentation/widgets/routing/fade_widget.dart';
@@ -56,11 +55,7 @@ class _State extends ConsumerState<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TitleContainer(
-                      title: AppLocalizations.of(context)!.homeScreenTitle,
-                      subtitle: AppLocalizations.of(context)!.homeScreenSubTitle,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
+                    TitleContainer(title: AppLocalizations.of(context)!.homeScreenTitle, color: Theme.of(context).colorScheme.primary),
                     Expanded(child: SizedBox()),
                     SlideWidget(
                       duration: Duration(milliseconds: 200),

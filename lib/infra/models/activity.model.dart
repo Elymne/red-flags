@@ -7,11 +7,11 @@ class ActivityModel {
   ActivityModel({required this.id, required this.name});
 
   factory ActivityModel.fromJson(Map<String, dynamic> json) {
-    return ActivityModel(id: json['id'] as String, name: json['name'] as String);
+    return ActivityModel(id: json['ID'] as String, name: json['name'] as String);
   }
 
   Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name};
+    return {'ID': id, 'name': name};
   }
 
   factory ActivityModel.fromEntity(Activity entity) {

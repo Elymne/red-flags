@@ -95,6 +95,21 @@ class CustomTheme {
 
       /// ! NOT INPUT STYLE.
       textSelectionTheme: TextSelectionThemeData(cursorColor: lightColorScheme.primary),
+
+      /// * All Outlined button style.
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: lightColorScheme.primary,
+          backgroundColor: lightColorScheme.surface,
+          splashFactory: InkRipple.splashFactory,
+          animationDuration: Duration(milliseconds: 100),
+          textStyle: GoogleFonts.nunitoSans(fontWeight: FontWeight.bold, fontSize: 18),
+          side: BorderSide(color: lightColorScheme.primary, width: 1.1),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+          elevation: 0,
+        ),
+      ),
     );
   }
 }

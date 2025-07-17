@@ -22,10 +22,7 @@ class _State extends ConsumerState<PersonListViewScreenScreen> with TickerProvid
       body: Column(
         children: [
           /// * Header container with page name.
-          TitleContainer(
-            title: AppLocalizations.of(context)!.personListViewScreenTitle,
-            subtitle: "${AppLocalizations.of(context)!.personListViewScreenSubTitle} (${widget.persons.length})",
-          ),
+          TitleContainer(title: AppLocalizations.of(context)!.personListViewScreenTitle),
 
           /// * The listview.
           Expanded(

@@ -7,7 +7,7 @@ import 'package:red_flags/domain/entities/company.entity.dart';
 import 'package:red_flags/domain/entities/zone.entity.dart';
 import 'package:red_flags/infra/datasources/datasource_failure.enum.dart';
 
-enum PersonFormInfo { tooShortFirstname, tooShortLastname, tooYoung, imcomplete }
+enum PersonFormInfo { tooShortFirstname, tooShortLastname, tooYoung, imcomplete, error }
 
 class CheckNewPersonForm extends Usecase<Either<DatasourceFailure, List<PersonFormInfo>>, CheckNewPersonFormParams> {
   CheckNewPersonForm();
@@ -30,11 +30,13 @@ class CheckNewPersonForm extends Usecase<Either<DatasourceFailure, List<PersonFo
       }
     }
 
-    if (params.firstname == null &&
-        params.lastname == null &&
-        params.birthDate == null &&
-        params.zone == null &&
-        params.company == null &&
+    if (params.firstname == null ||
+        params.firstname!.isEmpty ||
+        params.lastname == null ||
+        params.lastname!.isEmpty ||
+        params.birthDate == null ||
+        params.zone == null ||
+        params.company == null ||
         params.activity == null) {
       infos.add(PersonFormInfo.imcomplete);
     }
