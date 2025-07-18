@@ -85,15 +85,17 @@ class RemotePersonDatasource {
     required String companyID,
   }) async {
     try {
+      final birthDateStr = birthDate.microsecondsSinceEpoch.toString();
+
       final response = await _dio.post<Map<String, dynamic>>(
         "${dotenv.env["HOST"]}/persons",
         data: {
-          firstname: firstname,
-          lastname: lastname,
-          birthDate: birthDate.microsecondsSinceEpoch,
-          zoneID: zoneID,
-          activityID: activityID,
-          companyID: companyID,
+          "firstname": firstname,
+          "lastname": lastname,
+          "birthDate": birthDateStr,
+          "zoneID": zoneID,
+          "activityID": activityID,
+          "companyID": companyID,
         },
       );
 
@@ -101,7 +103,7 @@ class RemotePersonDatasource {
         return Failure(DatasourceFailure.duplication);
       }
 
-      if (response.statusCode != 200) {
+      if (response.statusCode != 201) {
         return Failure(DatasourceFailure.network);
       }
 
