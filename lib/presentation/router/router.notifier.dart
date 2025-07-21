@@ -9,7 +9,10 @@ final routerNotifierprovider = StateNotifierProvider<RouterNotifier, RouterState
 });
 
 class RouterNotifier extends StateNotifier<RouterState> {
+  final animDuration = const Duration(milliseconds: 1000);
   final Ref ref;
+
+  // When set to true, route cannot be changed, because animation are in progress.
   bool _isFreezed = false;
 
   RouterNotifier(this.ref) : super(RouterState(status: RoutingAnimationStatus.init));
@@ -18,8 +21,8 @@ class RouterNotifier extends StateNotifier<RouterState> {
     if (_isFreezed) return;
     _isFreezed = true;
 
-    state = RouterState(status: RoutingAnimationStatus.reverse, animationDuration: state.animationDuration);
-    Future.delayed(state.animationDuration, () async {
+    state = RouterState(status: RoutingAnimationStatus.reverse);
+    Future.delayed(animDuration, () async {
       _isFreezed = false;
       await navigator.push(
         PageRouteBuilder(
@@ -29,7 +32,7 @@ class RouterNotifier extends StateNotifier<RouterState> {
         ),
       );
 
-      state = RouterState(status: RoutingAnimationStatus.forward, animationDuration: state.animationDuration);
+      state = RouterState(status: RoutingAnimationStatus.forward);
     });
   }
 
@@ -37,8 +40,8 @@ class RouterNotifier extends StateNotifier<RouterState> {
     if (_isFreezed) return;
     _isFreezed = true;
 
-    state = RouterState(status: RoutingAnimationStatus.reverse, animationDuration: state.animationDuration);
-    Future.delayed(state.animationDuration, () async {
+    state = RouterState(status: RoutingAnimationStatus.reverse);
+    Future.delayed(animDuration, () async {
       _isFreezed = false;
       await navigator.pushAndRemoveUntil(
         PageRouteBuilder(
@@ -48,7 +51,7 @@ class RouterNotifier extends StateNotifier<RouterState> {
         ),
         (route) => false,
       );
-      state = RouterState(status: RoutingAnimationStatus.forward, animationDuration: state.animationDuration);
+      state = RouterState(status: RoutingAnimationStatus.forward);
     });
   }
 
@@ -56,8 +59,8 @@ class RouterNotifier extends StateNotifier<RouterState> {
     if (_isFreezed) return;
     _isFreezed = true;
 
-    state = RouterState(status: RoutingAnimationStatus.reverse, animationDuration: state.animationDuration);
-    Future.delayed(state.animationDuration, () async {
+    state = RouterState(status: RoutingAnimationStatus.reverse);
+    Future.delayed(animDuration, () async {
       _isFreezed = false;
       if (!navigator.canPop()) return;
       navigator.pop();
@@ -67,9 +70,8 @@ class RouterNotifier extends StateNotifier<RouterState> {
 
 class RouterState {
   final RoutingAnimationStatus status;
-  final Duration animationDuration;
 
-  RouterState({required this.status, this.animationDuration = const Duration(milliseconds: 1000)});
+  RouterState({required this.status});
 }
 
 enum RoutingAnimationStatus { init, reverse, forward }

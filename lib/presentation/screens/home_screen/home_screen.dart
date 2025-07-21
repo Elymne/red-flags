@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_flags/presentation/router/router.notifier.dart';
 import 'package:red_flags/presentation/screens/create_person_screen/create_person_screen.dart';
+import 'package:red_flags/presentation/viewmodels/current_screen.provider.dart';
 import 'package:red_flags/presentation/widgets/backgrounds/waves_background.dart';
+import 'package:red_flags/presentation/widgets/layouts/bottom_nav.dart';
 import 'package:red_flags/presentation/widgets/layouts/title_container.dart';
 import 'package:red_flags/presentation/widgets/routing/fade_widget.dart';
 import 'package:red_flags/presentation/widgets/routing/slide_widget.dart';
@@ -18,9 +20,14 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _State extends ConsumerState<HomeScreen> {
+  late final currentScreenNotifier = ref.read(currentScreenProvider.notifier);
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      currentScreenNotifier.updateCurrentScreen(0);
+    });
   }
 
   @override
@@ -33,6 +40,7 @@ class _State extends ConsumerState<HomeScreen> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {},
       child: Scaffold(
+        bottomNavigationBar: BottomNav(),
         body: Stack(
           children: [
             FadeWidget(
@@ -56,40 +64,6 @@ class _State extends ConsumerState<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TitleContainer(title: AppLocalizations.of(context)!.homeScreenTitle, color: Theme.of(context).colorScheme.primary),
-                    Expanded(child: SizedBox()),
-                    SlideWidget(
-                      duration: Duration(milliseconds: 200),
-                      child: Row(
-                        children: [
-                          ShakleTextButton(
-                            AppLocalizations.of(context)!.homeAddOption,
-                            onPressed: () {
-                              ref.read(routerNotifierprovider.notifier).push(Navigator.of(context), const CreatePersonScreen());
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    SlideWidget(
-                      duration: Duration(milliseconds: 400),
-                      child: ShakleTextButton(
-                        AppLocalizations.of(context)!.homeSearchOption,
-                        onPressed: () {
-                          // ref.read(routerNotifierprovider.notifier).push(Navigator.of(context), const SearchScreen());
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    SlideWidget(
-                      duration: Duration(milliseconds: 600),
-                      child: ShakleTextButton(AppLocalizations.of(context)!.homeNews, onPressed: () {}),
-                    ),
-                    SizedBox(height: 10),
-                    SlideWidget(
-                      duration: Duration(milliseconds: 800),
-                      child: ShakleTextButton(AppLocalizations.of(context)!.homeOptions, onPressed: () {}),
-                    ),
                     Expanded(child: SizedBox()),
                   ],
                 ),

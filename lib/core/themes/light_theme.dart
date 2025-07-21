@@ -5,10 +5,10 @@ final lightColorScheme = ColorScheme(
   brightness: Brightness.light,
 
   primary: Color(0xFFFF4164),
-  onPrimary: Color(0xFFF0F0F0),
+  onPrimary: Color(0xFFFFFFFF),
 
   secondary: Color.fromARGB(255, 59, 255, 206),
-  onSecondary: Color(0xFFF0F0F0),
+  onSecondary: Color(0xFFFFFFFF),
 
   error: Color(0xFFFF0000),
   onError: Color(0xFFFFFFFF),
